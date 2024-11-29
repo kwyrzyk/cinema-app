@@ -1,12 +1,12 @@
 package com.example;
 
+
 import javafx.scene.layout.VBox;
 
-public class SellTicketsPage implements Page{
+public class RepeitoirePage implements Page {
     @Override
-    public VBox getPage()  {
+    public VBox getPage() {
         VBox layout = new VBox();
         return layout;
     }
 }
-
