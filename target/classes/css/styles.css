@@ -2,16 +2,6 @@
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #45a049, #3e8e41);
 }
-
-.vbox {
-    -fx-padding: 20;
-    -fx-spacing: 15;
-    -fx-background-color: #6b708b;
-    -fx-border-color: #050505;
-    -fx-border-width: 5;
-    -fx-border-radius: 5;
-}
-
 .button {
     -fx-background-color: linear-gradient(to bottom, #4cdee9, #0fc4f1);
     -fx-text-fill: white;
@@ -19,4 +9,64 @@
     -fx-padding: 10 20;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+}
+.vbox {
+    -fx-background-color: #6b708b;
+    -fx-border-color: #050505;
+    -fx-border-width: 5;
+}
+
+.newpage {
+    -fx-background-color: #6b708b;
+    -fx-border-color: #050505;
+    -fx-pref-width: 650;
+}
+
+.sidebar{
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-background-color: #6b708b;
+    -fx-pref-width: 250;
+}
+
+.sidebar Button {
+    -fx-background-color: linear-gradient(to bottom, #4cdee9, #3b4547);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.newsidebar{
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-background-color: #6b708b;
+    -fx-pref-width: 350;
+}
+
+.newsidebar Button {
+    -fx-background-color: linear-gradient(to bottom, #4cdee9, #3b4547);
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+
+.sidebar Button:hover {
+    -fx-background-color: linear-gradient(to bottom, #45a049, #3e8e41);
+}
+
+.content {
+    -fx-background-color: #6b708b;
+    -fx-pref-width: 650; /* Szerokość dynamicznej zawartości */
+}
+
+.separator {
+    -fx-border-color: #000000;        
+    -fx-border-width: 0 5 0 0;     
+    -fx-pref-height: 900; 
+    -fx-background-color: #000000;   
 }
