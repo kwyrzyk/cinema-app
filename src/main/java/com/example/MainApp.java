@@ -7,6 +7,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
+    int height = 900;
+    int width = 800;
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -22,7 +25,7 @@ public class MainApp extends Application {
 
         // Layout for main scene
         VBox layout = new VBox(10, sellTicketsButton, sellFoodButton, accountsButton);
-        Scene mainScene = new Scene(layout, 300, 200);
+        Scene mainScene = new Scene(layout, width, height);
         
         // Set up primary stage
         primaryStage.setTitle("Main Application");
@@ -31,17 +34,17 @@ public class MainApp extends Application {
     }
 
     private void openSellTicketsPage(Stage primaryStage) {
-        Scene sellTicketsScene = new Scene(new SellTicketsPage().getPage(), 300, 200);
+        Scene sellTicketsScene = new Scene(new SellTicketsPage().getPage(), width, height);
         primaryStage.setScene(sellTicketsScene);
     }
 
     private void openSellFoodPage(Stage primaryStage) {
-        Scene sellFoodScene = new Scene(new SellFoodPage().getPage(), 300, 200);
+        Scene sellFoodScene = new Scene(new SellFoodPage().getPage(), width, height);
         primaryStage.setScene(sellFoodScene);
     }
 
     private void openAccountsPage(Stage primaryStage) {
-        Scene accountsScene = new Scene(new AccountsPage().getPage(), 300, 200);
+        Scene accountsScene = new Scene(new AccountsPage().getPage(), width, height);
         primaryStage.setScene(accountsScene);
     }
 
