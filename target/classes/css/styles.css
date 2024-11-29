@@ -1,0 +1,22 @@
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #45a049, #3e8e41);
+}
+
+.vbox {
+    -fx-padding: 20;
+    -fx-spacing: 15;
+    -fx-background-color: #6b708b;
+    -fx-border-color: #050505;
+    -fx-border-width: 5;
+    -fx-border-radius: 5;
+}
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #4cdee9, #0fc4f1);
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
