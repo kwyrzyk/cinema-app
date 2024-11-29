@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+
 public class DatabaseManager {
     
-    private static final String DB_URL = "jdbc:oracle:thin:@hostname:port:sid";  // @TODO replace this with the actual info
-    private static final String DB_USERNAME = "yourUsername";
-    private static final String DB_PASSWORD = "yourPassword";
+    private static final String DB_URL = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";  // @TODO replace this with the actual info
+    private static final String DB_USERNAME = "brzemek";
+    private static final String DB_PASSWORD = "brzemek";
 
     // Get connection to Oracle Database
     public static Connection getConnection() throws SQLException {
