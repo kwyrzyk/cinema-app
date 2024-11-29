@@ -14,7 +14,23 @@
         <javafx.version>23.0.1</javafx.version> <!-- Wersja JavaFX -->
     </properties>
 
+    <repositories>
+        <repository>
+            <id>oracle-repo</id>
+            <url>https://maven.oracle.com</url>
+            </repository>
+    </repositories>
+
+
+
     <dependencies>
+        <!-- oracle database --> 
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>19.8.0.0</version>
+        </dependency>
+
         <!-- JavaFX dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
