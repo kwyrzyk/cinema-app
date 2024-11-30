@@ -11,14 +11,13 @@
     -fx-background-radius: 5;
 }
 .vbox {
-    -fx-background-color: #6b708b;
+    -fx-background-color: #17028f;
     -fx-border-color: #050505;
     -fx-border-width: 5;
 }
 
 .newpage {
-    -fx-background-color: #6b708b;
-    -fx-border-color: #050505;
+    -fx-background-color: #17028f;
     -fx-pref-width: 650;
 }
 
@@ -56,16 +55,16 @@
 
 .content {
     -fx-background-color: #17028f;
-    -fx-pref-width: 650; /* Szerokość dynamicznej zawartości */
+    -fx-pref-width: 650;
 }
 
-.moviecontent {
+.krzychucontent {
     -fx-padding: 20 10;
     -fx-background-color: #17028f;
     -fx-alignment: top-center;
 }
 
-.moviebutton Button {
+.krzychucontent Button {
     -fx-background-color: linear-gradient(to bottom, #f50ee2, #190233);
     -fx-text-fill: white;
     -fx-font-size: 16px;
@@ -77,6 +76,7 @@
 
 .searchpanel {
     -fx-padding: 10;
+    -fx-background-color: #17028f;
     -fx-spacing: 10;
     -fx-alignment: center;
 }
@@ -94,4 +94,22 @@
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
     -fx-padding: 8 20;
+}
+
+.lists{
+    -fx-spacing: 10;
+    -fx-background-color: #17028f;
+    -fx-alignment: top-center;
+}
+
+.lists .list-cell {
+    -fx-background-color: #17028f;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+    
+}
+
+/* Styl na hover dla komórek */
+.lists .list-cell:hover {
+    -fx-background-color: #0f026e;
 }

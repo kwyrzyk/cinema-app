@@ -24,11 +24,10 @@ public class MovieCategory {
         HBox searchPanel = createSearchPanel();
 
         VBox sessionList = new VBox(10);
-        sessionList.getStyleClass().add("moviecontent");
+        sessionList.getStyleClass().add("krzychucontent");
 
         for (String session : movieSessions) {
             Button sessionButton = new Button(session);
-            sessionButton.getStyleClass().add("moviebutton");
             sessionButton.setOnAction(e -> handleSessionClick(session));
             sessionList.getChildren().add(sessionButton);
         }
