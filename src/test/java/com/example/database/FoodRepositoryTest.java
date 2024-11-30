@@ -9,12 +9,10 @@ import java.util.List;
 
 public class FoodRepositoryTest {
 
-    private FoodRepository foodRepository = new FoodRepository(new DatabaseManager());
-
     @Test
     public void testGetFoodById() throws Exception {
         // Test retrieving food by ID
-        Food food = foodRepository.getFoodById(1);
+        Food food = FoodRepository.getFoodById(1);
 
         // Assert the food is not null
         assertNotNull(food, "Food should not be null for ID 1");
@@ -26,7 +24,7 @@ public class FoodRepositoryTest {
     @Test
     public void testGetAllFoods() throws Exception {
         // Test retrieving all foods
-        List<Food> foods = foodRepository.getAllFoods();
+        List<Food> foods = FoodRepository.getAllFoods();
 
         // Assert the list is not null and has at least one item
         assertNotNull(foods, "Foods list should not be null");

@@ -19,7 +19,7 @@ public class FoodRepository {
     }
 
     // Method to get a food item by its ID
-    public Food getFoodById(int foodId) throws SQLException {
+    static public Food getFoodById(int foodId) throws SQLException {
         // Query to get the food's basic info
         String foodQuery = "SELECT id_food, name FROM foods WHERE id_food = " + foodId;
     
@@ -63,7 +63,7 @@ public class FoodRepository {
     }
     
     // Method to get a list of all foods
-    public List<Food> getAllFoods() {
+    static public List<Food> getAllFoods() {
         List<Food> foods = new ArrayList<>();
         String foodQuery = "SELECT id_food, name FROM foods";
         String pricesQuery = "SELECT portion_size, price FROM food_prices WHERE id_food =";

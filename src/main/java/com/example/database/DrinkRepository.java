@@ -17,7 +17,7 @@ public class DrinkRepository {
     }
 
     // Method to get a drink item by its ID
-    public Drink getDrinkById(int drinkId) throws SQLException {
+    static public Drink getDrinkById(int drinkId) throws SQLException {
         // Query to get the drink's basic info
         String drinkQuery = "SELECT id_drink, name FROM drinks WHERE id_drink = " + drinkId;
 
@@ -53,7 +53,7 @@ public class DrinkRepository {
     }
 
     // Method to get a list of all drinks
-    public List<Drink> getAllDrinks() {
+    static public List<Drink> getAllDrinks() {
         List<Drink> drinks = new ArrayList<>();
         String drinkQuery = "SELECT id_drink, name FROM drinks";
         String pricesQuery = "SELECT portion_size, price FROM drinks_prices WHERE id_drink =";
