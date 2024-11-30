@@ -9,30 +9,30 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class Snacks {
-    private final VBox snacksContainer; // Główny kontener dla przekąsek
-    private final ListView<String> snacksList; // Lista przekąsek jako ListView
+public class Drinks {
+    private final VBox drinksContainer; // Główny kontener dla przekąsek
+    private final ListView<String> drinksList; // Lista przekąsek jako ListView
 
-    public Snacks() {
-        snacksContainer = new VBox(10); // Tworzenie głównego VBox
-        snacksContainer.getStyleClass().add("newpage");
+    public Drinks() {
+        drinksContainer = new VBox(10); // Tworzenie głównego VBox
+        drinksContainer.getStyleClass().add("newpage");
 
-        snacksList = new ListView<>();
-        snacksList.getStyleClass().add("lists");
+        drinksList = new ListView<>();
+        drinksList.getStyleClass().add("lists");
 
         HBox searchPanel = createSearchPanel();
 
         populateSnacksList();
 
-        snacksList.setOnMouseClicked(this::handleSnackClick);
+        drinksList.setOnMouseClicked(this::handleSnackClick);
 
         updateListViewHeight();
 
-        snacksContainer.getChildren().addAll(searchPanel, snacksList);
+        drinksContainer.getChildren().addAll(searchPanel, drinksList);
     }
 
-    public VBox getSnacksContainer() {
-        return snacksContainer;
+    public VBox getDrinksContainer() {
+        return drinksContainer;
     }
 
     private HBox createSearchPanel() {
@@ -60,34 +60,34 @@ public class Snacks {
 
     private void populateSnacksList() {
         // Lista przekąsek
-        List<String> snacks = List.of(
-            "Chips",
-            "Chocolate",
-            "Popcorn",
-            "Nachos",
-            "Apple",
-            "Fjutek Bartka"
+        List<String> drinks = List.of(
+            "Pepsi",
+            "Cola",
+            "Lipton",
+            "Orange Juice",
+            "Apple Juice",
+            "Water"
         );
 
         // Dodaj przekąski do ListView
-        snacksList.getItems().addAll(snacks);
+        drinksList.getItems().addAll(drinks);
     }
 
     private void updateListViewHeight() {
         double rowHeight = 24.0;
     
 
-        int itemCount = snacksList.getItems().size();
+        int itemCount = drinksList.getItems().size();
     
         // Ustaw preferowaną wysokość
-        snacksList.setPrefHeight(itemCount * rowHeight);
+        drinksList.setPrefHeight(itemCount * rowHeight);
     }
     
 
     private void handleSnackClick(MouseEvent event) {
-        String selectedSnack = snacksList.getSelectionModel().getSelectedItem();
-        if (selectedSnack != null) {
-            System.out.println("You selected: " + selectedSnack);
+        String selectedDrink = drinksList.getSelectionModel().getSelectedItem();
+        if (selectedDrink != null) {
+            System.out.println("You selected: " + selectedDrink);
             // Możesz tutaj dodać logikę, np. pokazanie szczegółów przekąski
         }
     }

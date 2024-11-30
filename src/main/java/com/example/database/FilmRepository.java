@@ -1,12 +1,12 @@
 package com.example.database;
 
-import com.example.database.db_classes.Film;
-import com.example.database.db_classes.Actor;
-
-
-import java.sql.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.database.db_classes.Actor;
+import com.example.database.db_classes.Film;
 
 public class FilmRepository {
     // Constructor
