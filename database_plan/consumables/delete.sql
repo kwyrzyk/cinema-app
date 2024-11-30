@@ -1,0 +1,14 @@
+-- Drop existing objects to avoid conflicts
+DROP SEQUENCE seq_food_id CASCADE;
+DROP SEQUENCE seq_food_price_id CASCADE;
+DROP SEQUENCE seq_drink_id CASCADE;
+DROP SEQUENCE seq_drink_price_id CASCADE;
+DROP SEQUENCE seq_discount_id CASCADE;
+DROP SEQUENCE seq_position_id CASCADE;
+
+DROP TABLE discounts_positions CASCADE CONSTRAINTS;
+DROP TABLE discounts CASCADE CONSTRAINTS;
+DROP TABLE drinks_prices CASCADE CONSTRAINTS;
+DROP TABLE drinks CASCADE CONSTRAINTS;
+DROP TABLE food_prices CASCADE CONSTRAINTS;
+DROP TABLE foods CASCADE CONSTRAINTS;
