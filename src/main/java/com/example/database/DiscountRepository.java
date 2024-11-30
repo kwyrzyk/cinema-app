@@ -15,7 +15,7 @@ public class DiscountRepository {
     }
 
     // Method to get a discount by its ID
-    public Discount getDiscountById(int discountId) throws SQLException {
+    static public Discount getDiscountById(int discountId) throws SQLException {
         // Query to get the discount's basic info
         String discountQuery = "SELECT id_discount, price FROM discounts WHERE id_discount = " + discountId;
 
@@ -58,7 +58,7 @@ public class DiscountRepository {
     }
 
     // Method to get a list of all discounts
-    public List<Discount> getAllDiscounts() {
+    static public List<Discount> getAllDiscounts() {
         List<Discount> discounts = new ArrayList<>();
         String discountQuery = "SELECT id_discount, price FROM discounts";
 
