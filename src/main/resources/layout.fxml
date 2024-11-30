@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+
+<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
+    <VBox styleClass="sidebar" fx:id="side_bar">
+        <Button styleClass="side-bar-btn" text="Repertoire" onAction="#handleRefresh" />
+        <Button styleClass="side-bar-btn" text="Tickets" onAction="#handleRefresh" />
+        <Button styleClass="side-bar-btn" text="Snacks" onAction="#handleRefresh" />
+        <Button styleClass="side-bar-btn" text="Accounts" onAction="#handleRefresh" />
+    </VBox>
+    <VBox styleClass="newsidebar" fx:id="options_bar">
+        <Label fx:id="label" text="options" />
+    </VBox>
+    <VBox styleClass="content" fx:id="container">
+        <Label fx:id="label" text="container" />
+    </VBox>
+</HBox>
+
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
+    <Label fx:id="label" text="Hello, World!" />
+    <VBox fx:class="bar" fx:id="side-bar">
+        <Button fx:class="side-bar-btn" fx:id="repertoire-btn" text="Repertoire" onAction="#handleRefresh" />
+        <Button fx:class="side-bar-btn" fx:id="tickets-btn" text="Tickets" onAction="#handleRefresh" />
+        <Button fx:class="side-bar-btn" fx:id="snacks-btn" text="Snacks" onAction="#handleRefresh" />
+        <Button fx:class="side-bar-btn" fx:id="accounts-btn" text="Accounts" onAction="#handleRefresh" />
+    </VBox>
+    <VBox fx:class="bar" fx:id="options-bar">
+        
+    </VBox>
+    <VBox fx:id="container">
+        
+    </VBox>
+    <Button text="Refresh" onAction="#handleRefresh" />
+</HBox> -->
