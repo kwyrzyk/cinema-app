@@ -36,13 +36,13 @@ public class Movie {
             }
         });
 
-        // Główny kontener
+        double rowHeight = 24;
+        int itemCount = filmListing.getFilms().size();
+        filmListView.setPrefHeight(itemCount * rowHeight);
         ContentContainer mainContainer = new ContentContainer();
 
-        // Panel wyszukiwania
         HBox searchPanel = createSearchPanel(filmListView);
 
-        // Dodanie elementów do głównego kontenera
         mainContainer.getContainer().getChildren().addAll(searchPanel, filmListView);
 
         return mainContainer;
@@ -85,7 +85,6 @@ public class Movie {
                         new javafx.scene.control.Label("Title: " + film.getTitle())
                 );
                 content.getStyleClass().add("bartek");
-                content.getStyleClass().add("film-cell-content");
                 setGraphic(content);
             }
         }
