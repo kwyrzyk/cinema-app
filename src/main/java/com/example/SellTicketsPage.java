@@ -9,11 +9,11 @@ import javafx.scene.layout.VBox;
 public class SellTicketsPage implements Page{
     @Override
     public VBox getPage()  {
-        Button normal = new Button("Normal");
-        Button reduced = new Button("Reduced");
+        Button buy = new Button("Buy");
+        Button change = new Button("Change");
 
-        VBox sideBar = new VBox(10, normal, reduced);
-        sideBar.getStyleClass().add("newsidebar");
+        VBox sideBar = new VBox(10, buy, change);
+        sideBar.getStyleClass().add("sidebar");
 
         VBox container = new VBox(10, new Label("What you want"));
         container.getStyleClass().add("content");

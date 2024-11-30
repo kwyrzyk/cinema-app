@@ -12,7 +12,7 @@ public class AccountsPage implements Page{
         Button sign = new Button("Sign");
 
         VBox sideBar = new VBox(10, sign);
-        sideBar.getStyleClass().add("newsidebar");
+        sideBar.getStyleClass().add("sidebar");
 
         VBox container = new VBox(10, new Label("What you want"));
         container.getStyleClass().add("content");

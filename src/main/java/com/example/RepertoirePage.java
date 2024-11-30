@@ -2,7 +2,6 @@ package com.example;
 
 
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -15,9 +14,10 @@ public class RepertoirePage implements Page {
         Button other = new Button("Other");
 
         VBox sideBar = new VBox(10, category, type, other);
-        sideBar.getStyleClass().add("newsidebar");
+        sideBar.getStyleClass().add("sidebar");
 
-        VBox container = new VBox(10, new Label("What you want"));
+        MovieCategory sessionListGenerator = new MovieCategory();
+        VBox container = sessionListGenerator.getSessionListVBox().getContainer();
         container.getStyleClass().add("content");
         
         Region separator = new Region();
