@@ -5,16 +5,16 @@ import java.util.List;
 
 public class Discount {
     private int idDiscount;
-    private double discountPrice;
-    private List<Food> foods;
-    private List<Drink> drinks;
+    private double price;
+    private List<DiscountItem> foodItems;
+    private List<DiscountItem> drinkItems;
 
     // Constructor
-    public Discount(int idDiscount, double discountPrice) {
+    public Discount(int idDiscount, double price) {
         this.idDiscount = idDiscount;
-        this.discountPrice = discountPrice;
-        this.foods = new ArrayList<>();
-        this.drinks = new ArrayList<>();
+        this.price = price;
+        this.foodItems = new ArrayList<>();
+        this.drinkItems = new ArrayList<>();
     }
 
     // Getters and Setters
@@ -26,49 +26,28 @@ public class Discount {
         this.idDiscount = idDiscount;
     }
 
-    public double getDiscountPrice() {
-        return discountPrice;
+    public double getPrice() {
+        return price;
     }
 
-    public void setDiscountPrice(double discountPrice) {
-        this.discountPrice = discountPrice;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    // Method to add food item to the discount
-    public void addFood(Food food) {
-        this.foods.add(food);
+    // Methods to add food and drink items
+    public void addFoodItem(int foodPriceId, int foodCount) {
+        this.foodItems.add(new DiscountItem(foodPriceId, foodCount));
     }
 
-    // Method to add drink item to the discount
-    public void addDrink(Drink drink) {
-        this.drinks.add(drink);
-    }
-
-    // Method to calculate the final price for the discount
-    public double calculateFinalPrice() {
-        double totalFoodPrice = 0.0;
-        double totalDrinkPrice = 0.0;
-
-        // Calculate the total price for all food items
-        for (Food food : foods) {
-            // For simplicity, let's assume you always get the price for the "Medium" portion size.
-            // You can modify this to dynamically select a size based on a given input.
-            totalFoodPrice += food.getPriceForSize("Medium") != null ? food.getPriceForSize("Medium") : 0;
-        }
-
-        // Calculate the total price for all drink items
-        for (Drink drink : drinks) {
-            // Again, we assume the "Medium" size for drinks
-            totalDrinkPrice += drink.getPriceForSize("Medium") != null ? drink.getPriceForSize("Medium") : 0;
-        }
-
-        // Calculate the total price for food and drink, minus the discount price
-        return (totalFoodPrice + totalDrinkPrice) - this.discountPrice;
+    public void addDrinkItem(int drinkPriceId, int drinkCount) {
+        this.drinkItems.add(new DiscountItem(drinkPriceId, drinkCount));
     }
 
     // To String method (for printing object details)
     @Override
     public String toString() {
-        return "Discount{idDiscount=" + idDiscount + ", discountPrice=" + discountPrice + ", foods=" + foods + ", drinks=" + drinks + "}";
+        return "Discount{idDiscount=" + idDiscount + ", price=" + price +
+                ", foodItems=" + foodItems + ", drinkItems=" + drinkItems + "}";
     }
 }
+

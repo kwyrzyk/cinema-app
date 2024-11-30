@@ -22,21 +22,29 @@ public class FoodRepository {
     public Food getFoodById(int foodId) throws SQLException {
         // Query to get the food's basic info
         String foodQuery = "SELECT id_food, name FROM foods WHERE id_food = " + foodId;
-
+    
         // Execute food query
         ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
-        if (!foodResult.next()) {
-            return null; // No food found with the given ID
+        
+        // Check if the ResultSet is null or empty
+        if (foodResult == null) {
+            System.err.println("Error: The query did not return a result set.");
+            return null; // Return null if the result set is null
         }
-
+    
+        if (!foodResult.next()) {
+            System.err.println("No food found with id: " + foodId);
+            return null; // Return null if no rows are returned
+        }
+    
         // Extract food details
         int idFood = foodResult.getInt("id_food");
         String name = foodResult.getString("name");
-
+    
         // Query to get the prices for the food item
         String pricesQuery = "SELECT portion_size, price FROM food_prices WHERE id_food = " + foodId;
         ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery);
-
+    
         // Map to hold portion size and price
         Map<String, Double> prices = new HashMap<>();
         while (pricesResult.next()) {
@@ -44,16 +52,16 @@ public class FoodRepository {
             double price = pricesResult.getDouble("price");
             prices.put(portionSize, price);
         }
-
+    
         // Return a Food object with all details
         Food food = new Food(idFood, name);
         for (Map.Entry<String, Double> entry : prices.entrySet()) {
             food.addPrice(entry.getKey(), entry.getValue());  // Add prices to the food object
         }
-
+    
         return food;
     }
-
+    
     // Method to get a list of all foods
     public List<Food> getAllFoods() {
         List<Food> foods = new ArrayList<>();
