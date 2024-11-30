@@ -18,6 +18,7 @@
     <VBox styleClass="content" fx:id="container">
         <Label fx:id="label_content" text="container" />
     </VBox>
+    
 </HBox>
 
 <!-- <?xml version="1.0" encoding="UTF-8"?>

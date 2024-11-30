@@ -1,25 +1,21 @@
 package com.example;
 
-import javafx.scene.control.ListView;
-import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class Controller {
     private Stage stage;
     private Scene scene;
+    private RepertoirePage repertoirePage = new RepertoirePage();
 
     @FXML
     private Label label;
-
-
     @FXML
     private VBox sideBar;
     @FXML
@@ -70,24 +66,27 @@ public class Controller {
     @FXML
     private void handleOptionClick(ActionEvent event) {
         Button clickedOption = (Button) event.getSource();
-        String optionText = clickedOption.getText();
         String buttonId = clickedOption.getId();
-        System.out.println(buttonId);
-
-        // Zmień zawartość container w zależności od opcji
-        container.getChildren().clear();
-        if (buttonId.equals("categoryBtn")) {
-            categoryList.setVisible(false);
+        switch (buttonId){
+            case "categoryBtn" -> repertoirePage.toggleCategoryList();
+            case "snacksBtn" -> {
+                Snacks snacksPage = new Snacks();
+                container.getChildren().clear();
+                container.getChildren().add(snacksPage.getSnacksContainer());
+            }
+            case "drinksBtn" -> {
+                Drinks drinksPage = new Drinks();
+                container.getChildren().clear();
+                container.getChildren().add(drinksPage.getDrinksContainer());
+            }
+            case "registerBtn" -> {
+                RegisterPage registerPage = new RegisterPage();
+                container.getChildren().clear(); // Czyścimy kontener, jeśli to konieczne
+                container.getChildren().add(registerPage.getRegisterContainer());
+                break;
+            }
         }
-        if (buttonId.equals("snacksBtn")) {
-            Snacks snacksPage = new Snacks();
-            container.getChildren().add(snacksPage.getSnacksContainer());
-        } else if (buttonId.equals("drinksBtn")) {
-            Drinks drinksPage = new Drinks();
-            container.getChildren().add(drinksPage.getDrinksContainer());
-        } 
     }
-
     @FXML
     private void handleSidebarClick(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
@@ -98,14 +97,12 @@ public class Controller {
 
         if (buttonId.equals("repertoireBtn")) {
             addOption("Category", "categoryBtn", this::handleOptionClick);
-            RepertoirePage repertoirePage = new RepertoirePage();
-            ListView<String> list = repertoirePage.getCategoryList();
-            list.setId("categoryList");
-            optionsBar.getChildren().add(list);
+            ListView<String> categoryList = repertoirePage.getCategoryList();
+            categoryList.setId("categoryList");
+            optionsBar.getChildren().add(categoryList);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
-            Movie sessionListGenerator = new Movie();
-            container.getChildren().add(sessionListGenerator.getSessionListVBox());
+            container.getChildren().add(repertoirePage.getPage());
         } else if (buttonId.equals("ticketsBtn")) {
             addOption("Buy", "buyBtn", this::handleOptionClick);
             addOption("Change", "changeBtn", this::handleOptionClick);
@@ -114,6 +111,7 @@ public class Controller {
             addOption("Drinks", "drinksBtn", this::handleOptionClick);
         } else if (buttonId.equals("accountsBtn")) {
             addOption("Sign", "signBtn", this::handleOptionClick);
+            addOption("Register", "registerBtn", this::handleOptionClick);
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
         }
