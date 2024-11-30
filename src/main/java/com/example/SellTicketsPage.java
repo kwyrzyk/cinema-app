@@ -1,27 +1,15 @@
 package com.example;
 
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class SellTicketsPage implements Page{
     @Override
-    public VBox getPage()  {
-        Button buy = new Button("Buy");
-        Button change = new Button("Change");
-
-        VBox sideBar = new VBox(10, buy, change);
-        sideBar.getStyleClass().add("sidebar");
-
+    public VBox getPage() {
         VBox container = new VBox(10, new Label("What you want"));
         container.getStyleClass().add("content");
-        
-        Region separator = new Region();
-        separator.getStyleClass().add("separator");
-        
-        HBox main = new HBox(0, sideBar, separator, container);
+        HBox main = new HBox(0,container);
         main.getStyleClass().add("content");
         
         VBox layout = new VBox(0, main);

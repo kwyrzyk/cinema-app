@@ -8,41 +8,33 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class RepertoirePage implements Page {
-    private final ListView<String> categoryList = new ListView<>(); // Lista kategorii jako String
+    private final ListView<String> categoryList = new ListView<>();
     private boolean isCategoryListVisible = false;
 
-    @Override
-    public VBox getPage() {
-        // Przyciski w Sidebar
-        javafx.scene.control.Button category = new javafx.scene.control.Button("Category");
-        javafx.scene.control.Button type = new javafx.scene.control.Button("Type");
-        javafx.scene.control.Button other = new javafx.scene.control.Button("Other");
-
-        // Inicjalnie ukrywamy listę kategorii
+    public RepertoirePage() {
+        // Inicjalizacja ListView kategorii
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");
 
-        category.setOnAction(e -> toggleCategoryList());
-
         categoryList.setOnMouseClicked(this::handleCategoryClick);
+    }
 
-        VBox sideBar = new VBox(category, categoryList, type, other);
-        sideBar.getStyleClass().add("sidebar");
-
+    @Override
+    public VBox getPage() {
         Movie sessionListGenerator = new Movie();
-        VBox container = sessionListGenerator.getSessionListVBox().getContainer();
-        container.getStyleClass().add("content");
+        VBox sessionListVBox = sessionListGenerator.getSessionListVBox();
+        sessionListVBox.getStyleClass().add("content");
 
-        HBox main = new HBox(0, sideBar, container);
+        HBox main = new HBox(sessionListVBox);
         main.getStyleClass().add("content");
 
-        VBox layout = new VBox(0, main);
+        VBox layout = new VBox(main);
         layout.getStyleClass().add("newpage");
         return layout;
     }
 
-    private void toggleCategoryList() {
+    public void toggleCategoryList() {
         List<String> categories = List.of(
             "Action",
             "Drama",
@@ -57,11 +49,7 @@ public class RepertoirePage implements Page {
             categoryList.getItems().clear();
         } else {
             categoryList.getItems().addAll(categories);
-
-            double rowHeight = 24;
-            int itemCount = categories.size();
-            categoryList.setPrefHeight(itemCount * rowHeight);
-
+            categoryList.setPrefHeight(categories.size() * 24);
             categoryList.setVisible(true);
             categoryList.setManaged(true);
         }
@@ -74,5 +62,9 @@ public class RepertoirePage implements Page {
         if (selectedCategory != null) {
             System.out.println("Selected category: " + selectedCategory);
         }
+    }
+
+    public ListView<String> getCategoryList() {
+        return categoryList;
     }
 }

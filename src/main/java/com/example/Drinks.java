@@ -22,7 +22,7 @@ public class Drinks {
 
         HBox searchPanel = createSearchPanel();
 
-        populateSnacksList();
+        populateDrinksList();
 
         drinksList.setOnMouseClicked(this::handleSnackClick);
 
@@ -58,7 +58,7 @@ public class Drinks {
         return searchPanel;
     }
 
-    private void populateSnacksList() {
+    private void populateDrinksList() {
         // Lista przekąsek
         List<String> drinks = List.of(
             "Pepsi",
