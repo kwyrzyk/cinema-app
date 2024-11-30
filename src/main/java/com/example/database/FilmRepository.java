@@ -60,7 +60,7 @@ public class FilmRepository {
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
                              "FROM actors a " +
                              "JOIN emp_film_actors fa ON a.id_actor = fa.id_actor " +
-                             "WHERE fa.id_film = ?";
+                             "WHERE fa.id_film =";
 
         // Execute the film query to get all films
         try{
@@ -73,7 +73,7 @@ public class FilmRepository {
             String longDescription = filmResult.getString("long_description");
             double rating = filmResult.getDouble("rating");
 
-            String fullActorsQuery = actorsQuery + filmId;
+            String fullActorsQuery = actorsQuery + filmId + ";";
 
             // Now retrieve the associated actors for each film by calling runSelectQuery
             ResultSet actorsResult = DatabaseManager.runSelectQuery(fullActorsQuery);
