@@ -12,11 +12,13 @@
 }
 .vbox {
     -fx-background-color: #17028f;
+    -fx-background-color: #17028f;
     -fx-border-color: #050505;
     -fx-border-width: 5;
 }
 
 .newpage {
+    -fx-background-color: #17028f;
     -fx-background-color: #17028f;
     -fx-pref-width: 650;
 }
@@ -56,14 +58,17 @@
 .content {
     -fx-background-color: #17028f;
     -fx-pref-width: 650;
+    -fx-pref-width: 650;
 }
 
+.krzychucontent {
 .krzychucontent {
     -fx-padding: 20 10;
     -fx-background-color: #17028f;
     -fx-alignment: top-center;
 }
 
+.krzychucontent Button {
 .krzychucontent Button {
     -fx-background-color: linear-gradient(to bottom, #f50ee2, #190233);
     -fx-text-fill: white;
@@ -76,6 +81,7 @@
 
 .searchpanel {
     -fx-padding: 10;
+    -fx-background-color: #17028f;
     -fx-background-color: #17028f;
     -fx-spacing: 10;
     -fx-alignment: center;
