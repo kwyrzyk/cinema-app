@@ -14,10 +14,12 @@ import javafx.util.Callback;
 public class Movie {
 
     private final FilmListing filmListing;
+    private final List<Film> listOfFilms;
 
     public Movie() {
         // Inicjalizacja obiektu FilmListing, który pobiera filmy z bazy danych
         this.filmListing = new FilmListing();
+        this.listOfFilms = filmListing.getFilms();
     }
 
     public ContentContainer getSessionListVBox() {
@@ -26,7 +28,7 @@ public class Movie {
         filmListView.getStyleClass().add("lists");
 
         // Ustawienie listy filmów w ListView
-        filmListView.getItems().addAll(filmListing.getFilms());
+        filmListView.getItems().addAll(listOfFilms);
 
         // Dostosowanie komórek ListView
         filmListView.setCellFactory(new Callback<>() {
@@ -37,7 +39,7 @@ public class Movie {
         });
 
         double rowHeight = 24;
-        int itemCount = filmListing.getFilms().size();
+        int itemCount = listOfFilms.size();
         filmListView.setPrefHeight(itemCount * rowHeight);
         ContentContainer mainContainer = new ContentContainer();
 
