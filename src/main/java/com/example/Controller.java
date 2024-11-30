@@ -79,6 +79,11 @@ public class Controller {
                 container.getChildren().clear();
                 container.getChildren().add(drinksPage.getDrinksContainer());
             }
+            case "signBtn"-> {
+                LoginPage loginPage = new LoginPage();
+                container.getChildren().clear();
+                container.getChildren().add(loginPage.getLoginContainer());
+            }
             case "registerBtn" -> {
                 RegisterPage registerPage = new RegisterPage();
                 container.getChildren().clear(); // Czyścimy kontener, jeśli to konieczne
