@@ -6,17 +6,17 @@
 <?import javafx.scene.control.Label?>
 
 <HBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
-    <VBox styleClass="sidebar" fx:id="side_bar">
-        <Button styleClass="side-bar-btn" text="Repertoire" onAction="#handleRefresh" />
-        <Button styleClass="side-bar-btn" text="Tickets" onAction="#handleRefresh" />
-        <Button styleClass="side-bar-btn" text="Snacks" onAction="#handleRefresh" />
-        <Button styleClass="side-bar-btn" text="Accounts" onAction="#handleRefresh" />
+    <VBox styleClass="sidebar" fx:id="sideBar">
+        <Button styleClass="side-bar-btn" fx:id="repertoireBtn" text="Repertoire" onAction="#handleSidebarClick" />
+        <Button styleClass="side-bar-btn" fx:id="ticketsBtn" text="Tickets" onAction="#handleSidebarClick" />
+        <Button styleClass="side-bar-btn" fx:id="snacksBtn" text="Snacks" onAction="#handleSidebarClick" />
+        <Button styleClass="side-bar-btn" fx:id="accountsBtn" text="Accounts" onAction="#handleSidebarClick" />
     </VBox>
-    <VBox styleClass="newsidebar" fx:id="options_bar">
+    <VBox styleClass="newsidebar" fx:id="optionsBar">
         <Label fx:id="label" text="options" />
     </VBox>
     <VBox styleClass="content" fx:id="container">
-        <Label fx:id="label" text="container" />
+        <Label fx:id="label_content" text="container" />
     </VBox>
 </HBox>
 
