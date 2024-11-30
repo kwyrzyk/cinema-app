@@ -31,7 +31,7 @@ public class RepertoirePage implements Page {
         sideBar.getStyleClass().add("sidebar");
 
         Movie sessionListGenerator = new Movie();
-        VBox container = sessionListGenerator.getSessionListVBox().getContainer();
+        VBox container = sessionListGenerator.getSessionListVBox();
         container.getStyleClass().add("content");
 
         HBox main = new HBox(0, sideBar, container);
@@ -74,5 +74,8 @@ public class RepertoirePage implements Page {
         if (selectedCategory != null) {
             System.out.println("Selected category: " + selectedCategory);
         }
+    }
+    public ListView<String> getCategoryList() {
+        return categoryList;
     }
 }

@@ -22,7 +22,7 @@ public class Movie {
         this.listOfFilms = filmListing.getFilms();
     }
 
-    public ContentContainer getSessionListVBox() {
+    public VBox getSessionListVBox() {
         // Pobranie listy filmów z FilmListing
         ListView<Film> filmListView = new ListView<>();
         filmListView.getStyleClass().add("lists");
@@ -41,11 +41,11 @@ public class Movie {
         double rowHeight = 24;
         int itemCount = listOfFilms.size();
         filmListView.setPrefHeight(itemCount * rowHeight);
-        ContentContainer mainContainer = new ContentContainer();
+        VBox mainContainer = new VBox();
 
         HBox searchPanel = createSearchPanel(filmListView);
 
-        mainContainer.getContainer().getChildren().addAll(searchPanel, filmListView);
+        mainContainer.getChildren().addAll(searchPanel, filmListView);
 
         return mainContainer;
     }
