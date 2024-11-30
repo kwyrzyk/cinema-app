@@ -30,7 +30,7 @@ public class RepertoirePage implements Page {
         VBox sideBar = new VBox(category, categoryList, type, other);
         sideBar.getStyleClass().add("sidebar");
 
-        MovieCategory sessionListGenerator = new MovieCategory();
+        Movie sessionListGenerator = new Movie();
         VBox container = sessionListGenerator.getSessionListVBox().getContainer();
         container.getStyleClass().add("content");
 

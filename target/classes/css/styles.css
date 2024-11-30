@@ -106,10 +106,13 @@
     -fx-background-color: #17028f;
     -fx-text-fill: white;
     -fx-alignment: center;
-    
 }
 
 /* Styl na hover dla komórek */
 .lists .list-cell:hover {
     -fx-background-color: #0f026e;
+}
+
+.bartek{
+    -fx-alignment: center;
 }
