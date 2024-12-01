@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Food;
+import com.example.database.db_classes.Price;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -79,9 +80,9 @@ public class FoodMenu {
             } else {
                 VBox content = new VBox();
                 content.getChildren().add(new javafx.scene.control.Label("Name: " + food.getName()));
-                for (Map.Entry<String, Double> entry : food.getPrices().entrySet()) {
+                for (Map.Entry<String, Price> entry : food.getPrices().entrySet()) {
                     String size = entry.getKey();
-                    Double price = entry.getValue();
+                    Price price = entry.getValue();
                     javafx.scene.control.Label sizePriceLabel = new javafx.scene.control.Label("Size: " + size + " Price: " + price);
                     sizePriceLabel.setOnMouseClicked(event -> {
                         System.out.println("Name: " + food.getName() + " Size: " + size + ", Price: " + price+ ".zł");

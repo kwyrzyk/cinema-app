@@ -32,7 +32,7 @@ public class Drink {
         this.name = name;
     }
 
-    public Map<String, Double> getPrices(){
+    public Map<String, Price> getPrices(){
         return this.prices;
     }
 

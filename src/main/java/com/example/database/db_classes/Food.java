@@ -37,7 +37,7 @@ public class Food {
         this.prices.put(portionSize, price);
     }
 
-    public Map<String, Double> getPrices(){
+    public Map<String, Price> getPrices(){
         return this.prices;
     }
 
