@@ -10,7 +10,6 @@ import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
 import com.example.listing.DrinksListing;
 import com.example.listing.FoodListing;
-import com.example.listing.FoodListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -126,6 +125,7 @@ public class Controller {
                     container.getChildren().clear();
                     container.getChildren().add(backetPage.getPage());
                 }
+                break;
             }
             case "removeAllBtn" ->{
                 if (basket.isEmpty()) {
@@ -145,6 +145,7 @@ public class Controller {
                     container.getChildren().clear();
                     container.getChildren().add(backetPage.getPage());
                 }
+                break;
             }
         }
     }
