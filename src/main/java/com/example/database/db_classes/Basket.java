@@ -44,22 +44,70 @@ public class Basket {
         return true; // Item successfully removed
     }
 
+
+    public int findIndexByFoodId(int foodId, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            PricedItem item = items.get(i);
+            if (item.getFoodId() == foodId && item.getName().equals(name)) {
+                return i; // Return the index if a match is found
+            }
+        }
+        return -1; // Return -1 if no match is found
+    }
+
     // Method to add a Food item to the basket
     public void addFood(Food foodItem, String size) {
         PricedItem pricedItem = new PricedItem(foodItem, size);
-        addItem(pricedItem);
+        int index = findIndexByFoodId(foodItem.getIdFood(), pricedItem.getName());
+        if(index == -1){
+            addItem(pricedItem);   
+        }else{
+            quantities.set(index, quantities.get(index) + 1);
+        }
+    }
+
+
+    public int findIndexByDrinkId(int drinkId, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            PricedItem item = items.get(i);
+            if (item.getDrinkId() == drinkId && item.getName().equals(name)) {
+                return i; // Return the index if a match is found
+            }
+        }
+        return -1; // Return -1 if no match is found
     }
 
     // Method to add a Drink item to the basket
     public void addDrink(Drink drinkItem, String size) {
         PricedItem pricedItem = new PricedItem(drinkItem, size);
-        addItem(pricedItem);
+        int index = findIndexByDrinkId(drinkItem.getIdDrink(), pricedItem.getName());
+        if(index == -1){
+            addItem(pricedItem);
+        }else{
+            quantities.set(index, quantities.get(index) + 1);
+        }
     }
 
+    
+    public int findIndexByShowingId(int showingId, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            PricedItem item = items.get(i);
+            if (item.getDrinkId() == showingId && item.getName().equals(name)) {
+                return i; // Return the index if a match is found
+            }
+        }
+        return -1; // Return -1 if no match is found
+    }
+    
     // Method to add a Ticket item to the basket
     public void addTicket(Showing showingItem) {
         PricedItem pricedItem = new PricedItem(showingItem);
-        addItem(pricedItem);
+        int index = findIndexByShowingId(showingItem.getId(), pricedItem.getName());
+        if(index == -1){
+            addItem(pricedItem);
+        }else{
+            quantities.set(index, quantities.get(index) + 1);
+        }
     }
 
     // Method to get the list of items

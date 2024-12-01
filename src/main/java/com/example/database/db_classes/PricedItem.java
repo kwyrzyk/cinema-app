@@ -19,14 +19,14 @@ public class PricedItem {
 
 
     public PricedItem(Food foodItem, String size){
-        this.name = foodItem.getName();
+        this.name = foodItem.getName() + ": "+ size;
         this.price = foodItem.getPrices().get(size);
         this.foodId = foodItem.getIdFood();
     }
 
 
     public PricedItem(Drink drinkItem, String size){
-        this.name = drinkItem.getName();
+        this.name = drinkItem.getName() + ": " + size;
         this.price = drinkItem.getPrices().get(size);
         this.drinkId = drinkItem.getIdDrink();
     }
