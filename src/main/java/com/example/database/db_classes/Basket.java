@@ -130,6 +130,15 @@ public class Basket {
         return total;
     }
 
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    public void clear() {
+        items.clear();
+        quantities.clear();
+    }
+
     // Method to display the basket content
     public void displayBasket() {
         for (int i = 0; i < items.size(); i++) {

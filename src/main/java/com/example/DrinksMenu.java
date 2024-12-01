@@ -17,15 +17,13 @@ import javafx.util.Callback;
 
 public class DrinksMenu {
 
-    private final DrinkRepository drinkRepository;
     private final List<Drink> listOfDrinks;
     public Basket basket;
 
-    public DrinksMenu(DrinkRepository drinkRepository, Basket basket) {
+    public DrinksMenu(DrinkRepository drinkRepository, Basket basket, List<Drink> listOfDrinks) {
         // Inicjalizacja obiektu DrinkRepository, który pobiera napoje z bazy danych
-        this.drinkRepository = drinkRepository;
         this.basket = basket;
-        this.listOfDrinks = DrinkRepository.getAllDrinks();
+        this.listOfDrinks = listOfDrinks;
     }
 
     public VBox getDrinkListVBox() {
