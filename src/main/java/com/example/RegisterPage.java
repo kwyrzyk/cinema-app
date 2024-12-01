@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.database.AccountRepository;
+import com.example.listing.AccountListing;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,13 +12,17 @@ import javafx.scene.layout.VBox;
 public class RegisterPage {
     private VBox registerContainer;
 
+    private AccountListing accountListing;
+
     private TextField usernameField;
     private TextField emailField;
     private TextField phoneField;
     private PasswordField passwordField;
     private PasswordField repeatPasswordField; 
 
-    public RegisterPage() {
+    public RegisterPage(AccountListing accountListing) {
+        this.accountListing = accountListing;
+
         usernameField = new TextField();
         usernameField.setPromptText("Username");
 
@@ -89,7 +93,7 @@ public class RegisterPage {
         passwordField.clear();
         repeatPasswordField.clear();
 
-        AccountRepository.addAccount(username, password, email, phoneNumber);
+        this.accountListing.addAccount(username, password, email, phoneNumber);
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Registration Successful");

@@ -10,6 +10,7 @@ import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
 import com.example.listing.DrinksListing;
 import com.example.listing.FoodListing;
+import com.example.listing.AccountListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,10 @@ public class Controller {
     private Stage stage;
     private Scene scene;
     private RepertoirePage repertoirePage = new RepertoirePage();
+
+    private AccountListing accountsListing = new AccountListing();
+    private LoginPage loginPage = new LoginPage(accountsListing);
+    private RegisterPage registerPage = new RegisterPage(accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
@@ -97,12 +102,10 @@ public class Controller {
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
             case "signBtn"-> {
-                LoginPage loginPage = new LoginPage();
                 container.getChildren().clear();
                 container.getChildren().add(loginPage.getLoginContainer());
             }
             case "registerBtn" -> {
-                RegisterPage registerPage = new RegisterPage();
                 container.getChildren().clear();
                 container.getChildren().add(registerPage.getRegisterContainer());
                 break;
