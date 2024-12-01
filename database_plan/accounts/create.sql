@@ -10,6 +10,6 @@ CREATE TABLE orders (
     id_order INT PRIMARY KEY,
     id_account INT NOT NULL,
     price DECIMAL(10, 2) NOT NULL,
-    date DATE NOT NULL,
+    order_date DATE NOT NULL,
     FOREIGN KEY (id_account) REFERENCES accounts(id_account) ON DELETE CASCADE
 );
