@@ -6,7 +6,7 @@ import com.example.listing.FilmListing;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.fxml.FXML;
-
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -99,6 +99,8 @@ public class Movie {
                     Film filmInfo = (Film) this.getUserData(); // Pobieramy dane filmowe z komórki
                     System.out.println(filmInfo.getTitle());
                     FilmPage filmPage = new FilmPage(filmInfo);
+                    Parent parent = (this.getParent()).getParent().getParent().getParent().getParent();
+                    container = (VBox) parent;
                     container.getChildren().clear();
                     container.getChildren().add(filmPage.getPage());
                     System.out.println(filmInfo.getTitle());
