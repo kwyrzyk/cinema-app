@@ -6,20 +6,37 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class DatabaseManager {
     
-    private static final String DB_URL = "jdbc:oracle:thin:@ora4.ii.pw.edu.pl:1521/pdb1.ii.pw.edu.pl";  // @TODO replace this with the actual info
-    private static final String DB_USERNAME = "brzemek";
-    private static final String DB_PASSWORD = "brzemek";
-
     // Get connection to Oracle Database
-    public static Connection getConnection() throws SQLException {
-        try {
-            return DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+    public static Connection getConnection() throws SQLException{
+        Properties properties = new Properties();
+        
+         try (InputStream input = DatabaseManager.class.getClassLoader().getResourceAsStream("db.properties")) {
+            if (input == null) {
+                throw new IOException("No data in the database");
+            }
+
+            // Load the properties file
+            properties.load(input);
+
+            // Access properties
+            String url = properties.getProperty("db.url");
+            String username = properties.getProperty("db.username");
+            String password = properties.getProperty("db.password");
+            
+            return DriverManager.getConnection(url, username, password);
+            
+        } catch (IOException ex) {
+            throw new SQLException("No database properties found", ex);
         } catch (SQLException e) {
             throw new SQLException("Unable to connect to the database", e);
         }
+        
     }
 
     // Run a SELECT query and return a result set
