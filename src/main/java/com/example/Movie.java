@@ -83,9 +83,12 @@ public class Movie {
                 setText(null);
                 setGraphic(null);
             } else {
-                VBox content = new VBox(
-                        new javafx.scene.control.Label("Title: " + film.getTitle())
-                );
+                VBox content = new VBox();
+                javafx.scene.control.Label filmLabel = new javafx.scene.control.Label("Title: " + film.getTitle());
+                filmLabel.setOnMouseClicked(e -> {
+                    System.out.println("abc");
+                });
+                content.getChildren().add(filmLabel);
                 content.getStyleClass().add("bartek");
                 setGraphic(content);
             }
