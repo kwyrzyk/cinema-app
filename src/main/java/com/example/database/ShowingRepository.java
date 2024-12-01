@@ -1,32 +1,64 @@
 package com.example.database;
 
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import com.example.database.db_classes.Seat;
+import com.example.database.db_classes.Showing;
 
+import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowingRepository {
 
-    public ShowingRepository(DatabaseManager dbManager) {
-    }
+    /**
+     * Retrieves all showings for a given film ID, including their associated seats.
+     *
+     * @param filmId The ID of the film.
+     * @return A list of Showing objects with their associated seats.
+     * @throws SQLException if a database access error occurs.
+     */
+    static public List<Showing> getShowingsByFilmIdWithSeats(int filmId) throws SQLException {
+        List<Showing> showings = new ArrayList<>();
+        String showingQuery = "SELECT id_showing, id_room, show_time FROM showing WHERE id_film = ?";
+        String seatQuery = "SELECT id_seat, id_showing, row_number, seat_number, status " +
+                           "FROM seats WHERE id_showing = ?";
 
-    public int createShowing(int filmId, int roomId, LocalDateTime showTime) {
-        String query = "INSERT INTO showing (id_film, id_room, show_time) VALUES (?, ?, ?)";
-        try (PreparedStatement stmt = DatabaseManager.getConnection().prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, filmId);
-            stmt.setInt(2, roomId);
-            stmt.setTimestamp(3, Timestamp.valueOf(showTime));
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                return rs.getInt(1); // Return the ID of the created showing
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement showingStmt = connection.prepareStatement(showingQuery)) {
+
+            showingStmt.setInt(1, filmId);
+
+            try (ResultSet showingRs = showingStmt.executeQuery()) {
+                while (showingRs.next()) {
+                    int showingId = showingRs.getInt("id_showing");
+                    int roomId = showingRs.getInt("id_room");
+                    Timestamp showTimeStamp = showingRs.getTimestamp("show_time");
+                    LocalDateTime showTime = showTimeStamp.toLocalDateTime();
+
+                    // Fetch seats for the showing
+                    List<Seat> seats = new ArrayList<>();
+                    try (PreparedStatement seatStmt = connection.prepareStatement(seatQuery)) {
+                        seatStmt.setInt(1, showingId);
+                        try (ResultSet seatRs = seatStmt.executeQuery()) {
+                            while (seatRs.next()) {
+                                int seatId = seatRs.getInt("id_seat");
+                                int rowNumber = seatRs.getInt("row_number");
+                                int seatNumber = seatRs.getInt("seat_number");
+                                String status = seatRs.getString("status");
+
+                                Seat seat = new Seat(seatId, showingId, rowNumber, seatNumber, status);
+                                seats.add(seat);
+                            }
+                        }
+                    }
+
+                    // Create Showing object and add to the list
+                    Showing showing = new Showing(showingId, filmId, roomId, showTime, seats);
+                    showings.add(showing);
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return -1;
+
+        return showings;
     }
 }

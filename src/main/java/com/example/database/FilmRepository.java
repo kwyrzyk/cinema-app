@@ -7,13 +7,14 @@ import java.util.List;
 
 import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
+import com.example.database.db_classes.Showing;;
 
 public class FilmRepository {
     // Constructor
     public FilmRepository(DatabaseManager dbManager) {
     }
 
-    public Film getFilmById(int filmId) throws SQLException {
+    static public Film getFilmById(int filmId) throws SQLException {
         // Query to get the film's basic info
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating FROM films WHERE id_film = " + filmId;
 
@@ -47,8 +48,10 @@ public class FilmRepository {
             actors.add(new Actor(actorId, name, surname, role));
         }
 
+        List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
+
         // Return a Film object with all details
-        return new Film(id, title, shortDescription, longDescription, rating, actors);
+        return new Film(id, title, shortDescription, longDescription, rating, actors, showings);
     }
 
       // Method to get a list of all films
@@ -91,7 +94,9 @@ public class FilmRepository {
                     actors.add(new Actor(actorId, name, surname, role));
                 }
     
-                films.add(new Film(filmId, title, shortDescription, longDescription, rating, actors));
+                List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
+
+                films.add(new Film(filmId, title, shortDescription, longDescription, rating, actors, showings));
             }
         } catch (SQLException e) {
             e.printStackTrace();
