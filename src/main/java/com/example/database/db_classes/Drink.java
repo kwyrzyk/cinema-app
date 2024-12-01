@@ -6,7 +6,7 @@ import java.util.Map;
 public class Drink {
     private int idDrink;
     private String name;
-    private Map<String, Double> prices;  // A map to hold size and price for drinks
+    private Map<String, Price> prices;  // A map to hold size and price for drinks
 
     // Constructor
     public Drink(int idDrink, String name) {
@@ -37,12 +37,12 @@ public class Drink {
     }
 
     // Method to add price for a given portion size
-    public void addPrice(String portionSize, double price) {
+    public void addPrice(String portionSize, Price price) {
         this.prices.put(portionSize, price);
     }
 
     // Method to get the price for a specific portion size
-    public Double getPriceForSize(String portionSize) {
+    public Price getPriceForSize(String portionSize) {
         return this.prices.get(portionSize);
     }
 

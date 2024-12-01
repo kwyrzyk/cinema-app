@@ -1,5 +1,8 @@
 package com.example.database;
 
+import com.example.database.db_classes.Drink;
+import com.example.database.db_classes.Price;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,16 +40,16 @@ public class DrinkRepository {
         ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery);
 
         // Map to hold portion size and price
-        Map<String, Double> prices = new HashMap<>();
+        Map<String, Price> prices = new HashMap<>();
         while (pricesResult.next()) {
             String portionSize = pricesResult.getString("portion_size");
-            double price = pricesResult.getDouble("price");
+            Price price = new Price(pricesResult.getDouble("price"));
             prices.put(portionSize, price);
         }
 
         // Return a Drink object with all details
         Drink drink = new Drink(idDrink, name);
-        for (Map.Entry<String, Double> entry : prices.entrySet()) {
+        for (Map.Entry<String, Price> entry : prices.entrySet()) {
             drink.addPrice(entry.getKey(), entry.getValue());  // Add prices to the drink object
         }
 
@@ -80,16 +83,16 @@ public class DrinkRepository {
                 }
 
                 // Map to hold portion size and price
-                Map<String, Double> prices = new HashMap<>();
+                Map<String, Price> prices = new HashMap<>();
                 while (pricesResult.next()) {
                     String portionSize = pricesResult.getString("portion_size");
-                    double price = pricesResult.getDouble("price");
+                    Price price = new Price(pricesResult.getDouble("price"));
                     prices.put(portionSize, price);
                 }
 
                 // Create a Drink object and add prices
                 Drink drink = new Drink(drinkId, name);
-                for (Map.Entry<String, Double> entry : prices.entrySet()) {
+                for (Map.Entry<String, Price> entry : prices.entrySet()) {
                     drink.addPrice(entry.getKey(), entry.getValue());  // Add prices to the drink object
                 }
 
