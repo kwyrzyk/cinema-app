@@ -121,6 +121,9 @@ public class Controller {
         } else if (buttonId.equals("accountsBtn")) {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);
+        } else if (buttonId.equals("basketBtn")) {
+            addOption("Pay", "payBtn", this::handleOptionClick);
+            addOption("Remove All", "removeAllBtn", this::handleOptionClick);
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
         }

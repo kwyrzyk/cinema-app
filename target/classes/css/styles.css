@@ -9,6 +9,7 @@
     -fx-padding: 10 20;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
+    -fx-pref-width: 200px;
 }
 .vbox {
     -fx-background-color: #17028f;
@@ -48,7 +49,7 @@
 .optionsbar Button {
     -fx-background-color: linear-gradient(to bottom, #4cdee9, #3b4547);
     -fx-text-fill: white;
-    -fx-font-size: 10px;
+    -fx-font-size: 12px;
     -fx-padding: 10 20;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
