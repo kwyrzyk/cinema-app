@@ -1,3 +1,5 @@
+package com.example.database.db_classes;
+
 public class Account {
     private int idAccount;
     private String login;

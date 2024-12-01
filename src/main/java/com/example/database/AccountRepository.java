@@ -10,11 +10,9 @@ import java.util.List;
 
 public class AccountRepository {
 
-    private final DatabaseManager dbManager;
 
     // Constructor
     public AccountRepository(DatabaseManager dbManager) {
-        this.dbManager = dbManager;
     }
 
     // Method to get an account by its ID
