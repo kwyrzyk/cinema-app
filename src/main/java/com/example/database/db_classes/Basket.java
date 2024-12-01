@@ -45,6 +45,24 @@ public class Basket {
         return true; // Item successfully removed
     }
 
+    // Method to add a Food item to the basket
+    public void addFood(Food foodItem, String size) {
+        PricedItem pricedItem = new PricedItem(foodItem, size);
+        addItem(pricedItem);
+    }
+
+    // Method to add a Drink item to the basket
+    public void addDrink(Drink drinkItem, String size) {
+        PricedItem pricedItem = new PricedItem(drinkItem, size);
+        addItem(pricedItem);
+    }
+
+    // Method to add a Ticket item to the basket
+    public void addTicket(Showing showingItem) {
+        PricedItem pricedItem = new PricedItem(showingItem);
+        addItem(pricedItem);
+    }
+
     // Method to get the list of items
     public List<PricedItem> getItems() {
         return items;
@@ -103,5 +121,4 @@ public class Basket {
 
         return sb.toString();
     }
-
 }
