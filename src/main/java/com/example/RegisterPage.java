@@ -16,6 +16,9 @@ public class RegisterPage {
         TextField emailField = new TextField();
         emailField.setPromptText("Email");
 
+        TextField phoneField = new TextField();
+        phoneField.setPromptText("Phone Number");
+
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
 
@@ -26,12 +29,13 @@ public class RegisterPage {
         submitButton.setOnAction(e -> handleRegister(
             usernameField.getText(),
             emailField.getText(),
+            phoneField.getText(),
             passwordField.getText(),
             repeatPasswordField.getText()
         ));
 
         registerContainer = new VBox(10);
-        registerContainer.getChildren().addAll(usernameField, emailField, passwordField, repeatPasswordField, submitButton);
+        registerContainer.getChildren().addAll(usernameField, emailField, phoneField, passwordField, repeatPasswordField, submitButton);
         registerContainer.getStyleClass().add("content");
     }
 
@@ -39,7 +43,7 @@ public class RegisterPage {
         return registerContainer;
     }
 
-    private void handleRegister(String username, String email, String password, String repeatPassword) {
+    private void handleRegister(String username, String email, String phoneNumber, String password, String repeatPassword) {
          if (username.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Username cannot be empty.");
             return;
@@ -55,6 +59,11 @@ public class RegisterPage {
             return;
         }
 
+        if(!isValidPhoneNumber(phoneNumber)){
+            showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a valid phone number.");
+            return;
+        }
+
         if (password.isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Validation Error", "Password cannot be empty.");
             return;
@@ -65,11 +74,25 @@ public class RegisterPage {
             return;
         }
         System.out.println("Registering user: " + username + " with password: " + password);
+        //@TODO clear all and add a user to database easy :) u cna do it, right?
+    
     }
 
     private boolean isValidEmail(String email) {
         // Prosta walidacja e-maila. Możesz użyć bardziej zaawansowanej walidacji regex.
         return email.contains("@") && email.contains(".");
+    }
+    
+
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // Check if the phone number is null or empty
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            return false;
+        }
+        // Regular expression for exactly 9 digits
+        String regex = "\\d{9}";
+        // Check if the phone number matches the pattern
+        return phoneNumber.matches(regex);
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
