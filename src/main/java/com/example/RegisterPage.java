@@ -1,6 +1,7 @@
 package com.example;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -86,8 +87,19 @@ public class RegisterPage {
         passwordField.clear();
         repeatPasswordField.clear();
 
+
+        
         //@TODO insert to the database
     
+
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Registration Successful");
+        alert.setHeaderText(null); // No header text
+        alert.setContentText("Your registration was completed successfully!");
+
+        // Show the alert and wait for the user to close it
+        alert.showAndWait();
     }
 
     private boolean isValidEmail(String email) {
