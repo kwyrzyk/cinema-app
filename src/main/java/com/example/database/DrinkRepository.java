@@ -1,13 +1,13 @@
 package com.example.database;
 
-import com.example.database.db_classes.Drink;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.example.database.db_classes.Drink;
 
 public class DrinkRepository {
 
@@ -23,6 +23,7 @@ public class DrinkRepository {
 
         // Execute drink query
         ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
+        
         if (!drinkResult.next()) {
             return null; // No drink found with the given ID
         }

@@ -62,13 +62,11 @@
 }
 
 .krzychucontent {
-.krzychucontent {
     -fx-padding: 20 10;
     -fx-background-color: #17028f;
     -fx-alignment: top-center;
 }
 
-.krzychucontent Button {
 .krzychucontent Button {
     -fx-background-color: linear-gradient(to bottom, #f50ee2, #190233);
     -fx-text-fill: white;
@@ -111,12 +109,14 @@
 
 .lists .list-cell {
     -fx-background-color: #17028f;
-    -fx-text-fill: white;
     -fx-alignment: center;
     -fx-cursor: hand;
 }
 
-/* Styl na hover dla komórek */
+.lists .list-cell .text {
+    -fx-fill: white;
+}
+
 .lists .list-cell:hover {
     -fx-background-color: #0f026e;
 }

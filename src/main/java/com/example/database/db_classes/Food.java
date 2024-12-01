@@ -37,6 +37,10 @@ public class Food {
         this.prices.put(portionSize, price);
     }
 
+    public Map<String, Double> getPrices(){
+        return this.prices;
+    }
+
     // Method to get the price for a specific portion size
     public Double getPriceForSize(String portionSize) {
         return this.prices.get(portionSize);

@@ -32,6 +32,10 @@ public class Drink {
         this.name = name;
     }
 
+    public Map<String, Double> getPrices(){
+        return this.prices;
+    }
+
     // Method to add price for a given portion size
     public void addPrice(String portionSize, double price) {
         this.prices.put(portionSize, price);
