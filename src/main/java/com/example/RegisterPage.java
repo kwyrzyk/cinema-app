@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.database.AccountRepository;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -87,11 +89,7 @@ public class RegisterPage {
         passwordField.clear();
         repeatPasswordField.clear();
 
-
-        
-        //@TODO insert to the database
-    
-
+        AccountRepository.addAccount(username, password, email, phoneNumber);
 
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Registration Successful");

@@ -67,7 +67,7 @@ public class AccountRepository {
     }
 
     // Method to add a new account
-    public boolean addAccount(String login, String password, String email, String phoneNumber) {
+    static public boolean addAccount(String login, String password, String email, String phoneNumber) {
         String insertQuery = "INSERT INTO accounts (login, password, email, phone_number) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = DatabaseManager.getConnection().prepareStatement(insertQuery)) {
