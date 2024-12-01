@@ -7,6 +7,7 @@ import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Showing;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -18,22 +19,29 @@ public class FilmPage implements Page {
         List<Actor> actorsList = filmInfo.getActors();
         String actors = "";
         for (Actor actor : actorsList) {
-            actors.concat(actor + " ");
+            actors = actors.concat(actor.toString() + " ");
         }
+        System.out.println(actors);
         List<Showing> showings = filmInfo.getShowings();
         String showTimes = "";
         for (Showing showing : showings) {
-            showTimes.concat(showing.getShowTime() + "\n");
+            showTimes = showTimes.concat(showing.getShowTime() + "\n");
         }
         HBox titleRow = this.getRow("Title", filmInfo.getTitle());
         HBox ratingRow = this.getRow("Rating", String.valueOf(filmInfo.getRating()));
         HBox shortDescRow = this.getRow("Short Description", filmInfo.getShortDescription());
         HBox longDescRow = this.getRow("Description", filmInfo.getLongDescription());
-        // HBox actorsRow = this.getRow("Actors", actors);
+        HBox actorsRow = this.getRow("Actors", actors);
+        HBox showingsRow = this.getRow("Showings", showTimes);
+        Button backButton = new Button("Back");
+        backButton.getStyleClass().add("back-btn");
+        backButton.setOnMouseClicked(e -> {
+            //Tutaj wkleić kod odpowiedzialny za powrót do listy filmów
+        });
 
         filmPage = new VBox();
         filmPage.getStyleClass().add("film-page");
-        filmPage.getChildren().addAll(titleRow, ratingRow, shortDescRow, longDescRow);
+        filmPage.getChildren().addAll(titleRow, ratingRow, shortDescRow, longDescRow, actorsRow, showingsRow, backButton);
     }
 
     private HBox getRow(String attribute, String value) {
