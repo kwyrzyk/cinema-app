@@ -89,7 +89,7 @@ public class DrinksMenu {
                     Price price = entry.getValue();
                     javafx.scene.control.Label sizePriceLabel = new javafx.scene.control.Label("Size: " + size + " Price: " + price);
                     sizePriceLabel.setOnMouseClicked(event -> {
-                        System.out.println("Name: " + drink.getName() + " Size: " + size + ", Price: " + price+ ".zł");
+                        System.out.println("Name: " + drink.getName() + " Size: " + size + ", Price: " + price);
                     });
                     content.getChildren().add(sizePriceLabel);
                 }

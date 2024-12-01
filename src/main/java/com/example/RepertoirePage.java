@@ -1,10 +1,7 @@
 package com.example;
 
 import java.util.List;
-import java.util.List;
 
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -15,7 +12,6 @@ public class RepertoirePage implements Page {
     private boolean isCategoryListVisible = false;
 
     public RepertoirePage() {
-        // Inicjalizacja ListView kategorii
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");

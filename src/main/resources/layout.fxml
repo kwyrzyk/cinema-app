@@ -11,6 +11,7 @@
         <Button styleClass="side-bar-btn" fx:id="ticketsBtn" text="Tickets" onAction="#handleSidebarClick" />
         <Button styleClass="side-bar-btn" fx:id="foodBtn" text="Snacks" onAction="#handleSidebarClick" />
         <Button styleClass="side-bar-btn" fx:id="accountsBtn" text="Accounts" onAction="#handleSidebarClick" />
+        <Button styleClass="side-bar-btn" fx:id="basketBtn" text="Basket" onAction="#handleSidebarClick" />
     </VBox>
     <VBox styleClass="optionsbar" fx:id="optionsBar">
         <Label fx:id="label" text="options" />
