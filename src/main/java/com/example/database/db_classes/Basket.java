@@ -26,7 +26,6 @@ public class Basket {
             quantities.set(index, quantities.get(index) + 1);
         }
     }
-
     // Method to remove an item from the basket
     public boolean removeItem(PricedItem item) {
         int index = items.indexOf(item);

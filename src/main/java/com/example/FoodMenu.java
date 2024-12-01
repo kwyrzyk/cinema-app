@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.database.FoodRepository;
+import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.Price;
 
@@ -17,11 +18,17 @@ public class FoodMenu {
 
     private final FoodRepository foodRepository;
     private final List<Food> listOfFoods;
+    private Basket basket;
 
-    public FoodMenu(FoodRepository foodRepository) {
+    public FoodMenu(FoodRepository foodRepository, Basket basket) {
         // Inicjalizacja obiektu FoodRepository, który pobiera jedzenie z bazy danych
         this.foodRepository = foodRepository;
+        this.basket = basket;
         this.listOfFoods = FoodRepository.getAllFoods();
+
+        if (this.basket == null) {
+            System.err.println("Basket is null in FoodMenu constructor!");
+        }
     }
 
     public VBox getFoodListVBox() {
@@ -70,7 +77,7 @@ public class FoodMenu {
         return searchPanel;
     }
 
-    private static class FoodListCell extends ListCell<Food> {
+    private class FoodListCell extends ListCell<Food> {
         @Override
         protected void updateItem(Food food, boolean empty) {
             super.updateItem(food, empty);
@@ -85,6 +92,7 @@ public class FoodMenu {
                     Price price = entry.getValue();
                     javafx.scene.control.Label sizePriceLabel = new javafx.scene.control.Label("Size: " + size + " Price: " + price);
                     sizePriceLabel.setOnMouseClicked(event -> {
+                        basket.addFood(food, size);
                         System.out.println("Name: " + food.getName() + " Size: " + size + ", Price: " + price);
                     });
                     content.getChildren().add(sizePriceLabel);

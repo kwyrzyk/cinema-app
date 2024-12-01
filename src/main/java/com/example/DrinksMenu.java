@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.example.database.DrinkRepository;
+import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.Price;
@@ -18,10 +19,12 @@ public class DrinksMenu {
 
     private final DrinkRepository drinkRepository;
     private final List<Drink> listOfDrinks;
+    public Basket basket;
 
-    public DrinksMenu(DrinkRepository drinkRepository) {
+    public DrinksMenu(DrinkRepository drinkRepository, Basket basket) {
         // Inicjalizacja obiektu DrinkRepository, który pobiera napoje z bazy danych
         this.drinkRepository = drinkRepository;
+        this.basket = basket;
         this.listOfDrinks = DrinkRepository.getAllDrinks();
     }
 
@@ -74,7 +77,7 @@ public class DrinksMenu {
         return searchPanel;
     }
 
-    private static class DrinkListCell extends ListCell<Drink> {
+    private class DrinkListCell extends ListCell<Drink> {
         @Override
         protected void updateItem(Drink drink, boolean empty) {
             super.updateItem(drink, empty);
@@ -89,6 +92,7 @@ public class DrinksMenu {
                     Price price = entry.getValue();
                     javafx.scene.control.Label sizePriceLabel = new javafx.scene.control.Label("Size: " + size + " Price: " + price);
                     sizePriceLabel.setOnMouseClicked(event -> {
+                        basket.addDrink(drink, size);
                         System.out.println("Name: " + drink.getName() + " Size: " + size + ", Price: " + price);
                     });
                     content.getChildren().add(sizePriceLabel);

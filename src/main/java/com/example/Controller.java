@@ -3,6 +3,7 @@ package com.example;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
+import com.example.database.db_classes.Basket;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ public class Controller {
     private Stage stage;
     private Scene scene;
     private RepertoirePage repertoirePage = new RepertoirePage();
+    public Basket basket = new Basket();
 
     @FXML
     private Label label;
@@ -74,12 +76,12 @@ public class Controller {
         switch (buttonId){
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
-                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()));
+                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket);
                 container.getChildren().clear();
                 container.getChildren().add(foodMenu.getFoodListVBox());
             }
             case "drinksBtn" -> {
-                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()));
+                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket);
                 container.getChildren().clear();
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
@@ -122,8 +124,10 @@ public class Controller {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
+            BasketPage bus = new BasketPage(basket);
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+            container.getChildren().add(bus.getPage());
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
         }
