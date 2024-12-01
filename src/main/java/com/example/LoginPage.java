@@ -1,6 +1,10 @@
 package com.example;
 
+import com.example.database.db_classes.Account;
+import com.example.listing.AccountListing;
+
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -8,8 +12,11 @@ import javafx.scene.layout.VBox;
 
 public class LoginPage {
     private VBox loginContainer;
+    private AccountListing accountListing;
 
-    public LoginPage() {
+    public LoginPage(AccountListing accountListing) {
+        this.accountListing = accountListing;
+        this.accountListing.loadAllAccounts();
         TextField usernameField = new TextField();
         usernameField.setPromptText("Username");
 
@@ -42,7 +49,13 @@ public class LoginPage {
             return;
         }
 
-        System.out.println("Registering user: " + username + " with password: " + password);
+        Account account = this.accountListing.getAccountByLogin(username);
+        if(account.getPassword().equals(password)){
+            showAlert(AlertType.INFORMATION, "Login Successful", "Your registration for account - " + username + "was succesful.\nYour email: "
+             + account.getEmail() + " your phone number is " + account.getPhoneNumber());
+        }else{
+            showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with matching login and password");
+        }
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

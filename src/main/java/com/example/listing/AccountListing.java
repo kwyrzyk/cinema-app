@@ -11,7 +11,8 @@ public class AccountListing {
 
     // Constructor initializes the accounts list
     public AccountListing() {
-        loadAllAccounts();;
+        accounts = new ArrayList<>();
+        //loadAllAccounts();
     }
 
     // Load all accounts from the database into the list
@@ -31,6 +32,17 @@ public class AccountListing {
         }
         return null; // Return null if the account is not found
     }
+
+    public Account getAccountByLogin(String login) {
+        // Search through the accounts list
+        for (Account account : accounts) {
+            if (account.getLogin().equals(login)) {
+                return account;
+            }
+        }
+        return null; // Return null if the account is not found
+    }
+
 
     // Add a new account and update the list
     public boolean addAccount(String login, String password, String email, String phoneNumber) {

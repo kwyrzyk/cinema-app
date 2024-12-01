@@ -4,6 +4,7 @@ import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Basket;
+import com.example.listing.AccountListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +19,10 @@ public class Controller {
     private Stage stage;
     private Scene scene;
     private RepertoirePage repertoirePage = new RepertoirePage();
+
+    private AccountListing accountsListing = new AccountListing();
+    private LoginPage loginPage = new LoginPage(accountsListing);
+    private RegisterPage registerPage = new RegisterPage(accountsListing);
     public Basket basket = new Basket();
 
     @FXML
@@ -86,12 +91,10 @@ public class Controller {
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
             case "signBtn"-> {
-                LoginPage loginPage = new LoginPage();
                 container.getChildren().clear();
                 container.getChildren().add(loginPage.getLoginContainer());
             }
             case "registerBtn" -> {
-                RegisterPage registerPage = new RegisterPage();
                 container.getChildren().clear();
                 container.getChildren().add(registerPage.getRegisterContainer());
                 break;
