@@ -126,3 +126,20 @@
     -fx-alignment: center;
     -fx-cursor: hand;
 }
+
+.film-page {
+    
+}
+
+.film-attr {
+    -fx-text-fill: white;
+    -fx-pref-width: 170; 
+    -fx-padding: 5px;
+
+}
+
+.film-attr-value {
+    -fx-text-fill: white;
+    -fx-pref-width: 480px; 
+    -fx-padding: 5px;
+}
