@@ -16,15 +16,12 @@ import javafx.util.Callback;
 
 public class FoodMenu {
 
-    private final FoodRepository foodRepository;
     private final List<Food> listOfFoods;
     private Basket basket;
 
-    public FoodMenu(FoodRepository foodRepository, Basket basket) {
-        // Inicjalizacja obiektu FoodRepository, który pobiera jedzenie z bazy danych
-        this.foodRepository = foodRepository;
+    public FoodMenu(FoodRepository foodRepository, Basket basket, List<Food> listOfFoods) {
         this.basket = basket;
-        this.listOfFoods = FoodRepository.getAllFoods();
+        this.listOfFoods = listOfFoods;
 
         if (this.basket == null) {
             System.err.println("Basket is null in FoodMenu constructor!");

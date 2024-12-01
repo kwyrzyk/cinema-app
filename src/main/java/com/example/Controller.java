@@ -1,9 +1,16 @@
 package com.example;
 
+import java.util.List;
+
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.Drink;
+import com.example.database.db_classes.Food;
+import com.example.listing.DrinksListing;
+import com.example.listing.FoodListing;
+import com.example.listing.FoodListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,7 +25,11 @@ public class Controller {
     private Stage stage;
     private Scene scene;
     private RepertoirePage repertoirePage = new RepertoirePage();
+    private DrinksListing drinksListing = new DrinksListing();
     public Basket basket = new Basket();
+    private FoodListing foodListing = new FoodListing();
+    private final List<Food> listOfFoods = foodListing.getFoods();
+    private final List<Drink> listOfDrinks = drinksListing.getDrinks();
 
     @FXML
     private Label label;
@@ -76,12 +87,12 @@ public class Controller {
         switch (buttonId){
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
-                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket);
+                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket, listOfFoods);
                 container.getChildren().clear();
                 container.getChildren().add(foodMenu.getFoodListVBox());
             }
             case "drinksBtn" -> {
-                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket);
+                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket, listOfDrinks);
                 container.getChildren().clear();
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
