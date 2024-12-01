@@ -1,7 +1,5 @@
 package com.example;
 
-import com.example.database.db_classes.Film;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;

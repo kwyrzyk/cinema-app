@@ -1,10 +1,7 @@
 package com.example;
 
 import java.util.List;
-import java.util.List;
 
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -13,23 +10,23 @@ import javafx.scene.layout.VBox;
 public class RepertoirePage implements Page {
     private final ListView<String> categoryList = new ListView<>();
     private boolean isCategoryListVisible = false;
+    private Movie sessionListGenerator;
+    private VBox sessionListVbox;
 
     public RepertoirePage() {
         // Inicjalizacja ListView kategorii
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");
-
         categoryList.setOnMouseClicked(this::handleCategoryClick);
+        this.sessionListGenerator = new Movie();
+        this.sessionListVbox = sessionListGenerator.getSessionListVBox();
+        this.sessionListVbox.getStyleClass().add("content");
     }
 
     @Override
     public VBox getPage() {
-        Movie sessionListGenerator = new Movie();
-        VBox sessionListVBox = sessionListGenerator.getSessionListVBox();
-        sessionListVBox.getStyleClass().add("content");
-
-        HBox main = new HBox(sessionListVBox);
+        HBox main = new HBox(sessionListVbox);
         main.getStyleClass().add("content");
 
         VBox layout = new VBox(main);
