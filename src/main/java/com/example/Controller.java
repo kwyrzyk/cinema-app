@@ -148,7 +148,6 @@ public class Controller {
                     container.getChildren().clear();
                     container.getChildren().add(backetPage.getPage());
                 }
-                break;
             }
         }
     }
