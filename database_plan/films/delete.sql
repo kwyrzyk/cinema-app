@@ -1,13 +1,27 @@
 -- Drop foreign key dependent tables first
-BEGIN
-    EXECUTE IMMEDIATE 'DROP TABLE emp_film_actors CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE seats CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE showing CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE screening_room CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE films CASCADE CONSTRAINTS';
-    EXECUTE IMMEDIATE 'DROP TABLE actors CASCADE CONSTRAINTS';
-END;
-/
+
+-- Drop the tables in reverse order of dependencies
+DROP TABLE emp_film_actors CASCADE CONSTRAINTS;
+DROP TABLE seats CASCADE CONSTRAINTS;
+DROP TABLE showing CASCADE CONSTRAINTS;
+DROP TABLE screening_room CASCADE CONSTRAINTS;
+DROP TABLE films CASCADE CONSTRAINTS;
+DROP TABLE actors CASCADE CONSTRAINTS;
+
+
+-- Drop the existing sequences
+DROP SEQUENCE seq_film_id;
+
+DROP SEQUENCE seq_actor_id;
+
+DROP SEQUENCE seq_showing_id;
+
+DROP SEQUENCE seq_room_id;
+
+DROP SEQUENCE seq_seat_id;
+
+
+
 
 -- You can also drop any sequences, if created previously
 BEGIN

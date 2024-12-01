@@ -14,7 +14,7 @@ public class FilmRepository {
     public FilmRepository(DatabaseManager dbManager) {
     }
 
-    public Film getFilmById(int filmId) throws SQLException {
+    static public Film getFilmById(int filmId) throws SQLException {
         // Query to get the film's basic info
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating FROM films WHERE id_film = " + filmId;
 
