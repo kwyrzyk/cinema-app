@@ -1,5 +1,9 @@
 package com.example;
 
+import com.example.database.DatabaseManager;
+import com.example.database.DrinkRepository;
+import com.example.database.FoodRepository;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -70,14 +74,14 @@ public class Controller {
         switch (buttonId){
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
-                Snacks snacksPage = new Snacks();
+                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()));
                 container.getChildren().clear();
-                container.getChildren().add(snacksPage.getSnacksContainer());
+                container.getChildren().add(foodMenu.getFoodListVBox());
             }
             case "drinksBtn" -> {
-                Drinks drinksPage = new Drinks();
+                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()));
                 container.getChildren().clear();
-                container.getChildren().add(drinksPage.getDrinksContainer());
+                container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
             case "signBtn"-> {
                 LoginPage loginPage = new LoginPage();
@@ -86,7 +90,7 @@ public class Controller {
             }
             case "registerBtn" -> {
                 RegisterPage registerPage = new RegisterPage();
-                container.getChildren().clear(); // Czyścimy kontener, jeśli to konieczne
+                container.getChildren().clear();
                 container.getChildren().add(registerPage.getRegisterContainer());
                 break;
             }
