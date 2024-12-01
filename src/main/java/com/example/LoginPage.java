@@ -50,6 +50,7 @@ public class LoginPage {
         }
 
         Account account = this.accountListing.getAccountByLogin(username);
+        if(account == null) {showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with this login");}
         if(account.getPassword().equals(password)){
             showAlert(AlertType.INFORMATION, "Login Successful", "Your registration for account - " + username + "was succesful.\nYour email: "
              + account.getEmail() + " your phone number is " + account.getPhoneNumber());
