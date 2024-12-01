@@ -9,15 +9,17 @@ public class Film {
     private String longDescription;
     private double rating;
     private List<Actor> actors; // A list of associated actors
+    private List<Showing> showings;
 
     // Constructor
-    public Film(int id, String title, String shortDescription, String longDescription, double rating, List<Actor> actors) {
+    public Film(int id, String title, String shortDescription, String longDescription, double rating, List<Actor> actors, List<Showing> showings) {
         this.id = id;
         this.title = title;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;
         this.rating = rating;
         this.actors = actors;
+        this.showings = showings;
     }
 
     // Getters and toString method
@@ -27,6 +29,7 @@ public class Film {
     public String getLongDescription() { return longDescription; }
     public double getRating() { return rating; }
     public List<Actor> getActors() { return actors; }
+    public List<Showing> getShowings() {return showings;}
 
     @Override
     public String toString() {
