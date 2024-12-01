@@ -8,6 +8,7 @@ import com.example.database.db_classes.Basket;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -96,6 +97,44 @@ public class Controller {
                 container.getChildren().add(registerPage.getRegisterContainer());
                 break;
             }
+            case "payBtn" -> {
+                if (basket.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Payment Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Your basket is empty. Please add items before paying.");
+                    alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Payment Successful");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Your payment was processed successfully!");
+                    alert.showAndWait();
+                    basket.clear(); // Opróżnij koszyk po udanej płatności
+                    BasketPage backetPage = new BasketPage(basket);
+                    container.getChildren().clear();
+                    container.getChildren().add(backetPage.getPage());
+                }
+            }
+            case "removeAllBtn" ->{
+                if (basket.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Remove Failed");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Your basket is empty. Please add items before removing.");
+                    alert.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Remove Successful");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Your busket is now empty!");
+                    alert.showAndWait();
+                    basket.clear();
+                    BasketPage backetPage = new BasketPage(basket);
+                    container.getChildren().clear();
+                    container.getChildren().add(backetPage.getPage());
+                }
+            }
         }
     }
     @FXML
@@ -124,10 +163,10 @@ public class Controller {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
-            BasketPage bus = new BasketPage(basket);
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
-            container.getChildren().add(bus.getPage());
+            BasketPage backetPage = new BasketPage(basket);
+            container.getChildren().add(backetPage.getPage());
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
         }
