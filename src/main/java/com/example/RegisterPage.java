@@ -9,20 +9,26 @@ import javafx.scene.layout.VBox;
 public class RegisterPage {
     private VBox registerContainer;
 
+    private TextField usernameField;
+    private TextField emailField;
+    private TextField phoneField;
+    private PasswordField passwordField;
+    private PasswordField repeatPasswordField; 
+
     public RegisterPage() {
-        TextField usernameField = new TextField();
+        usernameField = new TextField();
         usernameField.setPromptText("Username");
 
-        TextField emailField = new TextField();
+        emailField = new TextField();
         emailField.setPromptText("Email");
 
-        TextField phoneField = new TextField();
+        phoneField = new TextField();
         phoneField.setPromptText("Phone Number");
 
-        PasswordField passwordField = new PasswordField();
+        passwordField = new PasswordField();
         passwordField.setPromptText("Password");
 
-        PasswordField repeatPasswordField = new PasswordField();
+        repeatPasswordField = new PasswordField();
         repeatPasswordField.setPromptText("Repeat Password");
 
         Button submitButton = new Button("Register");
@@ -74,7 +80,13 @@ public class RegisterPage {
             return;
         }
         System.out.println("Registering user: " + username + " with password: " + password);
-        //@TODO clear all and add a user to database easy :) u cna do it, right?
+        usernameField.clear();
+        emailField.clear();
+        phoneField.clear();
+        passwordField.clear();
+        repeatPasswordField.clear();
+
+        //@TODO insert to the database
     
     }
 
