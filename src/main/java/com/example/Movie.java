@@ -1,12 +1,13 @@
 package com.example;
 
 import java.util.List;
-
 import com.example.database.db_classes.Film;
 import com.example.listing.FilmListing;
-
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.fxml.FXML;
+
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -31,7 +32,7 @@ public class Movie {
         filmListView.getItems().addAll(listOfFilms);
 
         // Dostosowanie komórek ListView
-        filmListView.setCellFactory(new Callback<>() {
+        filmListView.setCellFactory(new Callback<ListView<Film>, ListCell<Film>>() {
             @Override
             public ListCell<Film> call(ListView<Film> listView) {
                 return new FilmListCell();
@@ -76,18 +77,33 @@ public class Movie {
     }
 
     private static class FilmListCell extends ListCell<Film> {
+        @FXML
+        VBox container;
+
         @Override
         protected void updateItem(Film film, boolean empty) {
             super.updateItem(film, empty);
+            
             if (empty || film == null) {
                 setText(null);
                 setGraphic(null);
             } else {
                 VBox content = new VBox();
-                javafx.scene.control.Label filmLabel = new javafx.scene.control.Label("Title: " + film.getTitle());
-                filmLabel.setOnMouseClicked(e -> {
-                    System.out.println("abc");
+                Label filmLabel = new Label("Title: " + film.getTitle());
+                // Ustawiamy dane filmowe dla komórki listy
+                this.setUserData(film);
+
+                // Obsługa kliknięcia na komórce (całej, nie tylko etykiecie)
+                this.setId("filmLabel");
+                this.setOnMouseClicked(e -> {
+                    Film filmInfo = (Film) this.getUserData(); // Pobieramy dane filmowe z komórki
+                    System.out.println(filmInfo.getTitle());
+                    FilmPage filmPage = new FilmPage(filmInfo);
+                    container.getChildren().clear();
+                    container.getChildren().add(filmPage.getPage());
+                    System.out.println(filmInfo.getTitle());
                 });
+
                 content.getChildren().add(filmLabel);
                 content.getStyleClass().add("bartek");
                 setGraphic(content);
