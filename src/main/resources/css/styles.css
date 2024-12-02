@@ -143,3 +143,8 @@
     -fx-pref-width: 480px; 
     -fx-padding: 5px;
 }
+
+.item {
+    -fx-padding: 10px;
+    -fx-text-fill: white;   
+}

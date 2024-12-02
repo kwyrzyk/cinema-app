@@ -31,6 +31,7 @@ public class BasketPage implements Page {
         content.getStyleClass().add("content");
         content.getChildren().clear();
         Label itemLabel = new Label(basket.toString());
+        itemLabel.getStyleClass().add("item");
         content.getChildren().add(itemLabel);
         VBox contentContainer = new VBox(10, content);
         contentContainer.getStyleClass().add("content");
