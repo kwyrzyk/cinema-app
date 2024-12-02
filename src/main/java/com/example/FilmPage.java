@@ -16,8 +16,10 @@ import javafx.scene.layout.VBox;
 
 public class FilmPage implements Page {
     private final VBox filmPage;
+    private final Controller controller;
 
-    public FilmPage(Film filmInfo) {
+    public FilmPage(Controller controller, Film filmInfo) {
+        this.controller = controller;
         List<Actor> actorsList = filmInfo.getActors();
         String actors = "";
         for (Actor actor : actorsList) {
@@ -37,13 +39,8 @@ public class FilmPage implements Page {
         HBox showingsRow = this.getRow("Showings", showTimes);
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("back-btn");
-        backButton.setOnMouseClicked(e -> {
-            Parent parent = backButton.getParent();
-            VBox container = (VBox) parent;
-            container.getChildren().clear();
-            //@TODO add here the RepetouirePage and add it here
-
-        });
+        backButton.setId("repertoireBackBtn");
+        backButton.setOnAction(this.controller::handleSidebarClick);
 
         filmPage = new VBox();
         filmPage.getStyleClass().add("film-page");

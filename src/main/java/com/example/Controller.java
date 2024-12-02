@@ -20,7 +20,7 @@ public class Controller {
     private Scene scene;
     private FilmListing filmListing = new FilmListing();
 
-    private RepertoirePage repertoirePage = new RepertoirePage(filmListing);
+    private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
     public Basket basket = new Basket();
 
     @FXML
@@ -73,7 +73,7 @@ public class Controller {
     }
 
     @FXML
-    private void handleOptionClick(ActionEvent event) {
+    public void handleOptionClick(ActionEvent event) {
         Button clickedOption = (Button) event.getSource();
         String buttonId = clickedOption.getId();
         switch (buttonId){
@@ -102,14 +102,23 @@ public class Controller {
         }
     }
     @FXML
-    private void handleSidebarClick(ActionEvent event) {
+    public void handleSidebarClick(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
         String buttonId = clickedButton.getId(); // Pobierz fx:id przycisku
 
         optionsBar.getChildren().clear();
         container.getChildren().clear();
 
-        if (buttonId.equals("repertoireBtn")) {
+        if(buttonId.equals("repertoireBackBtn")){
+            addOption("Category", "categoryBtn", this::handleOptionClick);
+            ListView<String> categoryList = repertoirePage.getCategoryList();
+            categoryList.setId("categoryList");
+            optionsBar.getChildren().add(categoryList);
+            addOption("Type", "typeBtn", this::handleOptionClick);
+            addOption("Other", "otherBtn", this::handleOptionClick);
+            this.repertoirePage = new RepertoirePage(this, this.filmListing);
+            container.getChildren().add(repertoirePage.getPage());
+        } else if (buttonId.equals("repertoireBtn")) {
             addOption("Category", "categoryBtn", this::handleOptionClick);
             ListView<String> categoryList = repertoirePage.getCategoryList();
             categoryList.setId("categoryList");

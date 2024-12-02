@@ -15,13 +15,16 @@ public class RepertoirePage implements Page {
     private boolean isCategoryListVisible = false;
     private Movie sessionListGenerator;
     private VBox sessionListVbox;
+
+    private Controller controller;
     
-    public RepertoirePage(FilmListing filmListing) {
+    public RepertoirePage(Controller controller, FilmListing filmListing) {
+        this.controller = controller;
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");
         categoryList.setOnMouseClicked(this::handleCategoryClick);
-        this.sessionListGenerator = new Movie(filmListing);
+        this.sessionListGenerator = new Movie(this.controller, filmListing);
         this.sessionListVbox = sessionListGenerator.getSessionListVBox();
         this.sessionListVbox.getStyleClass().add("content");
     }
