@@ -1,18 +1,16 @@
 package com.example;
-
 import java.util.List;
 import java.util.Map;
-
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.Price;
-
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import javafx.scene.control.Label;
 
 public class FoodMenu {
 
@@ -75,28 +73,31 @@ public class FoodMenu {
     }
 
     private class FoodListCell extends ListCell<Food> {
-        @Override
-        protected void updateItem(Food food, boolean empty) {
-            super.updateItem(food, empty);
-            if (empty || food == null) {
-                setText(null);
-                setGraphic(null);
-            } else {
-                VBox content = new VBox();
-                content.getChildren().add(new javafx.scene.control.Label("Name: " + food.getName()));
-                for (Map.Entry<String, Price> entry : food.getPrices().entrySet()) {
-                    String size = entry.getKey();
-                    Price price = entry.getValue();
-                    javafx.scene.control.Label sizePriceLabel = new javafx.scene.control.Label("Size: " + size + " Price: " + price);
-                    sizePriceLabel.setOnMouseClicked(event -> {
-                        basket.addFood(food, size);
-                        System.out.println("Name: " + food.getName() + " Size: " + size + ", Price: " + price);
-                    });
-                    content.getChildren().add(sizePriceLabel);
-                }
-                content.getStyleClass().add("bartek");
-                setGraphic(content);
+    @Override
+    protected void updateItem(Food food, boolean empty) {
+        super.updateItem(food, empty);
+        if (empty || food == null) {
+            setText(null);
+            setGraphic(null);
+        } else {
+            VBox content = new VBox();
+            content.setId("foodItem");
+            content.getChildren().add(new Label("Name: " + food.getName()));
+            for (Map.Entry<String, Price> entry : food.getPrices().entrySet()) {
+                String size = entry.getKey();
+                Price price = entry.getValue();
+                Label sizePriceLabel = new Label("Size: " + size + " Price: " + price);
+                sizePriceLabel.setOnMousePressed(event -> {
+                    basket.addFood(food, size);
+                    System.out.println("Name: " + food.getName() + " Size: " + size + ", Price: " + price);
+                });
+                
+                content.getChildren().add(sizePriceLabel);
             }
+            content.getStyleClass().add("bartek");
+            setGraphic(content);
         }
     }
+}
+
 }
