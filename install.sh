@@ -2,12 +2,19 @@
 
 # Instalacja zależności
 echo "Sprawdzanie zależności..."
-if ! dpkg -s openjdk-21-jdk maven unzip wget > /dev/null 2>&1; then
-    echo "Instalowanie zależności..."
+if ! dpkg -s openjdk-21-jdk maven > /dev/null 2>&1; then
+    echo "Instalowanie JDK i Maven..."
     sudo apt update
-    sudo apt install -y openjdk-21-jdk maven unzip wget
+    sudo apt install -y openjdk-21-jdk maven
 else
-    echo "Zależności już zainstalowane."
+    echo "JDK i Maven już zainstalowane."
+fi
+
+if ! dpkg -s unzip wget > /dev/null 2>&1; then
+    echo "Instalowanie unzip i wget..."
+    sudo apt install -y unzip wget
+else
+    echo "unzip i wget już zainstalowane."
 fi
 
 # Pobranie i rozpakowanie JavaFX
