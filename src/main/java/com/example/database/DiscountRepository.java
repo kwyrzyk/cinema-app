@@ -41,14 +41,15 @@ public class DiscountRepository {
             WHERE dp.id_discount = """ + discountId;
     
         ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
-        while (foodResult.next()) {
-            int foodPriceId = foodResult.getInt("id_food_price");
-            int foodCount = foodResult.getInt("food_count");
-            String foodName = foodResult.getString("name");
-            String foodSize = foodResult.getString("size");
-            discount.addFoodItem(foodPriceId, (foodName + foodSize), foodCount);
+        if(foodResult != null){
+            while (foodResult.next()) {
+                int foodPriceId = foodResult.getInt("id_food_price");
+                int foodCount = foodResult.getInt("food_count");
+                String foodName = foodResult.getString("name");
+                String foodSize = foodResult.getString("size");
+                discount.addFoodItem(foodPriceId, (foodName + foodSize), foodCount);
+            }
         }
-    
         // Query to get the associated drink items for this discount
         String drinkQuery = """
             SELECT dp.id_drink_price, dp.drinks_count, dp.size, d.name
@@ -58,14 +59,15 @@ public class DiscountRepository {
             WHERE dp.id_discount = """ + discountId;
     
         ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
-        while (drinkResult.next()) {
-            int drinkPriceId = drinkResult.getInt("id_drink_price");
-            int drinkCount = drinkResult.getInt("drinks_count");
-            String drinkName = drinkResult.getString("name");
-            String drinkSize = drinkResult.getString("size");
-            discount.addDrinkItem(drinkPriceId, (drinkName + drinkSize), drinkCount);
+        if(drinkResult != null){
+            while (drinkResult.next()) {
+                int drinkPriceId = drinkResult.getInt("id_drink_price");
+                int drinkCount = drinkResult.getInt("drinks_count");
+                String drinkName = drinkResult.getString("name");
+                String drinkSize = drinkResult.getString("size");
+                discount.addDrinkItem(drinkPriceId, (drinkName + drinkSize), drinkCount);
+            }
         }
-    
         return discount;
     }
     
