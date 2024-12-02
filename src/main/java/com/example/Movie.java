@@ -17,9 +17,8 @@ public class Movie {
     private final FilmListing filmListing;
     private final List<Film> listOfFilms;
 
-    public Movie() {
-        // Inicjalizacja obiektu FilmListing, który pobiera filmy z bazy danych
-        this.filmListing = new FilmListing();
+    public Movie(FilmListing filmListing) {
+        this.filmListing = filmListing;
         this.listOfFilms = filmListing.getFilms();
     }
 

@@ -4,6 +4,7 @@ import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Basket;
+import com.example.listing.FilmListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +18,9 @@ import javafx.stage.Stage;
 public class Controller {
     private Stage stage;
     private Scene scene;
-    private RepertoirePage repertoirePage = new RepertoirePage();
+    private FilmListing filmListing = new FilmListing();
+
+    private RepertoirePage repertoirePage = new RepertoirePage(filmListing);
     public Basket basket = new Basket();
 
     @FXML

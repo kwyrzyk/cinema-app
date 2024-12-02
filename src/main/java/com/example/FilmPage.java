@@ -6,7 +6,9 @@ import java.util.List;
 import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Showing;
+import com.example.listing.FilmListing;
 
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -36,7 +38,11 @@ public class FilmPage implements Page {
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("back-btn");
         backButton.setOnMouseClicked(e -> {
-            //Tutaj wkleić kod odpowiedzialny za powrót do listy filmów
+            Parent parent = backButton.getParent();
+            VBox container = (VBox) parent;
+            container.getChildren().clear();
+            //@TODO add here the RepetouirePage and add it here
+
         });
 
         filmPage = new VBox();
