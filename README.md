@@ -10,18 +10,18 @@ Poniżej przedstawiono kroki, które należy wykonać, aby zainstalować i uruch
 ## Instalacja aplikacji
 
 1. Sklonuj repozytorium projektu:
-   
+   ```bash
    git clone https://gitlab-stud.elka.pw.edu.pl/brzemek/pap2024z-z14.git
-
+   ```
 2. Przejdź do katalogu projektu:
-
+   ```bash
    cd pap2024z-z14
-
+   ```
 
 3. Uruchom skrypt instalacyjny:
-
+   ```bash
    sudo ./install.sh
-
+   ```
 ## Uwagi
 
 - Skrypt instalacyjny automatycznie pobierze wszystkie zależności, zbuduje aplikację oraz uruchomi ją.  
