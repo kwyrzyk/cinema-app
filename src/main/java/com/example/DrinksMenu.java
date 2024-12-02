@@ -6,7 +6,6 @@ import java.util.Map;
 import com.example.database.DrinkRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Drink;
-import com.example.database.db_classes.Food;
 import com.example.database.db_classes.Price;
 
 import javafx.scene.control.ListCell;

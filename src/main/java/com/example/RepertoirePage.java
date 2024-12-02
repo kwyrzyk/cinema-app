@@ -2,7 +2,6 @@ package com.example;
 
 import java.util.List;
 
-import com.example.database.db_classes.Film;
 import com.example.listing.FilmListing;
 
 import javafx.scene.control.ListView;

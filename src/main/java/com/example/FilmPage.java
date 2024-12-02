@@ -1,14 +1,11 @@
 package com.example;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Showing;
-import com.example.listing.FilmListing;
 
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

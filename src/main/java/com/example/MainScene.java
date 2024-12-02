@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class MainScene {
@@ -19,11 +18,6 @@ public class MainScene {
         Button snacksButton = new Button("Food");
         Button accountsButton = new Button("Accounts");
         
-        //repertoireButton.setOnAction(e -> loadPage(new RepertoirePage()));
-        // ticketsButton.setOnAction(e -> loadPage(primaryStage, sideBar, new SellTicketsPage()));
-        // snacksButton.setOnAction(e -> loadPage(primaryStage, sideBar, new SellFoodPage()));
-        // accountsButton.setOnAction(e -> loadPage(primaryStage, sideBar, new AccountsPage()));
-
         VBox sideBar = new VBox(10, repertoireButton, ticketsButton, snacksButton, accountsButton);
         sideBar.getStyleClass().add("sidebar");
         

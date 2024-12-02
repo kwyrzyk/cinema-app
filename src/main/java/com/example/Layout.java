@@ -1,6 +1,5 @@
 package com.example;
 
-import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 

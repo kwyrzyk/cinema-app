@@ -65,26 +65,14 @@ public class Controller {
         this.scene = scene;
     }
 
-    // @FXML
-    // public void handleSideBar() {
-    //     try {
-    //         label.setText("Kliknięto");
-    //         // Załadowanie nowego pliku FXML
-    //         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("/../../layout.fxml"));
-    //         VBox root = loader.load();
+    public Stage getStage(){
+        return this.stage;
+    }
 
-            
-    //         // Przekazanie Stage do nowego kontrolera
-    //         Controller newController = loader.getController();
-    //         newController.setStage(stage);
+    public Scene getScene(){
+        return this.scene;
+    }
 
-    //         // Zmiana zawartości sceny
-    //         stage.getScene().setRoot(root);
-
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
 
     private void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
