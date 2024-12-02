@@ -46,8 +46,7 @@ public class Discount {
     // To String method (for printing object details)
     @Override
     public String toString() {
-        return "Discount{idDiscount=" + idDiscount + ", price=" + price +
-                ", foodItems=" + foodItems + ", drinkItems=" + drinkItems + "}";
+        return foodItems +" "+drinkItems+ "price = " + price;
     }
 }
 

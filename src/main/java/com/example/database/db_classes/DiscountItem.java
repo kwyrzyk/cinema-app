@@ -30,6 +30,6 @@ public class DiscountItem {
     // To String method (for printing object details)
     @Override
     public String toString() {
-        return "DiscountItem{idItem=" + idItem + ", count=" + count + "}";
+        return  idItem + ", x" + count + " ";
     }
 }
