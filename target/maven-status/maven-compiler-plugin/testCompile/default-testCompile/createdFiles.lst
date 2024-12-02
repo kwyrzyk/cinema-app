@@ -1,0 +1,6 @@
+com/example/database/DiscountRepositoryTest.class
+com/example/database/FilmRepositoryTest.class
+com/example/database/DatabaseManagerTest.class
+com/example/database/DrinkRepositoryTest.class
+com/example/database/FoodRepositoryTest.class
+com/example/database/ShowingRepositoryTest.class
