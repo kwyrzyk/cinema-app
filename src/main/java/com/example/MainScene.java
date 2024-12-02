@@ -19,7 +19,7 @@ public class MainScene {
         Button snacksButton = new Button("Food");
         Button accountsButton = new Button("Accounts");
         
-        repertoireButton.setOnAction(e -> loadPage(new RepertoirePage()));
+        //repertoireButton.setOnAction(e -> loadPage(new RepertoirePage()));
         // ticketsButton.setOnAction(e -> loadPage(primaryStage, sideBar, new SellTicketsPage()));
         // snacksButton.setOnAction(e -> loadPage(primaryStage, sideBar, new SellFoodPage()));
         // accountsButton.setOnAction(e -> loadPage(primaryStage, sideBar, new AccountsPage()));

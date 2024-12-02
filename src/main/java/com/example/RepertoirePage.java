@@ -2,6 +2,9 @@ package com.example;
 
 import java.util.List;
 
+import com.example.database.db_classes.Film;
+import com.example.listing.FilmListing;
+
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -13,12 +16,15 @@ public class RepertoirePage implements Page {
     private Movie sessionListGenerator;
     private VBox sessionListVbox;
 
-    public RepertoirePage() {
+    private Controller controller;
+    
+    public RepertoirePage(Controller controller, FilmListing filmListing) {
+        this.controller = controller;
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");
         categoryList.setOnMouseClicked(this::handleCategoryClick);
-        this.sessionListGenerator = new Movie();
+        this.sessionListGenerator = new Movie(this.controller, filmListing);
         this.sessionListVbox = sessionListGenerator.getSessionListVBox();
         this.sessionListVbox.getStyleClass().add("content");
     }

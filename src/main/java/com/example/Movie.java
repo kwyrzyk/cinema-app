@@ -17,9 +17,11 @@ public class Movie {
     private final FilmListing filmListing;
     private final List<Film> listOfFilms;
 
-    public Movie() {
-        // Inicjalizacja obiektu FilmListing, który pobiera filmy z bazy danych
-        this.filmListing = new FilmListing();
+    private Controller controller;
+
+    public Movie(Controller controller, FilmListing filmListing) {
+        this.controller = controller;
+        this.filmListing = filmListing;
         this.listOfFilms = filmListing.getFilms();
     }
 
@@ -35,7 +37,7 @@ public class Movie {
         filmListView.setCellFactory(new Callback<ListView<Film>, ListCell<Film>>() {
             @Override
             public ListCell<Film> call(ListView<Film> listView) {
-                return new FilmListCell();
+                return new FilmListCell(controller);
             }
         });
 
@@ -77,39 +79,44 @@ public class Movie {
     }
 
     private static class FilmListCell extends ListCell<Film> {
+        private final Controller controller; // Add a reference to the controller
         @FXML
         VBox container;
-
+    
+        // Constructor to receive the controller
+        public FilmListCell(Controller controller) {
+            this.controller = controller;
+        }
+    
         @Override
         protected void updateItem(Film film, boolean empty) {
             super.updateItem(film, empty);
-            
+    
             if (empty || film == null) {
                 setText(null);
                 setGraphic(null);
             } else {
                 VBox content = new VBox();
                 Label filmLabel = new Label("Title: " + film.getTitle());
-                // Ustawiamy dane filmowe dla komórki listy
                 this.setUserData(film);
-
-                // Obsługa kliknięcia na komórce (całej, nie tylko etykiecie)
+    
                 this.setId("filmLabel");
                 this.setOnMouseClicked(e -> {
-                    Film filmInfo = (Film) this.getUserData(); // Pobieramy dane filmowe z komórki
+                    Film filmInfo = (Film) this.getUserData();
                     System.out.println(filmInfo.getTitle());
-                    FilmPage filmPage = new FilmPage(filmInfo);
+                    FilmPage filmPage = new FilmPage(this.controller, filmInfo); // Use the controller
                     Parent parent = (this.getParent()).getParent().getParent().getParent().getParent();
                     container = (VBox) parent;
                     container.getChildren().clear();
                     container.getChildren().add(filmPage.getPage());
                     System.out.println(filmInfo.getTitle());
                 });
-
+    
                 content.getChildren().add(filmLabel);
                 content.getStyleClass().add("bartek");
                 setGraphic(content);
             }
         }
     }
+    
 }

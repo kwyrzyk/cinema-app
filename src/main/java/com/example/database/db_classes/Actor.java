@@ -22,11 +22,6 @@ public class Actor {
 
     @Override
     public String toString() {
-        return "Actor{" +
-               "id=" + id +
-               ", name='" + name + '\'' +
-               ", surname='" + surname + '\'' +
-               ", role='" + role + '\'' +
-               '}';
+        return this.getName() + " " + this.getSurname();
     }
 }
