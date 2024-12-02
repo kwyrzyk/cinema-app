@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -3,
-    "scrollLeft": -14,
+    "scrollTop": 0,
+    "scrollLeft": -105,
     "zoomLevel": 1,
     "show": 431,
     "database": 4,
@@ -117,7 +117,7 @@
         "options": 10,
         "ui": {
           "keys": 1,
-          "widthName": 60,
+          "widthName": 61,
           "widthComment": 60,
           "widthDataType": 60,
           "widthDefault": 60
@@ -297,7 +297,7 @@
         "options": 0,
         "ui": {
           "keys": 2,
-          "widthName": 60,
+          "widthName": 61,
           "widthComment": 60,
           "widthDataType": 60,
           "widthDefault": 60
@@ -337,7 +337,7 @@
         "options": 0,
         "ui": {
           "keys": 0,
-          "widthName": 82,
+          "widthName": 85,
           "widthComment": 60,
           "widthDataType": 60,
           "widthDefault": 60
@@ -387,7 +387,7 @@
           "columnIds": [
             "qUjWcHv8oBzoH_hVRZzQQ"
           ],
-          "x": 598,
+          "x": 601,
           "y": 191,
           "direction": 2
         },

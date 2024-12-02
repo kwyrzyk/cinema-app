@@ -3,9 +3,11 @@ package com.example.database.db_classes;
 public class DiscountItem {
     private int idItem;
     private int count;
+    private String name;
 
     // Constructor
-    public DiscountItem(int idItem, int count) {
+    public DiscountItem(int idItem, String name, int count) {
+        this.name = name;
         this.idItem = idItem;
         this.count = count;
     }
@@ -27,9 +29,13 @@ public class DiscountItem {
         this.count = count;
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     // To String method (for printing object details)
     @Override
     public String toString() {
-        return  idItem + ", x" + count + " ";
+        return  name + " x" + count + " ";
     }
 }

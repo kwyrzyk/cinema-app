@@ -18,44 +18,58 @@ public class DiscountRepository {
     static public Discount getDiscountById(int discountId) throws SQLException {
         // Query to get the discount's basic info
         String discountQuery = "SELECT id_discount, price FROM discounts WHERE id_discount = " + discountId;
-
+    
         // Execute discount query
         ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery);
         if (!discountResult.next()) {
             return null; // No discount found with the given ID
         }
-
+    
         // Extract discount details
         int idDiscount = discountResult.getInt("id_discount");
         double price = discountResult.getDouble("price");
-
+    
         // Create a Discount object
         Discount discount = new Discount(idDiscount, price);
-
-        // Query to get the associated food and drink items for this discount
-        String foodQuery = "SELECT id_food_price, food_count FROM discounts_positions WHERE id_discount = " + discountId;
+    
+        // Query to get the associated food items for this discount
+        String foodQuery = """
+            SELECT dp.id_food_price, dp.food_count, fp.size, f.name
+            FROM discounts_positions dp
+            JOIN food_prices fp ON dp.id_food_price = fp.id_food_price
+            JOIN foods f ON fp.id_food = f.id_food
+            WHERE dp.id_discount = """ + discountId;
+    
         ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
-
         while (foodResult.next()) {
             int foodPriceId = foodResult.getInt("id_food_price");
             int foodCount = foodResult.getInt("food_count");
-            // You could use the foodPriceId to retrieve more detailed food data (e.g., price, portion size)
-            // For simplicity, we are just associating food count here
-            discount.addFoodItem(foodPriceId, foodCount);
+            String foodName = foodResult.getString("name");
+            String foodSize = foodResult.getString("size");
+            discount.addFoodItem(foodPriceId, (foodName + foodSize), foodCount);
         }
-
-        String drinkQuery = "SELECT id_drink_price, drinks_count FROM discounts_positions WHERE id_discount = " + discountId;
+    
+        // Query to get the associated drink items for this discount
+        String drinkQuery = """
+            SELECT dp.id_drink_price, dp.drinks_count, dp.size, d.name
+            FROM discounts_positions dp
+            JOIN drinks_prices dp ON dp.id_drink_price = dp.id_drink_price
+            JOIN drinks d ON dp.id_drink = d.id_drink
+            WHERE dp.id_discount = """ + discountId;
+    
         ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
-
         while (drinkResult.next()) {
             int drinkPriceId = drinkResult.getInt("id_drink_price");
             int drinkCount = drinkResult.getInt("drinks_count");
-            // Similarly, use the drinkPriceId to retrieve more details about the drink
-            discount.addDrinkItem(drinkPriceId, drinkCount);
+            String drinkName = drinkResult.getString("name");
+            String drinkSize = drinkResult.getString("size");
+            discount.addDrinkItem(drinkPriceId, (drinkName + drinkSize), drinkCount);
         }
-
+    
         return discount;
     }
+    
+
 
     // Method to get a list of all discounts
     static public List<Discount> getAllDiscounts() {
@@ -77,21 +91,44 @@ public class DiscountRepository {
                 Discount discount = new Discount(discountId, price);
 
                 // Query to get the associated food items for this discount
-                String foodQuery = "SELECT id_food_price, food_count FROM discounts_positions WHERE id_discount = " + discountId;
+                String foodQuery = """
+                    SELECT dp.id_food_price, dp.food_count, fp.portion_size, f.name
+                    FROM discounts_positions dp
+                    JOIN food_prices fp ON dp.id_food_price = fp.id_food_price
+                    JOIN foods f ON fp.id_food = f.id_food
+                    WHERE dp.id_discount = """ + discountId;
+
                 ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
-                while (foodResult.next()) {
-                    int foodPriceId = foodResult.getInt("id_food_price");
-                    int foodCount = foodResult.getInt("food_count");
-                    discount.addFoodItem(foodPriceId, foodCount);
+                if(foodResult != null){
+                    while (foodResult.next()) {
+                        int foodPriceId = foodResult.getInt("id_food_price");
+                        int foodCount = foodResult.getInt("food_count");
+                        String foodSize = foodResult.getString("portion_size");
+                        String foodName = foodResult.getString("name");
+
+                        discount.addFoodItem(foodPriceId, (foodName + " " + foodSize),  foodCount);
+                    }
                 }
 
+
                 // Query to get the associated drink items for this discount
-                String drinkQuery = "SELECT id_drink_price, drinks_count FROM discounts_positions WHERE id_discount = " + discountId;
+                String drinkQuery = """
+                    SELECT dp.id_drink_price, dp.drinks_count, drp.portion_size, d.name
+                    FROM discounts_positions dp
+                    JOIN drinks_prices drp ON dp.id_drink_price = drp.id_drink_price
+                    JOIN drinks d ON drp.id_drink = d.id_drink
+                    WHERE dp.id_discount = """ + discountId;
+
                 ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
-                while (drinkResult.next()) {
-                    int drinkPriceId = drinkResult.getInt("id_drink_price");
-                    int drinkCount = drinkResult.getInt("drinks_count");
-                    discount.addDrinkItem(drinkPriceId, drinkCount);
+                if(drinkResult != null){
+                    while (drinkResult.next()) {
+                        int drinkPriceId = drinkResult.getInt("id_drink_price");
+                        int drinkCount = drinkResult.getInt("drinks_count");
+                        String drinkSize = drinkResult.getString("portion_size");
+                        String drinkName = drinkResult.getString("name");
+                        
+                        discount.addDrinkItem(drinkPriceId, (drinkName+drinkSize), drinkCount);
+                    }
                 }
 
                 discounts.add(discount);  // Add the discount object to the list
