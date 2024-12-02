@@ -6,10 +6,12 @@ import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
 import com.example.listing.DrinksListing;
 import com.example.listing.FoodListing;
+import com.example.listing.DiscountListing;
 import com.example.listing.AccountListing;
 import com.example.listing.FilmListing;
 
@@ -34,10 +36,13 @@ public class Controller {
     private LoginPage loginPage = new LoginPage(accountsListing);
     private RegisterPage registerPage = new RegisterPage(accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
+    private DiscountListing discountListing = new DiscountListing();
+
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
+    private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
 
     @FXML
     private Label label;
@@ -103,6 +108,11 @@ public class Controller {
                 DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket, listOfDrinks);
                 container.getChildren().clear();
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
+            }
+            case "discountsBtn" ->{
+                DiscountsMenu discountsMenu = new DiscountsMenu(basket, listOfDiscounts);
+                container.getChildren().clear();
+                container.getChildren().add(discountsMenu.getDiscountListVBox());
             }
             case "signBtn"-> {
                 container.getChildren().clear();
@@ -185,6 +195,7 @@ public class Controller {
         } else if (buttonId.equals("foodBtn")) {
             addOption("Snacks", "snacksBtn", this::handleOptionClick);
             addOption("Drinks", "drinksBtn", this::handleOptionClick);
+            addOption("Discounts", "discountsBtn", this::handleOptionClick);
         } else if (buttonId.equals("accountsBtn")) {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);

@@ -8,13 +8,13 @@ import java.util.List;
 public class DiscountListing {
 
     // Static method to get the list of discounts
-    public static List<Discount> getDiscounts() {
+    public List<Discount> getDiscounts() {
         // Fetch the list of discounts using the static method from DiscountRepository
         return DiscountRepository.getAllDiscounts();
     }
 
     // Static method to display all the discounts
-    public static void displayDiscounts() {
+    public void displayDiscounts() {
         List<Discount> discounts = getDiscounts();  // Get the list of discounts
         
         for (Discount discount : discounts) {
