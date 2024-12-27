@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": 0,
-    "scrollLeft": -3,
+    "scrollTop": -191,
+    "scrollLeft": -27,
     "zoomLevel": 1,
     "show": 431,
     "database": 4,
@@ -165,11 +165,15 @@
         "comment": "",
         "columnIds": [
           "RmRIV2x_2ZF4On2qzXN4z",
-          "nGSVbOpipo98MpaRnbTyz"
+          "nGSVbOpipo98MpaRnbTyz",
+          "n1zdDMNT3KeUBisyo4PEd",
+          "XkQaBas-f6xr3oeze6N9l"
         ],
         "seqColumnIds": [
           "RmRIV2x_2ZF4On2qzXN4z",
-          "nGSVbOpipo98MpaRnbTyz"
+          "nGSVbOpipo98MpaRnbTyz",
+          "n1zdDMNT3KeUBisyo4PEd",
+          "XkQaBas-f6xr3oeze6N9l"
         ],
         "ui": {
           "x": 510,
@@ -180,7 +184,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1733140319555,
+          "updateAt": 1735321867800,
           "createAt": 1732986645872
         }
       },
@@ -638,6 +642,46 @@
           "updateAt": 1732987287175,
           "createAt": 1732987279603
         }
+      },
+      "n1zdDMNT3KeUBisyo4PEd": {
+        "id": "n1zdDMNT3KeUBisyo4PEd",
+        "tableId": "socISX7ntMfI4MGBYJ35b",
+        "name": "start_time",
+        "comment": "",
+        "dataType": "DATETIME",
+        "default": "NULL",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1735321891235,
+          "createAt": 1735321867126
+        }
+      },
+      "XkQaBas-f6xr3oeze6N9l": {
+        "id": "XkQaBas-f6xr3oeze6N9l",
+        "tableId": "socISX7ntMfI4MGBYJ35b",
+        "name": "end_time",
+        "comment": "",
+        "dataType": "DATETIME",
+        "default": "NULL",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1735321900692,
+          "createAt": 1735321867800
+        }
       }
     },
     "relationshipEntities": {
@@ -1081,6 +1125,26 @@
       1732987279599,
       -1,
       {}
+    ],
+    "n1zdDMNT3KeUBisyo4PEd": [
+      "tableColumnEntities",
+      1735321867121,
+      -1,
+      {
+        "default": 1735321872949,
+        "name": 1735321882219,
+        "dataType": 1735321891234
+      }
+    ],
+    "XkQaBas-f6xr3oeze6N9l": [
+      "tableColumnEntities",
+      1735321867799,
+      -1,
+      {
+        "default": 1735321875242,
+        "name": 1735321896694,
+        "dataType": 1735321900691
+      }
     ]
   }
 }
