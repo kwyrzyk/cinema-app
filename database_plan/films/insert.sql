@@ -1,12 +1,12 @@
 -- Insert some films
-INSERT INTO films (id_film, title, short_description, long_description, rating)
-VALUES (seq_film_id.NEXTVAL, 'The Matrix', 'A computer hacker learns about the true nature of his reality.', 'Neo, a computer hacker, joins a group of rebels to learn about the true nature of his reality in a dystopian future where machines have enslaved humanity.', 8.7);
+INSERT INTO films (id_film, title, short_description, long_description, rating, pegi)
+VALUES (seq_film_id.NEXTVAL, 'The Matrix', 'A computer hacker learns about the true nature of his reality.', 'Neo, a computer hacker, joins a group of rebels to learn about the true nature of his reality in a dystopian future where machines have enslaved humanity.', 8.7, 16);
 
-INSERT INTO films (id_film, title, short_description, long_description, rating)
-VALUES (seq_film_id.NEXTVAL, 'Inception', 'A skilled thief is given a chance to have his criminal record erased if he can perform the ultimate heist.', 'A thief who enters the dreams of others to steal secrets from their subconscious is given the task of planting an idea in the mind of a CEO, but his latest mission becomes complicated.', 9.0);
+INSERT INTO films (id_film, title, short_description, long_description, rating, pegi)
+VALUES (seq_film_id.NEXTVAL, 'Inception', 'A skilled thief is given a chance to have his criminal record erased if he can perform the ultimate heist.', 'A thief who enters the dreams of others to steal secrets from their subconscious is given the task of planting an idea in the mind of a CEO, but his latest mission becomes complicated.', 9.0, 12);
 
-INSERT INTO films (id_film, title, short_description, long_description, rating)
-VALUES (seq_film_id.NEXTVAL, 'Interstellar', 'A team of explorers travel through a wormhole in space to ensure humanity’s survival.', 'In a dystopian future where Earth’s resources are dwindling, a team of astronauts travel through a wormhole in search of a new habitable planet for humans to colonize.', 8.6);
+INSERT INTO films (id_film, title, short_description, long_description, rating, pegi)
+VALUES (seq_film_id.NEXTVAL, 'Interstellar', 'A team of explorers travel through a wormhole in space to ensure humanity’s survival.', 'In a dystopian future where Earth’s resources are dwindling, a team of astronauts travel through a wormhole in search of a new habitable planet for humans to colonize.', 8.6, 12);
 
 -- Insert some actors
 INSERT INTO actors (id_actor, name, surname, birth_date)

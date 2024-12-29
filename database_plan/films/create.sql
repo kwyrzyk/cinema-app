@@ -14,10 +14,13 @@ CREATE SEQUENCE seq_seat_id START WITH 1 INCREMENT BY 1;
 CREATE TABLE films (
     id_film INT PRIMARY KEY,
     title VARCHAR2(255) NOT NULL,
-    short_description VARCHAR2(4000),  -- Replaced CLOB with VARCHAR2(4000)
-    long_description VARCHAR2(4000),   -- Replaced CLOB with VARCHAR2(4000)
-    rating NUMBER(3, 1)
+    short_description VARCHAR2(4000),  
+    long_description VARCHAR2(4000),   
+    rating NUMBER(3, 1),
+    pegi INT,
+    CONSTRAINT chk_pegi CHECK (pegi IN (3, 7, 12, 16, 18)) -- Ensures only valid PEGI values
 );
+
 
 -- Create the 'actors' table
 CREATE TABLE actors (
