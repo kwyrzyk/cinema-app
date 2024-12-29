@@ -28,8 +28,8 @@ INSERT INTO drinks_prices (id_drink, portion_size, price) VALUES (2, 'Large', 2.
 INSERT INTO drinks_prices (id_drink, portion_size, price) VALUES (3, 'Small', 2.99);    -- Small Juice
 
 -- Insert sample data into discounts table
-INSERT INTO discounts (price) VALUES (1.00);    -- Discount 1: $1 off
-INSERT INTO discounts (price) VALUES (2.50);    -- Discount 2: $2.50 off
+INSERT INTO discounts (price) VALUES (10.00);    -- 
+INSERT INTO discounts (price) VALUES (25.00);    -- 
 
 -- Insert sample data into discounts_positions table
 -- Discount 1 applies to 2 medium popcorns (ID 1 from food_prices) and 3 small sodas (ID 1 from drinks_prices)

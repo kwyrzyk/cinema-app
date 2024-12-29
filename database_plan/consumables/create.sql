@@ -39,7 +39,9 @@ CREATE TABLE drinks_prices (
 -- Create the discounts table
 CREATE TABLE discounts (
     id_discount INT PRIMARY KEY,
-    price NUMBER(10, 2) NOT NULL
+    price NUMBER(10, 2) NOT NULL,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP
 );
 
 -- Create the discounts_positions table

@@ -8,13 +8,21 @@ CREATE SEQUENCE orders_seq
     START WITH 1
     INCREMENT BY 1;
 
+-- Create the sequence for generating IDs with caching
+CREATE SEQUENCE seq_order_item_id
+    START WITH 1
+    INCREMENT BY 1;
+
+
 -- Create the accounts table
 CREATE TABLE accounts (
     id_account NUMBER PRIMARY KEY, -- We will assign this using the sequence
     login VARCHAR2(255) NOT NULL,
     password VARCHAR2(255) NOT NULL,
     email VARCHAR2(255) NOT NULL,
-    phone_number VARCHAR2(20)
+    phone_number VARCHAR2(20),
+    loyalty_points NUMBER(10, 2) DEFAULT 0,
+    balance NUMBER(10, 2) DEFAULT 0
 );
 
 -- Create a trigger to auto-populate id_account from the sequence
@@ -49,3 +57,28 @@ BEGIN
     END IF;
 END;
 /
+
+
+-- Create the table
+CREATE TABLE order_item (
+    id_order_item INT DEFAULT seq_order_item_id.NEXTVAL PRIMARY KEY, -- Primary key with auto-increment
+    item_type VARCHAR2(20) NOT NULL CHECK(item_type in  ('food', 'drink', 'ticket')) , -- ENUM with specific types
+    item_reference_id INT NOT NULL, -- Reference to the specific drink/food/ticket
+    id_order INT NOT NULL, -- Foreign key referencing the orders table
+    quantity INT DEFAULT 1 NOT NULL, -- Quantity with a default value of 1
+    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) -- Foreign key constraint
+);
+
+
+-- Create a trigger to auto-populate id_order_item from the sequence
+CREATE OR REPLACE TRIGGER order_item_trigger
+    BEFORE INSERT ON order_item
+    FOR EACH ROW
+BEGIN
+    -- Automatically set id_order_item using the seq_order_item_id sequence
+    IF :NEW.id_order_item IS NULL THEN
+        SELECT seq_order_item_id.NEXTVAL INTO :NEW.id_order_item FROM dual;
+    END IF;
+END;
+/
+

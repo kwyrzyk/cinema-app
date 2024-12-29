@@ -25,8 +25,8 @@ com/example/LoginPage.class
 com/example/database/ShowingRepository.class
 com/example/database/DatabaseManager.class
 com/example/database/db_classes/DiscountItem.class
-com/example/Movie$FilmListCell.class
 com/example/database/db_classes/Basket.class
+com/example/Movie$FilmListCell.class
 com/example/RegisterPage.class
 com/example/listing/AccountListing.class
 com/example/FoodMenu$FoodListCell.class
@@ -36,8 +36,8 @@ com/example/database/db_classes/Seat.class
 com/example/Page.class
 com/example/database/db_classes/Film.class
 com/example/listing/DiscountListing.class
-com/example/database/db_classes/Actor.class
 com/example/database/db_classes/Food.class
+com/example/database/db_classes/Actor.class
 com/example/database/db_classes/Price.class
 com/example/SellTicketsPage.class
 com/example/database/db_classes/ScreeningRoom.class
