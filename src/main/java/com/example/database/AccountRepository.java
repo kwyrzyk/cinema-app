@@ -2,6 +2,7 @@ package com.example.database;
 
 import com.example.database.db_classes.Account;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -84,4 +85,138 @@ public class AccountRepository {
             return false;
         }
     }
+
+    static private boolean changeColumn(String columnName, int accountId, String newData){
+        String updateQuery = "UPDATE accounts SET " + columnName + " = ? WHERE id_account = ?";
+
+        // Use try-with-resources to manage resources
+        try (Connection connection = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            // Set the parameters for the query
+            preparedStatement.setString(1, newData); // Set the new login
+            preparedStatement.setInt(2, accountId);  // Set the account ID
+
+            // Execute the update and check rows affected
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            // Log and handle SQL exceptions
+            e.printStackTrace();
+            System.err.println("Failed to update login for account ID " + accountId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Method to change the login for a given account ID
+    static public boolean changeLogin(int accountId, String newLogin) {
+    return changeColumn(new String("login"), accountId, newLogin);
+    }
+
+    static public boolean changePassword(int accountId, String newLogin) {
+        return changeColumn(new String("password"), accountId, newLogin);
+    }
+
+    static public boolean changeEmail(int accountId, String newLogin) {
+        return changeColumn(new String("email"), accountId, newLogin);
+    }
+
+    static public boolean changePhone(int accountId, String newLogin) {
+        return changeColumn(new String("phone_number"), accountId, newLogin);
+    }
+
+    // Method to add loyalty points to a given account ID
+    static public boolean addLoyaltyPoints(int accountId, int pointsToAdd) {
+        // SQL query to update the loyalty_points column in the accounts table
+        String updateQuery = "UPDATE accounts SET loyalty_points = loyalty_points + ? WHERE id_account = ?";
+
+        // Use try-with-resources to manage resources
+        try (Connection connection = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            // Set the parameters for the query
+            preparedStatement.setInt(1, pointsToAdd); // Set the amount of points to add
+            preparedStatement.setInt(2, accountId);      // Set the account ID
+
+            // Execute the update and check rows affected
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            // Log and handle SQL exceptions
+            e.printStackTrace();
+            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    static public boolean takeLoyaltyPoints(int accountId, int pointsToTake) {
+        // SQL query to update the loyalty_points column in the accounts table
+        String updateQuery = "UPDATE accounts SET loyalty_points = loyalty_points - ? WHERE id_account = ?";
+
+        // Use try-with-resources to manage resources
+        try (Connection connection = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            // Set the parameters for the query
+            preparedStatement.setInt(1, pointsToTake); // Set the amount of points to add
+            preparedStatement.setInt(2, accountId);      // Set the account ID
+
+            // Execute the update and check rows affected
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            // Log and handle SQL exceptions
+            e.printStackTrace();
+            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    static public boolean addBalance(int accountId, double balanceToAdd) {
+        // SQL query to update the loyalty_points column in the accounts table
+        String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE id_account = ?";
+
+        // Use try-with-resources to manage resources
+        try (Connection connection = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            // Set the parameters for the query
+            preparedStatement.setDouble(1, balanceToAdd); // Set the amount of points to add
+            preparedStatement.setInt(2, accountId);      // Set the account ID
+
+            // Execute the update and check rows affected
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            // Log and handle SQL exceptions
+            e.printStackTrace();
+            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+
+    static public boolean takeBalance(int accountId, double balanceToAdd) {
+        // SQL query to update the loyalty_points column in the accounts table
+        String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE id_account = ?";
+
+        // Use try-with-resources to manage resources
+        try (Connection connection = DatabaseManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+
+            // Set the parameters for the query
+            preparedStatement.setDouble(1, balanceToAdd); // Set the amount of points to add
+            preparedStatement.setInt(2, accountId);      // Set the account ID
+
+            // Execute the update and check rows affected
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0; // Return true if the update was successful
+        } catch (SQLException e) {
+            // Log and handle SQL exceptions
+            e.printStackTrace();
+            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
 }
