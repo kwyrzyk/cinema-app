@@ -61,4 +61,30 @@ public class ShowingRepository {
 
         return showings;
     }
+
+    public static boolean reserveSeat(int showingId, int rowNumber, int seatNumber) {
+        String updateQuery = "UPDATE seats " +
+                             "SET status = 'reserved' " +
+                             "WHERE showing_id = ? AND row_number = ? AND seat_number = ? AND status = 'available'";
+    
+        try (Connection connection = DatabaseManager.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+    
+            // Set the parameters for the query
+            preparedStatement.setInt(1, showingId);
+            preparedStatement.setInt(2, rowNumber);
+            preparedStatement.setInt(3, seatNumber);
+    
+            // Execute the update
+            int rowsAffected = preparedStatement.executeUpdate();
+    
+            // If a row was updated, the seat was successfully reserved
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Failed to reserve seat: " + e.getMessage());
+            return false;
+        }
+    }
+    
 }

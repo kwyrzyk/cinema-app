@@ -45,6 +45,10 @@ VALUES (seq_showing_id.NEXTVAL, 2, 2, TO_DATE('2024-12-01 20:30', 'YYYY-MM-DD HH
 INSERT INTO showing (id_showing, id_film, id_room, show_time)
 VALUES (seq_showing_id.NEXTVAL, 3, 1, TO_DATE('2024-12-02 17:00', 'YYYY-MM-DD HH24:MI'));
 
+
+INSERT INTO showing (id_showing, id_film, id_room, show_time)
+VALUES (seq_showing_id.NEXTVAL, 3, 1, TO_DATE('2024-12-29 19:00', 'YYYY-MM-DD HH24:MI'));
+
 -- Insert some seats for showings
 -- Room A seats (for 'The Matrix' showing)
 INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
