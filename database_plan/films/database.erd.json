@@ -4,7 +4,7 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -176,
+    "scrollTop": -491,
     "scrollLeft": 0,
     "zoomLevel": 1,
     "show": 431,
@@ -60,7 +60,8 @@
           "m1tDC_J01uZmWvdDYtxLI",
           "_y0Exh9xFn8x2BPNjW-8p",
           "NRjABabYAcPWC-v5ftPVP",
-          "k7UgaQH-BUl0jkEhzBvc1"
+          "k7UgaQH-BUl0jkEhzBvc1",
+          "o_agB8vKzvRbMKI5snsxJ"
         ],
         "seqColumnIds": [
           "8WV2p0sGtIK47tmOOn5cJ",
@@ -68,7 +69,8 @@
           "m1tDC_J01uZmWvdDYtxLI",
           "_y0Exh9xFn8x2BPNjW-8p",
           "NRjABabYAcPWC-v5ftPVP",
-          "k7UgaQH-BUl0jkEhzBvc1"
+          "k7UgaQH-BUl0jkEhzBvc1",
+          "o_agB8vKzvRbMKI5snsxJ"
         ],
         "ui": {
           "x": -6.9381,
@@ -79,7 +81,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1733140030324,
+          "updateAt": 1735473945656,
           "createAt": 1732952522688
         }
       },
@@ -918,6 +920,26 @@
           "updateAt": 1733140176348,
           "createAt": 1733140176346
         }
+      },
+      "o_agB8vKzvRbMKI5snsxJ": {
+        "id": "o_agB8vKzvRbMKI5snsxJ",
+        "tableId": "fHeKM5upRyPza6vx32LEd",
+        "name": "pegi",
+        "comment": "",
+        "dataType": "INT",
+        "default": "",
+        "options": 0,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1735474149725,
+          "createAt": 1735473945655
+        }
       }
     },
     "relationshipEntities": {
@@ -1016,7 +1038,7 @@
             "8WV2p0sGtIK47tmOOn5cJ"
           ],
           "x": 396.0619,
-          "y": 677.3402,
+          "y": 689.3402,
           "direction": 2
         },
         "end": {
@@ -1509,6 +1531,16 @@
       1733140176340,
       -1,
       {}
+    ],
+    "o_agB8vKzvRbMKI5snsxJ": [
+      "tableColumnEntities",
+      1735473945653,
+      -1,
+      {
+        "name": 1735473948920,
+        "dataType": 1735473951189,
+        "options(notNull)": 1735474149723
+      }
     ]
   }
 }
