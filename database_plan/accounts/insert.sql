@@ -1,7 +1,7 @@
 -- Insert data into accounts table
 -- id_account will be auto-generated using the accounts_seq sequence
 INSERT INTO accounts (login, password, email, phone_number) 
-VALUES ('user1', 'pass123', 'user1@example.com', '123-456-7890');
+VALUES ('behq', 'behq', 'behq1@example.com', '123456789');
 
 INSERT INTO accounts (login, password, email, phone_number) 
 VALUES ('user2', 'pass456', 'user2@example.com', '234-567-8901');
