@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 com/example/listing/FilmListing.class
 com/example/listing/DrinksListing.class
 com/example/Controller.class
@@ -45,3 +46,5 @@ com/example/database/db_classes/Account.class
 com/example/RepertoirePage.class
 com/example/BasketPage.class
 com/example/MainApp.class
+=======
+>>>>>>> origin/develop

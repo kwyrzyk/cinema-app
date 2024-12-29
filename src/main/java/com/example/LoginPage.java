@@ -13,8 +13,10 @@ import javafx.scene.layout.VBox;
 public class LoginPage {
     private VBox loginContainer;
     private AccountListing accountListing;
+    private final Controller controller;
 
-    public LoginPage(AccountListing accountListing) {
+    public LoginPage(Controller controller, AccountListing accountListing) {
+        this.controller = controller;
         this.accountListing = accountListing;
         this.accountListing.loadAllAccounts();
         TextField usernameField = new TextField();
@@ -53,7 +55,8 @@ public class LoginPage {
         if(account == null) {showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with this login");}
         if(account.getPassword().equals(password)){
             showAlert(AlertType.INFORMATION, "Login Successful", "Your registration for account - " + username + "was succesful.\nYour email: "
-             + account.getEmail() + " your phone number is " + account.getPhoneNumber());
+            + account.getEmail() + " your phone number is " + account.getPhoneNumber());
+            controller.login(account.getIdAccount());
         }else{
             showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with matching login and password");
         }
