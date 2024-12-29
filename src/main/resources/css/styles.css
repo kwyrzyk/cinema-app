@@ -148,3 +148,22 @@
     -fx-padding: 10px;
     -fx-text-fill: white;   
 }
+
+.option_page {
+    -fx-background-color: #17028f;  /* Ciemne tło */
+    -fx-padding: 20;
+}
+
+.option_page Label {
+    -fx-text-fill: white;  /* Biały tekst */
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+}
+
+.option_page TextField {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-border-color: black;
+    -fx-padding: 5;
+}

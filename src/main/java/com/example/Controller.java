@@ -29,20 +29,23 @@ public class Controller {
     private Stage stage;
     private Scene scene;
     private FilmListing filmListing = new FilmListing();
+    private int accountId = 0;
 
     private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
     private AccountListing accountsListing = new AccountListing();
-    private LoginPage loginPage = new LoginPage(accountsListing);
+    private LoginPage loginPage = new LoginPage( this, accountsListing);
     private RegisterPage registerPage = new RegisterPage(accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
     private DiscountListing discountListing = new DiscountListing();
+    private AccoutOptionsPage accountPage = new AccoutOptionsPage(this, accountsListing);
 
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
+    
 
     @FXML
     private Label label;
@@ -71,6 +74,14 @@ public class Controller {
 
     public Scene getScene(){
         return this.scene;
+    }
+
+    public void login(int Id){
+        this.accountId = Id;
+    }
+
+    public int getAccountId(){
+        return this.accountId;
     }
 
 
@@ -110,6 +121,20 @@ public class Controller {
                 container.getChildren().clear();
                 container.getChildren().add(registerPage.getRegisterContainer());
                 break;
+            }
+            case "optionsBtn" -> {
+                if (accountId == 0){
+                    container.getChildren().clear();
+                    container.getChildren().add(loginPage.getLoginContainer());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("You are not loged in");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You need to log in first.");
+                    alert.showAndWait();
+                } else {
+                    container.getChildren().clear();
+                    container.getChildren().add(accountPage.getOptionContainer());
+                }
             }
             case "payBtn" -> {
                 if (basket.isEmpty()) {
@@ -187,6 +212,7 @@ public class Controller {
         } else if (buttonId.equals("accountsBtn")) {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);
+            addOption("Options", "optionsBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
