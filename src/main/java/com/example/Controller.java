@@ -202,9 +202,6 @@ public class Controller {
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
             container.getChildren().add(repertoirePage.getPage());
-        } else if (buttonId.equals("ticketsBtn")) {
-            addOption("Buy", "buyBtn", this::handleOptionClick);
-            addOption("Change", "changeBtn", this::handleOptionClick);
         } else if (buttonId.equals("foodBtn")) {
             addOption("Snacks", "snacksBtn", this::handleOptionClick);
             addOption("Drinks", "drinksBtn", this::handleOptionClick);
@@ -216,6 +213,7 @@ public class Controller {
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+            addOption("Change", "changeBtn", this::handleOptionClick);
             BasketPage backetPage = new BasketPage(basket);
             container.getChildren().add(backetPage.getPage());
         } else {

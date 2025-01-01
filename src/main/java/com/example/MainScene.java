@@ -14,11 +14,10 @@ public class MainScene {
     public MainScene() {
         // this.layout = layout;
         Button repertoireButton = new Button("Repertoire");
-        Button ticketsButton = new Button("Tickets");
         Button snacksButton = new Button("Food");
         Button accountsButton = new Button("Accounts");
         
-        VBox sideBar = new VBox(10, repertoireButton, ticketsButton, snacksButton, accountsButton);
+        VBox sideBar = new VBox(10, repertoireButton, snacksButton, accountsButton);
         sideBar.getStyleClass().add("sidebar");
         
         VBox optionsBar = new VBox();
