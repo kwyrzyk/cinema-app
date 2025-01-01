@@ -60,6 +60,10 @@ public class Controller {
     @FXML
     private ListView<String> categoryList;
 
+    public VBox getContainer(){
+        return this.container;
+    }
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
