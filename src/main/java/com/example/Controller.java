@@ -9,11 +9,11 @@ import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
-import com.example.listing.DrinksListing;
-import com.example.listing.FoodListing;
-import com.example.listing.DiscountListing;
 import com.example.listing.AccountListing;
+import com.example.listing.DiscountListing;
+import com.example.listing.DrinksListing;
 import com.example.listing.FilmListing;
+import com.example.listing.FoodListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -38,7 +38,7 @@ public class Controller {
     private RegisterPage registerPage = new RegisterPage(accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
     private DiscountListing discountListing = new DiscountListing();
-    private AccoutOptionsPage accountPage = new AccoutOptionsPage(this, accountsListing);
+    public AccoutOptionsPage accountPage = new AccoutOptionsPage(this, accountsListing);
 
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();

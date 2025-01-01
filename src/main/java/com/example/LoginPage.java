@@ -57,6 +57,7 @@ public class LoginPage {
             showAlert(AlertType.INFORMATION, "Login Successful", "Your registration for account - " + username + "was succesful.\nYour email: "
             + account.getEmail() + " your phone number is " + account.getPhoneNumber());
             controller.login(account.getIdAccount());
+            controller.getContainer().getChildren().clear();
             controller.getContainer().getChildren().add(controller.accountPage.getOptionContainer());
         }else{
             showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with matching login and password");
