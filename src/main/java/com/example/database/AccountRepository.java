@@ -1,7 +1,11 @@
 package com.example.database;
 
 import com.example.database.db_classes.Account;
+import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.PricedItem;
+import com.example.database.db_classes.Price;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +22,7 @@ public class AccountRepository {
 
     // Method to get an account by its ID
     static public Account getAccountById(int accountId) throws SQLException {
-        String accountQuery = "SELECT id_account, login, password, email, phone_number FROM accounts WHERE id_account = " + accountId;
+        String accountQuery = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance  FROM accounts WHERE id_account = " + accountId;
 
         ResultSet accountResult = DatabaseManager.runSelectQuery(accountQuery);
 
@@ -32,14 +36,16 @@ public class AccountRepository {
         String password = accountResult.getString("password");
         String email = accountResult.getString("email");
         String phoneNumber = accountResult.getString("phone_number");
+        int loyalty_points = accountResult.getInt("loyalty_points");
+        Price balance = new Price(accountResult.getDouble("balance"));
 
-        return new Account(idAccount, login, password, email, phoneNumber);
+        return new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance);
     }
 
     // Method to get all accounts
     static public List<Account> getAllAccounts() {
         List<Account> accounts = new ArrayList<>();
-        String query = "SELECT id_account, login, password, email, phone_number FROM accounts";
+        String query = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance FROM accounts";
 
         try {
             ResultSet result = DatabaseManager.runSelectQuery(query);
@@ -55,9 +61,11 @@ public class AccountRepository {
                 String password = result.getString("password");
                 String email = result.getString("email");
                 String phoneNumber = result.getString("phone_number");
+                int loyalty_points = result.getInt("loyalty_points");
+                Price balance = new Price(result.getDouble("balance"));
 
                 // Add account to the list
-                accounts.add(new Account(idAccount, login, password, email, phoneNumber));
+                accounts.add(new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -218,5 +226,84 @@ public class AccountRepository {
             return false;
         }
     }
+
+    
+    static public boolean addOrder(int accountId, Basket basket) {
+        List<PricedItem> items = basket.getItems();
+        List<Integer> quantities = basket.getQuantities();
+
+        String insertOrderQuery = "INSERT INTO orders (id_account, price, order_date) VALUES (?, ?, SYSDATE)";
+        String insertOrderItemQuery = "INSERT INTO order_item (item_type, item_reference_id, id_order, quantity) VALUES (?, ?, ?, ?)";
+        
+
+        double price = basket.getTotalPrice();
+
+        try (Connection connection = DatabaseManager.getConnection()) {
+            // Disable auto-commit for transaction
+            connection.setAutoCommit(false);
+
+            // Insert into orders and retrieve the generated id_order
+            int orderId;
+            try (PreparedStatement orderStatement = connection.prepareStatement(insertOrderQuery, Statement.RETURN_GENERATED_KEYS)) {
+                orderStatement.setInt(1, accountId);
+                orderStatement.setDouble(2, price);
+                
+                int rowsAffected = orderStatement.executeUpdate();
+                if (rowsAffected == 0) {
+                    connection.rollback();
+                    throw new SQLException("Failed to insert order into the database");
+                }
+
+                // Retrieve the generated id_order
+                try (ResultSet generatedKeys = orderStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        orderId = generatedKeys.getInt(1);
+                    } else {
+                        connection.rollback();
+                        throw new SQLException("Failed to retrieve the generated order ID");
+                    }
+                }
+            } 
+        
+            
+    
+            try (PreparedStatement itemStatement = connection.prepareStatement(insertOrderItemQuery)) {
+                for(int i = 0; i < items.size(); i++){
+                    PricedItem item = items.get(i);
+                    int quantity = quantities.get(i);
+                    int id = 0;
+                    String type = "";            
+                    if(item.getDrinkId() != -1){
+                        type = "food";
+                        id = item.getFoodId();
+                    }else if(item.getDrinkId() != -1){
+                        type = "drink";
+                        id = item.getDrinkId();
+                    }else if(item.getShowingId() != -1){
+                        type = "ticket";
+                        id = item.getShowingId();
+                    }
+
+                    itemStatement.setString(1, type);
+                    itemStatement.setInt(2, id);
+                    itemStatement.setInt(3, orderId);
+                    itemStatement.setInt(4, quantity);
+                    itemStatement.addBatch(); // Add to batch for efficient execution
+                }
+                int[] itemRowsAffected = itemStatement.executeBatch();
+                if (itemRowsAffected.length != items.size()) {
+                    connection.rollback();
+                    throw new SQLException("Failed to insert all order items");
+                }
+            }
+        
+    
+           return true;
+        
+        }catch (SQLException e){
+            System.err.println("Somehing went wrong inserting the order");
+            return false;
+        }
+    }    
 
 }
