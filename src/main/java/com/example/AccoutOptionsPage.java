@@ -44,11 +44,15 @@ public class AccoutOptionsPage {
         Button changePhoneButton = new Button("Zmień");
         changePhoneButton.setOnAction(e -> changePhone(phoneField.getText()));
 
+        int ballance = 100;
+        Label points = new Label("Points: " + ballance);
+        points.getStyleClass().add("ballance");
+
         optionPage.getChildren().addAll(
             loginLabel, loginField, changeLoginButton,
             passwordLabel, passwordField, changePasswordButton,
             emailLabel, emailField, changeEmailButton,
-            phoneLabel, phoneField, changePhoneButton
+            phoneLabel, phoneField, changePhoneButton, points
         );
     }
 

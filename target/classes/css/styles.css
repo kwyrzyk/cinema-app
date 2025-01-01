@@ -167,3 +167,9 @@
     -fx-border-color: black;
     -fx-padding: 5;
 }
+
+.ballance {
+    -fx-font-size: 20px;
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+}
