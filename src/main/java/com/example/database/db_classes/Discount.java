@@ -54,6 +54,10 @@ public class Discount {
 
 
     // time setters and getters
+    public boolean is_time_limited(){
+        return is_time_limited;
+    }
+    
     public LocalTime getStartTime() {
         return startTime;
     }
