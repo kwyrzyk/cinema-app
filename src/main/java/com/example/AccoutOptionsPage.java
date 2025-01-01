@@ -46,13 +46,18 @@ public class AccoutOptionsPage {
 
         int ballance = 100;
         Label points = new Label("Points: " + ballance);
-        points.getStyleClass().add("ballance");
+        points.getStyleClass().add("optionLabel");
+
+        int cre = 200;
+        Label credits = new Label("Credits: " + cre);
+        credits.getStyleClass().add("optionLabel");
 
         optionPage.getChildren().addAll(
             loginLabel, loginField, changeLoginButton,
             passwordLabel, passwordField, changePasswordButton,
             emailLabel, emailField, changeEmailButton,
-            phoneLabel, phoneField, changePhoneButton, points
+            phoneLabel, phoneField, changePhoneButton, points,
+            credits
         );
     }
 
