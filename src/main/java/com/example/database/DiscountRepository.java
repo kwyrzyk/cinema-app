@@ -4,6 +4,7 @@ import com.example.database.db_classes.Discount;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class DiscountRepository {
     // Method to get a discount by its ID
     static public Discount getDiscountById(int discountId) throws SQLException {
         // Query to get the discount's basic info
-        String discountQuery = "SELECT id_discount, price FROM discounts WHERE id_discount = " + discountId;
+        String discountQuery = "SELECT id_discount, price, start_time, end_time FROM discounts WHERE id_discount = " + discountId;
     
         // Execute discount query
         ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery);
@@ -28,10 +29,17 @@ public class DiscountRepository {
         // Extract discount details
         int idDiscount = discountResult.getInt("id_discount");
         double price = discountResult.getDouble("price");
-    
+        LocalTime startTime = discountResult.getObject("start_time", LocalTime.class);
+        LocalTime endTime = discountResult.getObject("end_time", LocalTime.class);
+        
+        Discount discount;
+        if(startTime == null || endTime == null){
         // Create a Discount object
-        Discount discount = new Discount(idDiscount, price);
-    
+            discount = new Discount(idDiscount, price);
+        }else{
+            discount = new Discount(idDiscount, price, startTime, endTime);
+        }
+
         // Query to get the associated food items for this discount
         String foodQuery = """
             SELECT dp.id_food_price, dp.food_count, fp.size, f.name
@@ -76,7 +84,7 @@ public class DiscountRepository {
     // Method to get a list of all discounts
     static public List<Discount> getAllDiscounts() {
         List<Discount> discounts = new ArrayList<>();
-        String discountQuery = "SELECT id_discount, price FROM discounts";
+        String discountQuery = "SELECT id_discount, price, start_time, end_time FROM discounts";
 
         try {
             ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery);
@@ -88,10 +96,16 @@ public class DiscountRepository {
             while (discountResult.next()) {
                 int discountId = discountResult.getInt("id_discount");
                 double price = discountResult.getDouble("price");
-
-                // Create the Discount object
-                Discount discount = new Discount(discountId, price);
-
+                LocalTime startTime = discountResult.getObject("start_time", LocalTime.class);
+                LocalTime endTime = discountResult.getObject("end_time", LocalTime.class);
+                
+                Discount discount;
+                if(startTime == null || endTime == null){
+                // Create a Discount object
+                    discount = new Discount(discountId, price);
+                }else{
+                    discount = new Discount(discountId, price, startTime, endTime);
+                }
                 // Query to get the associated food items for this discount
                 String foodQuery = """
                     SELECT dp.id_food_price, dp.food_count, fp.portion_size, f.name
