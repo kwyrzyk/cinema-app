@@ -180,8 +180,8 @@ public class Controller {
                                     goToPayment[0] = false; // Modyfikacja wartości w tablicy
             
                                     // Zamiana produktu na zestaw w koszyku
-                                    basket.getItems().clear(); // Usunięcie obecnych produktów z koszyka
-                                    basket.addItem(new PricedItem(matchingDiscount.toString(), matchingDiscount.getPrice())); // Dodanie zestawu do koszyka
+                                    basket.clear(); // Usunięcie obecnych produktów z koszyka
+                                    basket.addItem(new PricedItem(matchingDiscount)); // Dodanie zestawu do koszyka
                                     
                                     // Wyświetlenie informacji o sukcesie
                                     Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -208,7 +208,7 @@ public class Controller {
                         alert.setContentText("Your payment was processed successfully!");
                         alert.showAndWait();
                         if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
-                    basket.clear(); // Opróżnij koszyk po udanej płatności
+                        basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
                         container.getChildren().add(backetPage.getPage());

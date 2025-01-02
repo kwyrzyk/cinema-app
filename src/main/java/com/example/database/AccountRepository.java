@@ -257,7 +257,6 @@ public class AccountRepository {
                         ResultSet resultSet = statement.executeQuery("SELECT orders_seq.CURRVAL FROM dual");
                         if (resultSet.next()) {
                             orderId = resultSet.getInt(1); // Get the last generated sequence value
-                            System.out.println("Generated Order ID from Sequence: " + orderId);
                         }
                     }
                 }
