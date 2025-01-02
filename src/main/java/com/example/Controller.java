@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.List;
 
+import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
@@ -206,7 +207,8 @@ public class Controller {
                         alert.setHeaderText(null);
                         alert.setContentText("Your payment was processed successfully!");
                         alert.showAndWait();
-                        basket.clear(); // Opróżnij koszyk po udanej płatności
+                        if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
+                    basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
                         container.getChildren().add(backetPage.getPage());

@@ -5,9 +5,10 @@ public class PricedItem {
     private String name;
     private Price price;
 
-    private int foodId = -1;   // Default value to indicate it's not a food item
-    private int drinkId = -1;  // Default value to indicate it's not a drink item
-    private int showingId = -1; // Default value to indicate it's not a showing
+    private int foodId = -1;
+    private int drinkId = -1;
+    private int showingId = -1;
+    private int  discountId= -1;
     public static final Price ticketPrice = new Price(20.0);
 
     // Constructor to initialize name and price
@@ -30,9 +31,17 @@ public class PricedItem {
         this.drinkId = drinkItem.getIdDrink();
     }
 
-    // Constructor for showing item
-    public PricedItem(Showing showingItem) {
-        this.name = showingItem.getFilmId() + " " + showingItem.getShowTime();
+
+
+    public PricedItem(Discount discountItem){
+        this.name = discountItem.toString();
+        this.price = discountItem.getPrice();
+        this.discountId = discountItem.getIdDiscount();
+    }
+
+
+    public PricedItem(Showing showingItem){
+        this.name = String.valueOf(showingItem.getFilmId()) + " " +   showingItem.getShowTime();
         this.price = ticketPrice;
         this.showingId = showingItem.getId();
     }
@@ -88,4 +97,8 @@ public class PricedItem {
     public String toString() {
         return "PricedItem{name='" + name + "', price=" + price + ", foodId=" + foodId + ", drinkId=" + drinkId + ", showingId=" + showingId + '}';
     }
+    public int getDiscountId(){
+        return discountId;
+    }
+
 }
