@@ -237,14 +237,14 @@ public class AccountRepository {
         
 
         double price = basket.getTotalPrice();
-
+        
+        int orderId = -1;
         try (Connection connection = DatabaseManager.getConnection()) {
             // Disable auto-commit for transaction
             connection.setAutoCommit(false);
 
-            // Insert into orders and retrieve the generated id_order
-            int orderId;
-            try (PreparedStatement orderStatement = connection.prepareStatement(insertOrderQuery, Statement.RETURN_GENERATED_KEYS)) {
+        
+            try (PreparedStatement orderStatement = connection.prepareStatement(insertOrderQuery)) {
                 orderStatement.setInt(1, accountId);
                 orderStatement.setDouble(2, price);
                 
@@ -252,20 +252,19 @@ public class AccountRepository {
                 if (rowsAffected == 0) {
                     connection.rollback();
                     throw new SQLException("Failed to insert order into the database");
-                }
-
-                // Retrieve the generated id_order
-                try (ResultSet generatedKeys = orderStatement.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        orderId = generatedKeys.getInt(1);
-                    } else {
-                        connection.rollback();
-                        throw new SQLException("Failed to retrieve the generated order ID");
+                }else{
+                    try (Statement statement = connection.createStatement()) {
+                        ResultSet resultSet = statement.executeQuery("SELECT orders_seq.CURRVAL FROM dual");
+                        if (resultSet.next()) {
+                            orderId = resultSet.getInt(1); // Get the last generated sequence value
+                            System.out.println("Generated Order ID from Sequence: " + orderId);
+                        }
                     }
                 }
+
             } 
         
-            
+            System.out.println("wORKS?");    
     
             try (PreparedStatement itemStatement = connection.prepareStatement(insertOrderItemQuery)) {
                 for(int i = 0; i < items.size(); i++){
@@ -273,7 +272,7 @@ public class AccountRepository {
                     int quantity = quantities.get(i);
                     int id = 0;
                     String type = "";            
-                    if(item.getDrinkId() != -1){
+                    if(item.getFoodId() != -1){
                         type = "food";
                         id = item.getFoodId();
                     }else if(item.getDrinkId() != -1){
@@ -301,7 +300,7 @@ public class AccountRepository {
            return true;
         
         }catch (SQLException e){
-            System.err.println("Somehing went wrong inserting the order");
+            System.err.println("Somehing went wrong inserting the order" + e.getMessage());
             return false;
         }
     }    

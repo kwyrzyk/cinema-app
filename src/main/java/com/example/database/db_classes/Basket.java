@@ -124,8 +124,9 @@ public class Basket {
     public double getTotalPrice() {
         double total = 0;
         for (int i = 0; i < items.size(); i++) {
-            total += items.get(i).getPrice().getDollars() + items.get(i).getPrice().getCents() / 100.0;
-            total *= quantities.get(i); // Multiply by quantity of this item
+            double price = items.get(i).getPrice().getDollars() + items.get(i).getPrice().getCents() / 100.0;
+            price *= quantities.get(i); // Multiply by quantity of this item
+            total += price;
         }
         return total;
     }
