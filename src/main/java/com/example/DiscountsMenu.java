@@ -1,6 +1,8 @@
 package com.example;
 
 import java.util.List;
+import java.time.LocalTime;
+import java.util.stream.Collectors;
 
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
@@ -27,9 +29,14 @@ public class DiscountsMenu {
         // Create a ListView for discounts
         ListView<Discount> discountListView = new ListView<>();
         discountListView.getStyleClass().add("lists");
+        System.out.println("Number of discounts: " + listOfDiscounts.size());
+        // Filter active discounts based on current time
+        List<Discount> activeDiscounts = listOfDiscounts.stream()
+                .filter(discount -> discount.isDiscountActive(LocalTime.now()))
+                .collect(Collectors.toList());
 
-        // Add discounts to the ListView
-        discountListView.getItems().addAll(listOfDiscounts);
+        // Add active discounts to the ListView
+        discountListView.getItems().addAll(activeDiscounts);
 
         // Set custom cells in the ListView
         discountListView.setCellFactory(new Callback<>() {
@@ -59,9 +66,9 @@ public class DiscountsMenu {
 
         searchButton.setOnAction(e -> {
             String query = searchField.getText().toLowerCase();
-            List<Discount> filteredDiscounts = listOfDiscounts.stream()
+            List<Discount> filteredDiscounts = discountListView.getItems().stream()
                     .filter(discount -> discount.toString().toLowerCase().contains(query))
-                    .toList();
+                    .collect(Collectors.toList());
 
             discountListView.getItems().setAll(filteredDiscounts);
         });
