@@ -121,6 +121,13 @@ public class Discount {
                         .anyMatch(item -> item.getIdItem() == drinkItemId);
     }
 
+    public boolean isDiscountActive(LocalTime currentTime) {
+        if (is_time_limited) {
+            return (currentTime.isAfter(startTime) && currentTime.isBefore(endTime));
+        }
+        return true; // Always active if not time-limited
+    }
+
     // To String method (for printing object details)
     @Override
     public String toString() {
