@@ -167,7 +167,7 @@ public class Controller {
                             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                             confirmationAlert.setTitle("Suggested discount");
                             confirmationAlert.setHeaderText(null);
-                            confirmationAlert.setContentText("Do you want to change the product to a set?");
+                            confirmationAlert.setContentText("Do you want to change the product to a set:\n" + matchingDiscount.toString() + "?");
                             
                             ButtonType buttonYes = new ButtonType("Yes");
                             ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
