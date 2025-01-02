@@ -137,24 +137,36 @@ public class Controller {
                 }
             }
             case "payBtn" -> {
-                if (basket.isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Payment Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your basket is empty. Please add items before paying.");
-                    alert.showAndWait();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Payment Successful");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your payment was processed successfully!");
-                    alert.showAndWait();
-                    basket.clear(); // Opróżnij koszyk po udanej płatności
-                    BasketPage backetPage = new BasketPage(basket);
-                    container.getChildren().clear();
-                    container.getChildren().add(backetPage.getPage());
+                int totalQuantity = basket.getTotalQuantity();
+
+                switch (totalQuantity) {
+                    case 0:
+                        Alert empty_alert = new Alert(Alert.AlertType.WARNING);
+                        empty_alert.setTitle("Payment Failed");
+                        empty_alert.setHeaderText(null);
+                        empty_alert.setContentText("Your basket is empty. Please add items before paying.");
+                        empty_alert.showAndWait();
+                        break;  
+
+                    case 1:
+                        Alert one_item_alert = new Alert(Alert.AlertType.INFORMATION);
+                        one_item_alert.setTitle("Only one item in basket");
+                        one_item_alert.setHeaderText(null);
+                        one_item_alert.setContentText("Suggest set!");
+                        one_item_alert.showAndWait();
+                        break;
+                    default:
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Payment Successful");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Your payment was processed successfully!");
+                        alert.showAndWait();
+                        basket.clear(); // Opróżnij koszyk po udanej płatności
+                        BasketPage backetPage = new BasketPage(basket);
+                        container.getChildren().clear();
+                        container.getChildren().add(backetPage.getPage());
+                        break;  
                 }
-                break;
             }
             case "removeAllBtn" ->{
                 if (basket.isEmpty()) {
