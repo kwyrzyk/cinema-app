@@ -5,10 +5,9 @@ public class PricedItem {
     private String name;
     private Price price;
 
-
-    private int foodId;
-    private int drinkId;
-    private int showingId;
+    private int foodId = -1;   // Default value to indicate it's not a food item
+    private int drinkId = -1;  // Default value to indicate it's not a drink item
+    private int showingId = -1; // Default value to indicate it's not a showing
     public static final Price ticketPrice = new Price(20.0);
 
     // Constructor to initialize name and price
@@ -17,28 +16,26 @@ public class PricedItem {
         this.price = price;
     }
 
-
-    public PricedItem(Food foodItem, String size){
-        this.name = foodItem.getName() + ": "+ size;
+    // Constructor for food item
+    public PricedItem(Food foodItem, String size) {
+        this.name = foodItem.getName() + ": " + size;
         this.price = foodItem.getPrices().get(size);
         this.foodId = foodItem.getIdFood();
     }
 
-
-    public PricedItem(Drink drinkItem, String size){
+    // Constructor for drink item
+    public PricedItem(Drink drinkItem, String size) {
         this.name = drinkItem.getName() + ": " + size;
         this.price = drinkItem.getPrices().get(size);
         this.drinkId = drinkItem.getIdDrink();
     }
 
-
-    public PricedItem(Showing showingItem){
-        this.name = String.valueOf(showingItem.getFilmId()) + " " +   showingItem.getShowTime();
+    // Constructor for showing item
+    public PricedItem(Showing showingItem) {
+        this.name = showingItem.getFilmId() + " " + showingItem.getShowTime();
         this.price = ticketPrice;
         this.showingId = showingItem.getId();
     }
-
-
 
     // Constructor to initialize name and price using a double value
     public PricedItem(String name, double price) {
@@ -56,7 +53,7 @@ public class PricedItem {
         return price;
     }
 
-
+    // Getter for foodId
     public int getFoodId() {
         return foodId;
     }
@@ -71,4 +68,24 @@ public class PricedItem {
         return showingId;
     }
 
+    // Check if the item is a food item
+    public boolean isFood() {
+        return foodId != -1; // Food items have a valid foodId
+    }
+
+    // Check if the item is a drink item
+    public boolean isDrink() {
+        return drinkId != -1; // Drink items have a valid drinkId
+    }
+
+    // Check if the item is a showing (e.g., movie ticket)
+    public boolean isShowing() {
+        return showingId != -1; // Showings have a valid showingId
+    }
+
+    // ToString method for better debugging
+    @Override
+    public String toString() {
+        return "PricedItem{name='" + name + "', price=" + price + ", foodId=" + foodId + ", drinkId=" + drinkId + ", showingId=" + showingId + '}';
+    }
 }

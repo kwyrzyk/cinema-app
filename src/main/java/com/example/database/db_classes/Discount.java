@@ -56,6 +56,18 @@ public class Discount {
         this.drinkItems.add(new DiscountItem(drinkPriceId, name, drinkCount));
     }
 
+    // Method to check if a specific food item (by ID) is part of the discount
+    public boolean containsFoodItemById(int foodItemId) {
+        return foodItems.stream()
+                        .anyMatch(item -> item.getIdItem() == foodItemId);
+    }
+
+    // Method to check if a specific drink item (by ID) is part of the discount
+    public boolean containsDrinkItemById(int drinkItemId) {
+        return drinkItems.stream()
+                        .anyMatch(item -> item.getIdItem() == drinkItemId);
+    }
+
     // To String method (for printing object details)
     @Override
     public String toString() {

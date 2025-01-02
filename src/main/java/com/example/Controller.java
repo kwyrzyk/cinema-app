@@ -9,6 +9,7 @@ import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
+import com.example.database.db_classes.PricedItem;
 import com.example.listing.DrinksListing;
 import com.example.listing.FoodListing;
 import com.example.listing.DiscountListing;
@@ -20,6 +21,8 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
@@ -138,6 +141,7 @@ public class Controller {
             }
             case "payBtn" -> {
                 int totalQuantity = basket.getTotalQuantity();
+                boolean[] goToPayment = { true };
 
                 switch (totalQuantity) {
                     case 0:
@@ -149,12 +153,53 @@ public class Controller {
                         break;  
 
                     case 1:
-                        Alert one_item_alert = new Alert(Alert.AlertType.INFORMATION);
-                        one_item_alert.setTitle("Only one item in basket");
-                        one_item_alert.setHeaderText(null);
-                        one_item_alert.setContentText("Suggest set!");
-                        one_item_alert.showAndWait();
-                        break;
+                        PricedItem firstItem = basket.getItems().get(0);
+            
+                        // Sprawdzenie, czy produkt znajduje się w zestawie
+                        Discount matchingDiscount = listOfDiscounts.stream()
+                                .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getFoodId()))
+                                                 || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getDrinkId())))
+                                .findFirst()
+                                .orElse(null);
+            
+                        if (matchingDiscount != null) {
+                            // Wyświetlenie alertu z pytaniem
+                            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                            confirmationAlert.setTitle("Suggested discount");
+                            confirmationAlert.setHeaderText(null);
+                            confirmationAlert.setContentText("Do you want to change the product to a set?");
+                            
+                            ButtonType buttonYes = new ButtonType("Yes");
+                            ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+                            confirmationAlert.getButtonTypes().setAll(buttonYes, buttonNo);
+            
+                            // Oczekiwanie na wybór użytkownika
+                            confirmationAlert.showAndWait().ifPresent(response -> {
+                                if (response == buttonYes) {
+                                    goToPayment[0] = false; // Modyfikacja wartości w tablicy
+            
+                                    // Zamiana produktu na zestaw w koszyku
+                                    basket.getItems().clear(); // Usunięcie obecnych produktów z koszyka
+                                    basket.addItem(new PricedItem(matchingDiscount.toString(), matchingDiscount.getPrice())); // Dodanie zestawu do koszyka
+                                    
+                                    // Wyświetlenie informacji o sukcesie
+                                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                                    successAlert.setTitle("Zamiana na zestaw");
+                                    successAlert.setHeaderText(null);
+                                    successAlert.setContentText("Produkt został zamieniony na zestaw!");
+                                    successAlert.showAndWait();
+            
+                                    BasketPage backetPage = new BasketPage(basket);
+                                    container.getChildren().clear();
+                                    container.getChildren().add(backetPage.getPage());
+                                }
+                            });
+            
+                            if (!goToPayment[0]) { // Sprawdzamy zmodyfikowaną wartość
+                                break;
+                            }
+                        }
+                        
                     default:
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Payment Successful");
