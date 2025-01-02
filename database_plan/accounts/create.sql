@@ -62,7 +62,7 @@ END;
 -- Create the table
 CREATE TABLE order_item (
     id_order_item INT DEFAULT seq_order_item_id.NEXTVAL PRIMARY KEY, -- Primary key with auto-increment
-    item_type VARCHAR2(20) NOT NULL CHECK(item_type in  ('food', 'drink', 'ticket')) , -- ENUM with specific types
+    item_type VARCHAR2(20) NOT NULL CHECK(item_type in  ('food', 'drink', 'ticket', 'discount')) , -- ENUM with specific types
     item_reference_id INT NOT NULL, -- Reference to the specific drink/food/ticket
     id_order INT NOT NULL, -- Foreign key referencing the orders table
     quantity INT DEFAULT 1 NOT NULL, -- Quantity with a default value of 1
