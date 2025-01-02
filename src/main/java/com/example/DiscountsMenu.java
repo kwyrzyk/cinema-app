@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
-import com.example.database.db_classes.PricedItem;
 
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -85,7 +84,7 @@ public class DiscountsMenu {
                 Label discountNameLabel = new Label(discount.toString());
                 // Adding discount to the basket on click
                 discountNameLabel.setOnMouseClicked(event -> {
-                    basket.addItem(new PricedItem(discount.toString(), discount.getPrice()));
+                    basket.addDiscount(discount);
                     System.out.println("Discount " + discount.toString());
                 });
 

@@ -5,10 +5,10 @@ public class PricedItem {
     private String name;
     private Price price;
 
-
     private int foodId = -1;
     private int drinkId = -1;
     private int showingId = -1;
+    private int  discountId= -1;
     public static final Price ticketPrice = new Price(20.0);
 
     // Constructor to initialize name and price
@@ -29,6 +29,14 @@ public class PricedItem {
         this.name = drinkItem.getName() + ": " + size;
         this.price = drinkItem.getPrices().get(size);
         this.drinkId = drinkItem.getIdDrink();
+    }
+
+
+
+    public PricedItem(Discount discountItem){
+        this.name = discountItem.toString();
+        this.price = discountItem.getPrice();
+        this.discountId = discountItem.getIdDiscount();
     }
 
 
@@ -69,6 +77,10 @@ public class PricedItem {
     // Getter for showingId
     public int getShowingId() {
         return showingId;
+    }
+
+    public int getDiscountId(){
+        return discountId;
     }
 
 }

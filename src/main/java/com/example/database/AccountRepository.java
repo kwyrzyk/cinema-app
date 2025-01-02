@@ -264,8 +264,6 @@ public class AccountRepository {
 
             } 
         
-            System.out.println("wORKS?");    
-    
             try (PreparedStatement itemStatement = connection.prepareStatement(insertOrderItemQuery)) {
                 for(int i = 0; i < items.size(); i++){
                     PricedItem item = items.get(i);
@@ -281,6 +279,9 @@ public class AccountRepository {
                     }else if(item.getShowingId() != -1){
                         type = "ticket";
                         id = item.getShowingId();
+                    }else if(item.getDiscountId() != -1){
+                        type = "discount";
+                        id = item.getDiscountId();
                     }
 
                     itemStatement.setString(1, type);
