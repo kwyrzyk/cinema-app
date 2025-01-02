@@ -134,6 +134,15 @@ public class Basket {
         return items.isEmpty();
     }
 
+    public int getTotalQuantity() {
+        int totalQuantity = 0;
+        for (int quantity : quantities) {
+            totalQuantity += quantity;
+        }
+        return totalQuantity;
+    }
+
+
     public void clear() {
         items.clear();
         quantities.clear();
