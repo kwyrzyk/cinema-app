@@ -51,7 +51,7 @@ VALUES (seq_showing_id.NEXTVAL, 3, 1, TO_DATE('2024-12-29 19:00', 'YYYY-MM-DD HH
 
 -- Insert some seats for showings
 -- Room A seats (for 'The Matrix' showing)
-INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
+/*INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
 VALUES (seq_seat_id.NEXTVAL, 1, 1, 1, 'available');
 
 INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
@@ -72,4 +72,4 @@ INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
 VALUES (seq_seat_id.NEXTVAL, 3, 1, 1, 'available');
 
 INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
-VALUES (seq_seat_id.NEXTVAL, 3, 1, 2, 'available');
+VALUES (seq_seat_id.NEXTVAL, 3, 1, 2, 'available');*/

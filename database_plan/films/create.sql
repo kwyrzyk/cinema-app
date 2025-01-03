@@ -10,6 +10,7 @@ CREATE SEQUENCE seq_room_id START WITH 1 INCREMENT BY 1;
 CREATE SEQUENCE seq_seat_id START WITH 1 INCREMENT BY 1;
 
 
+
 -- Create the 'films' table with smaller data types for descriptions
 CREATE TABLE films (
     id_film INT PRIMARY KEY,
@@ -69,6 +70,81 @@ CREATE TABLE seats (
     CONSTRAINT unique_seat UNIQUE (id_showing, row_number, seat_number) -- Ensure unique seats per showing
 );
 
--- Create a sequence for generating IDs (Oracle does not support AUTO_INCREMENT)
-CREATE SEQUENCE seq_film_id START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE seq_actor_id START WITH 1 INCREMENT BY 1;
+CREATE OR REPLACE TRIGGER trg_film_id
+BEFORE INSERT ON films
+FOR EACH ROW
+BEGIN
+    :NEW.id_film := seq_film_id.NEXTVAL;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_actor_id
+BEFORE INSERT ON actors
+FOR EACH ROW
+BEGIN
+    :NEW.id_actor := seq_actor_id.NEXTVAL;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_room_id
+BEFORE INSERT ON screening_room
+FOR EACH ROW
+BEGIN
+    :NEW.id_room := seq_room_id.NEXTVAL;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_showing_id
+BEFORE INSERT ON showing
+FOR EACH ROW
+BEGIN
+    :NEW.id_showing := seq_showing_id.NEXTVAL;
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER trg_seat_id
+BEFORE INSERT ON seats
+FOR EACH ROW
+BEGIN
+    :NEW.id_seat := seq_seat_id.NEXTVAL;
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER insert_seats_for_showing
+AFTER INSERT ON showing
+FOR EACH ROW
+DECLARE
+    -- Use %TYPE to dynamically match the column types
+    v_num_rows screening_room.num_rows%TYPE;
+    v_seats_per_row screening_room.seats_per_row%TYPE;
+    v_row_number screening_room.num_rows%TYPE;
+    v_seat_number screening_room.seats_per_row%TYPE;
+BEGIN
+    -- Retrieve the number of rows and seats per row from the screening_room table
+    SELECT num_rows, seats_per_row
+    INTO v_num_rows, v_seats_per_row
+    FROM screening_room
+    WHERE id_room = :NEW.id_room;
+
+    -- Loop through each row and seat
+    FOR v_row_number IN 1..v_num_rows LOOP
+        FOR v_seat_number IN 1..v_seats_per_row LOOP
+            INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
+            VALUES (
+                SEQ_SEAT_ID.NEXTVAL,  -- Assuming a sequence for unique seat IDs
+                :NEW.id_showing,
+                v_row_number,
+                v_seat_number,
+                'available'  -- Default status
+            );
+        END LOOP;
+    END LOOP;
+END;
+/
