@@ -9,6 +9,8 @@ CREATE SEQUENCE seq_room_id START WITH 1 INCREMENT BY 1;
 
 CREATE SEQUENCE seq_seat_id START WITH 1 INCREMENT BY 1;
 
+CREATE SEQUENCE seq_tag_id START WITH 1 INCREMENT BY 1;
+
 
 
 -- Create the 'films' table with smaller data types for descriptions
@@ -69,6 +71,34 @@ CREATE TABLE seats (
     FOREIGN KEY (id_showing) REFERENCES showing(id_showing) ON DELETE CASCADE,
     CONSTRAINT unique_seat UNIQUE (id_showing, row_number, seat_number) -- Ensure unique seats per showing
 );
+
+
+CREATE TABLE tags (
+    id_tag INT PRIMARY KEY,
+    name VARCHAR2(255) NOT NULL UNIQUE -- Unique tag name
+);
+
+
+CREATE TABLE film_tags (
+    id_film INT NOT NULL, -- Foreign key to films table
+    id_tag INT NOT NULL,  -- Foreign key to tags table
+    PRIMARY KEY (id_film, id_tag), -- Composite primary key to ensure no duplicate tag for a film
+    FOREIGN KEY (id_film) REFERENCES films(id_film) ON DELETE CASCADE,
+    FOREIGN KEY (id_tag) REFERENCES tags(id_tag) ON DELETE CASCADE
+);
+
+
+
+-- Create a trigger to automatically assign IDs for tags
+CREATE OR REPLACE TRIGGER trg_tag_id
+BEFORE INSERT ON tags
+FOR EACH ROW
+BEGIN
+    :NEW.id_tag := seq_tag_id.NEXTVAL;
+END;
+/
+
+
 
 CREATE OR REPLACE TRIGGER trg_film_id
 BEFORE INSERT ON films
