@@ -6,10 +6,12 @@ import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
+import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
+import com.example.database.db_classes.Tag;
 import com.example.database.db_classes.PricedItem;
 import com.example.listing.DrinksListing;
 import com.example.listing.FoodListing;
@@ -50,6 +52,7 @@ public class Controller {
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     
+    private final List<Tag> listOTags = TagsRepository.getAllTags();
 
     @FXML
     private Label label;
