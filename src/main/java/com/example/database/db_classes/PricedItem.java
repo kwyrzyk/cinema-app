@@ -47,9 +47,25 @@ public class PricedItem {
     }
 
     // Constructor to initialize name and price using a double value
-    public PricedItem(String name, double price) {
+    public PricedItem(String name, String type, double price, int id) {
+        switch (type) {
+            case "food":
+                this.foodId = id;
+                break;
+            case "drink":
+                this.foodId = id;
+                break;
+            case "discount":
+                this.discountId = id;
+                break;
+            case "ticket":
+                this.showingId = id;
+                break;
+            default:
+                break;
+        }
         this.name = name;
-        this.price = new Price(price); // Create a Price object from the double value
+        this.price = new Price(price); 
     }
 
     // Getter for name

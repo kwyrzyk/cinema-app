@@ -14,6 +14,7 @@ public class Basket {
         this.quantities = new ArrayList<>();
     }
 
+
     // Method to add an item to the basket
     public void addItem(PricedItem item) {
         int index = items.indexOf(item);
@@ -26,6 +27,14 @@ public class Basket {
             quantities.set(index, quantities.get(index) + 1);
         }
     }
+
+
+    public void addNewItemInQuantity(PricedItem item, int quantity){
+        items.add(item);
+        quantities.add(quantity);
+    }
+
+
     // Method to remove an item from the basket
     public boolean removeItem(PricedItem item) {
         int index = items.indexOf(item);
@@ -43,6 +52,7 @@ public class Basket {
         }
         return true; // Item successfully removed
     }
+
 
 
     public int findIndexByFoodId(int foodId, String name) {

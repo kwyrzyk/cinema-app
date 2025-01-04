@@ -89,6 +89,11 @@ public class Price {
         normalize();  // Ensure cents don't exceed 100
     }
 
+    public double toDouble(){
+        return dollars + ((double)cents)/100;
+    }
+
+
     // Override toString() for display
     @Override
     public String toString() {
