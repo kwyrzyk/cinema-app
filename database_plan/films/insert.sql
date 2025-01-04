@@ -8,6 +8,25 @@ VALUES (seq_film_id.NEXTVAL, 'Inception', 'A skilled thief is given a chance to 
 INSERT INTO films (id_film, title, short_description, long_description, rating, pegi)
 VALUES (seq_film_id.NEXTVAL, 'Interstellar', 'A team of explorers travel through a wormhole in space to ensure humanity’s survival.', 'In a dystopian future where Earth’s resources are dwindling, a team of astronauts travel through a wormhole in search of a new habitable planet for humans to colonize.', 8.6, 12);
 
+INSERT INTO tags (name) VALUES ('Sci-Fi');
+INSERT INTO tags (name) VALUES ('Adventure');
+INSERT INTO tags (name) VALUES ('Action');
+
+
+
+-- Tags for 'Interstellar'
+INSERT INTO film_tags (id_film, id_tag) VALUES (1, (SELECT id_tag FROM tags WHERE name = 'Sci-Fi'));
+INSERT INTO film_tags (id_film, id_tag) VALUES (1, (SELECT id_tag FROM tags WHERE name = 'Adventure'));
+
+-- Tags for 'Inception'
+INSERT INTO film_tags (id_film, id_tag) VALUES (2, (SELECT id_tag FROM tags WHERE name = 'Sci-Fi'));
+INSERT INTO film_tags (id_film, id_tag) VALUES (2, (SELECT id_tag FROM tags WHERE name = 'Action'));
+
+-- Tags for 'The Matrix'
+INSERT INTO film_tags (id_film, id_tag) VALUES (3, (SELECT id_tag FROM tags WHERE name = 'Sci-Fi'));
+INSERT INTO film_tags (id_film, id_tag) VALUES (3, (SELECT id_tag FROM tags WHERE name = 'Action'));
+
+
 -- Insert some actors
 INSERT INTO actors (id_actor, name, surname, birth_date)
 VALUES (seq_actor_id.NEXTVAL, 'Keanu', 'Reeves', TO_DATE('1964-09-02', 'YYYY-MM-DD'));

@@ -10,10 +10,12 @@ public class Film {
     private double rating;
     private List<Actor> actors; // A list of associated actors
     private List<Showing> showings;
+    private List<Tag> tags; 
     private int pegi;
 
     // Constructor
-    public Film(int id, String title, String shortDescription, String longDescription, double rating, List<Actor> actors, List<Showing> showings, int pegi) {
+    public Film(int id, String title, String shortDescription, String longDescription, double rating, List<Actor> actors, 
+     List<Showing> showings, List<Tag> tags, int pegi) {
         this.id = id;
         this.title = title;
         this.shortDescription = shortDescription;
@@ -22,6 +24,7 @@ public class Film {
         this.actors = actors;
         this.showings = showings;
         this.pegi = pegi;
+        this.tags = tags;
     }
 
     // Getters and toString method
@@ -33,6 +36,7 @@ public class Film {
     public List<Actor> getActors() { return actors; }
     public List<Showing> getShowings() {return showings;}
     public int getPegi() {return pegi;}
+    public List<Tag> getTags() {return tags;}
 
     @Override
     public String toString() {
