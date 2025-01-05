@@ -2,6 +2,7 @@ package com.example.database;
 
 import com.example.database.db_classes.Account;
 import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.OrderHistoryRecord;
 import com.example.database.db_classes.PricedItem;
 import com.example.database.db_classes.Price;
 
@@ -12,6 +13,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Date;
 
 public class AccountRepository {
 
@@ -233,7 +236,7 @@ public class AccountRepository {
         List<Integer> quantities = basket.getQuantities();
 
         String insertOrderQuery = "INSERT INTO orders (id_account, price, order_date) VALUES (?, ?, SYSDATE)";
-        String insertOrderItemQuery = "INSERT INTO order_item (item_type, item_reference_id, id_order, quantity) VALUES (?, ?, ?, ?)";
+        String insertOrderItemQuery = "INSERT INTO order_item (item_type, item_reference_id, id_order, quantity, item_name, price) VALUES (?, ?, ?, ?, ?, ?)";
         
 
         double price = basket.getTotalPrice();
@@ -266,6 +269,9 @@ public class AccountRepository {
             try (PreparedStatement itemStatement = connection.prepareStatement(insertOrderItemQuery)) {
                 for(int i = 0; i < items.size(); i++){
                     PricedItem item = items.get(i);
+                    String name = item.getName();
+                    Price item_price = item.getPrice();
+
                     int quantity = quantities.get(i);
                     int id = 0;
                     String type = "";            
@@ -287,6 +293,8 @@ public class AccountRepository {
                     itemStatement.setInt(2, id);
                     itemStatement.setInt(3, orderId);
                     itemStatement.setInt(4, quantity);
+                    itemStatement.setString(5, name);
+                    itemStatement.setDouble(6, item_price.toDouble());
                     itemStatement.addBatch(); // Add to batch for efficient execution
                 }
                 int[] itemRowsAffected = itemStatement.executeBatch();
@@ -305,4 +313,66 @@ public class AccountRepository {
         }
     }    
 
+
+    public static List<OrderHistoryRecord> getAllOrdersHistory(int accountId){
+
+        List<OrderHistoryRecord> orders = new ArrayList<>();
+        String query = "SELECT id_order, price, order_date FROM orders WHERE id_account = ?";
+
+        try (Connection connection = DatabaseManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, accountId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int idOrder = resultSet.getInt("id_order");
+                    double price = resultSet.getDouble("price");
+                    Date orderDate = resultSet.getDate("order_date");
+
+                    Basket basket = getOrderItemsByOrderId(idOrder);
+
+                    orders.add(new OrderHistoryRecord(idOrder, price, orderDate, basket));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return orders;
+    }
+    
+        // Query to get all items for a given order ID
+    public static Basket getOrderItemsByOrderId(int orderId) {
+        String query = """
+            SELECT item_name, item_type, item_reference_id, price, quantity
+            FROM order_item
+            WHERE id_order = ?
+            """;
+
+        Basket basket = new Basket();
+
+        try (Connection connection = DatabaseManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, orderId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    String itemName = resultSet.getString("item_name");
+                    String itemType = resultSet.getString("item_type");
+                    int itemReferenceId = resultSet.getInt("item_reference_id");
+                    double price = resultSet.getDouble("price");
+                    int quantity = resultSet.getInt("quantity");
+
+                    basket.addNewItemInQuantity(new PricedItem(itemName, itemType, price, itemReferenceId), quantity);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return basket;
+    }
+    
 }
