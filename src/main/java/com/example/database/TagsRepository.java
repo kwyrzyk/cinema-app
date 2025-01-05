@@ -13,8 +13,7 @@ public class TagsRepository {
 
     public static List<Tag> getAllTags(){
 
-        String query = "SELECT name, id_tag" +
-                        "FROM tags";
+        String query = "SELECT name, id_tag FROM tags";
 
         List<Tag> tags = new ArrayList<>();
 

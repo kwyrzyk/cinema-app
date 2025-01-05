@@ -33,8 +33,8 @@ CREATE TABLE actors (
     birth_date DATE
 );
 
--- Create the junction table 'emp_film_actors'
-CREATE TABLE emp_film_actors (
+-- Create the junction table 'film_actors'
+CREATE TABLE film_actors (
     id_film INT NOT NULL,
     id_actor INT NOT NULL,
     role VARCHAR2(255),

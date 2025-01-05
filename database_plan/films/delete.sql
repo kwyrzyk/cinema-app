@@ -1,7 +1,7 @@
 -- Drop foreign key dependent tables first
 
 -- Drop the tables in reverse order of dependencies
-DROP TABLE emp_film_actors CASCADE CONSTRAINTS;
+DROP TABLE film_actors CASCADE CONSTRAINTS;
 DROP TABLE seats CASCADE CONSTRAINTS;
 DROP TABLE showing CASCADE CONSTRAINTS;
 DROP TABLE screening_room CASCADE CONSTRAINTS;

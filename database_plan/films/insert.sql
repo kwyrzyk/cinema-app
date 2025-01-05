@@ -38,21 +38,21 @@ INSERT INTO actors (id_actor, name, surname, birth_date)
 VALUES (seq_actor_id.NEXTVAL, 'Matthew', 'McConaughey', TO_DATE('1969-11-04', 'YYYY-MM-DD'));
 
 -- Insert actor roles for films
-INSERT INTO emp_film_actors (id_film, id_actor, role)
+INSERT INTO film_actors (id_film, id_actor, role)
 VALUES (1, 1, 'Neo');
 
-INSERT INTO emp_film_actors (id_film, id_actor, role)
+INSERT INTO film_actors (id_film, id_actor, role)
 VALUES (2, 2, 'Cobb');
 
-INSERT INTO emp_film_actors (id_film, id_actor, role)
+INSERT INTO film_actors (id_film, id_actor, role)
 VALUES (3, 3, 'Cooper');
 
 -- Insert screening rooms
 INSERT INTO screening_room (id_room, name, num_rows, seats_per_row)
-VALUES (seq_room_id.NEXTVAL, 'Room A', 10, 20);
+VALUES (seq_room_id.NEXTVAL, 'Room A', 8, 10);
 
 INSERT INTO screening_room (id_room, name, num_rows, seats_per_row)
-VALUES (seq_room_id.NEXTVAL, 'Room B', 15, 25);
+VALUES (seq_room_id.NEXTVAL, 'Room B', 10, 10);
 
 -- Insert showings for films
 INSERT INTO showing (id_showing, id_film, id_room, show_time)
