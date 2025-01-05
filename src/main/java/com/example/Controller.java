@@ -15,6 +15,7 @@ import com.example.database.db_classes.Tag;
 import com.example.database.db_classes.PricedItem;
 import com.example.listing.DrinksListing;
 import com.example.listing.FoodListing;
+import com.example.listing.OrderHistoryListing;
 import com.example.listing.DiscountListing;
 import com.example.listing.AccountListing;
 import com.example.listing.FilmListing;
@@ -39,7 +40,9 @@ public class Controller {
 
     private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
+    private OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
     private AccountListing accountsListing = new AccountListing();
+    
     private LoginPage loginPage = new LoginPage( this, accountsListing);
     private RegisterPage registerPage = new RegisterPage(accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
@@ -52,6 +55,8 @@ public class Controller {
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     
+
+
     private final List<Tag> listOTags = TagsRepository.getAllTags();
 
     @FXML

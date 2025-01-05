@@ -314,7 +314,7 @@ public class AccountRepository {
     }    
 
 
-    public List<OrderHistoryRecord> getAllOrdersHistory(int accountId){
+    public static List<OrderHistoryRecord> getAllOrdersHistory(int accountId){
 
         List<OrderHistoryRecord> orders = new ArrayList<>();
         String query = "SELECT id_order, price, order_date FROM orders WHERE id_account = ?";
