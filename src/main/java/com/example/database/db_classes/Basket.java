@@ -89,10 +89,10 @@ public class Basket {
     }
 
     
-    public int findIndexByShowingId(int showingId, String name) {
+    public int findIndexByTicketId(int ticketId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getDrinkId() == showingId && item.getName().equals(name)) {
+            if (item.getDrinkId() == ticketId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -100,9 +100,9 @@ public class Basket {
     }
     
     // Method to add a Ticket item to the basket
-    public void addTicket(Showing showingItem) {
-        PricedItem pricedItem = new PricedItem(showingItem);
-        int index = findIndexByShowingId(showingItem.getId(), pricedItem.getName());
+    public void addTicket(Ticket ticketItem) {
+        PricedItem pricedItem = new PricedItem(ticketItem);
+        int index = findIndexByTicketId(ticketItem.getId(), pricedItem.getName());
         if(index == -1){
             addItem(pricedItem);
         }else{
@@ -123,7 +123,7 @@ public class Basket {
 
     public void addDiscount(Discount discountItem) {
         PricedItem pricedItem = new PricedItem(discountItem);
-        int index = findIndexByShowingId(discountItem.getIdDiscount(), pricedItem.getName());
+        int index = findIndexByDiscountId(discountItem.getIdDiscount(), pricedItem.getName());
         if(index == -1){
             addItem(pricedItem);
         }else{

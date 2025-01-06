@@ -269,16 +269,16 @@ public class AccountRepository {
                     int quantity = quantities.get(i);
                     int id = 0;
                     String type = "";            
-                    if(item.getFoodId() != -1){
+                    if(item.isFood()){
                         type = "food";
                         id = item.getFoodId();
-                    }else if(item.getDrinkId() != -1){
+                    }else if(item.isDrink()){
                         type = "drink";
                         id = item.getDrinkId();
-                    }else if(item.getShowingId() != -1){
+                    }else if(item.isTicket()){
                         type = "ticket";
-                        id = item.getShowingId();
-                    }else if(item.getDiscountId() != -1){
+                        id = item.getTicketId();
+                    }else if(item.isDiscount()){
                         type = "discount";
                         id = item.getDiscountId();
                     }
