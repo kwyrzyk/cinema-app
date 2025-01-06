@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Seat;
 import com.example.database.db_classes.Showing;
+import com.example.database.db_classes.Ticket;
+
 
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -59,9 +61,6 @@ public class SeatsPage implements Page {
                             seatButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
                             break;
                         case "reserved":
-                            seatButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
-                            break;
-                        case "booked":
                             seatButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
                             break;
                         default:
@@ -71,6 +70,11 @@ public class SeatsPage implements Page {
                     // Dodanie akcji kliknięcia
                     seatButton.setOnAction(e -> {
                         System.out.println("Selected seat: Row " + rowNumber + ", Seat " + seatNumber);
+                        if (seat.getStatus().equals("available")) {
+                            Ticket ticket = new Ticket(filmInfo, showing, seat);
+                            controller.basket.addTicket(ticket);
+                            seatButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+                        }
                     });
                 } else {
                     // Miejsce nie istnieje (puste pole w siatce)

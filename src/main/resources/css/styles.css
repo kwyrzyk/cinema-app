@@ -147,6 +147,7 @@
 .item {
     -fx-padding: 10px;
     -fx-text-fill: white;   
+    -fx-wrap-text: true;
 }
 
 .option_page {
