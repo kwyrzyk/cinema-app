@@ -7,7 +7,7 @@ public class PricedItem {
 
     private int foodId = -1;
     private int drinkId = -1;
-    private int showingId = -1;
+    private int ticketId = -1;
     private int  discountId= -1;
     public static final Price ticketPrice = new Price(20.0);
 
@@ -40,10 +40,10 @@ public class PricedItem {
     }
 
 
-    public PricedItem(Showing showingItem){
-        this.name = String.valueOf(showingItem.getFilmId()) + " " +   showingItem.getShowTime();
+    public PricedItem(Ticket ticketItem){
+        this.name = ticketItem.getName();
         this.price = ticketPrice;
-        this.showingId = showingItem.getId();
+        this.ticketId = ticketItem.getId();
     }
 
     // Constructor to initialize name and price using a double value
@@ -72,9 +72,9 @@ public class PricedItem {
         return drinkId;
     }
 
-    // Getter for showingId
-    public int getShowingId() {
-        return showingId;
+    // Getter for ticketId
+    public int getTicketId() {
+        return ticketId;
     }
 
     // Check if the item is a food item
@@ -88,14 +88,18 @@ public class PricedItem {
     }
 
     // Check if the item is a showing (e.g., movie ticket)
-    public boolean isShowing() {
-        return showingId != -1; // Showings have a valid showingId
+    public boolean isTicket() {
+        return ticketId != -1; // Showings have a valid showingId
+    }
+
+    public boolean isDiscount() {
+        return discountId != -1; // Showings have a valid showingId
     }
 
     // ToString method for better debugging
     @Override
     public String toString() {
-        return "PricedItem{name='" + name + "', price=" + price + ", foodId=" + foodId + ", drinkId=" + drinkId + ", showingId=" + showingId + '}';
+        return "PricedItem{name='" + name + "', price=" + price + ", foodId=" + foodId + ", drinkId=" + drinkId + ", ticketId=" + ticketId + '}';
     }
     public int getDiscountId(){
         return discountId;
