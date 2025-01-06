@@ -40,14 +40,15 @@ public class Controller {
 
     private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
-    private OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
+    public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
     private AccountListing accountsListing = new AccountListing();
     
     private LoginPage loginPage = new LoginPage( this, accountsListing);
     private RegisterPage registerPage = new RegisterPage(accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
     private DiscountListing discountListing = new DiscountListing();
-    private AccoutOptionsPage accountPage = new AccoutOptionsPage(this, accountsListing);
+    private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
+    private OrderHistoryPage orderHistoryPage;
 
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
@@ -95,7 +96,6 @@ public class Controller {
     public int getAccountId(){
         return this.accountId;
     }
-
 
     private void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
@@ -145,7 +145,23 @@ public class Controller {
                     alert.showAndWait();
                 } else {
                     container.getChildren().clear();
-                    container.getChildren().add(accountPage.getOptionContainer());
+                    container.getChildren().add(accountOptionsPage.getOptionContainer());
+                }
+            }
+            case "orderHistoryBtn" -> {
+                if (accountId == 0){
+                    container.getChildren().clear();
+                    container.getChildren().add(loginPage.getLoginContainer());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("You are not loged in");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You need to log in first.");
+                    alert.showAndWait();
+                    System.out.println("Order history");
+                } else {
+                    this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
+                    container.getChildren().clear();
+                    container.getChildren().add(orderHistoryPage.getPage());
                 }
             }
             case "payBtn" -> {
@@ -220,6 +236,7 @@ public class Controller {
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
                         container.getChildren().add(backetPage.getPage());
+                        this.orderHistoryListing.loadOrderHistory(accountId);
                         break;  
                 }
             }
@@ -280,6 +297,7 @@ public class Controller {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);
             addOption("Options", "optionsBtn", this::handleOptionClick);
+            addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
