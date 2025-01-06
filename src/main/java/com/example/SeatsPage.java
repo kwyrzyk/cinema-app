@@ -9,6 +9,7 @@ import com.example.database.db_classes.Showing;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -34,6 +35,11 @@ public class SeatsPage implements Page {
 
         // Wypełnianie siatki siedzeniami
         for (int i = 1; i <= maxRowNumber; i++) {
+            // Dodanie numeru rzędu (liczba rzymska)
+            Label rowLabel = new Label(toRoman(i));
+            rowLabel.getStyleClass().add("row-label"); // Dodanie klasy CSS
+            seatsGrid.add(rowLabel, 0, i - 1); // Umieszczenie w pierwszej kolumnie (0)
+
             for (int j = 1; j <= maxSeatNumber; j++) {
                 final int rowNumber = i;
                 final int seatNumber = j;
@@ -44,9 +50,7 @@ public class SeatsPage implements Page {
                         .orElse(null);
 
                 Button seatButton = new Button();
-                seatButton.setPrefWidth(50); // Szerokość przycisku
-                seatButton.setPrefHeight(50); // Wysokość przycisku
-                seatButton.setText(rowNumber + "-" + seatNumber); // Wyświetla numer miejsca
+                seatButton.setText(String.valueOf(seatNumber)); // Wyświetla numer miejsca
 
                 if (seat != null) {
                     // Ustawiamy kolor w zależności od statusu miejsca
@@ -74,7 +78,8 @@ public class SeatsPage implements Page {
                 }
 
                 // Dodanie przycisku do siatki
-                seatsGrid.add(seatButton, j - 1, i - 1); // Indeksy w GridPane zaczynają się od 0
+                seatButton.getStyleClass().add("seat-btn");
+                seatsGrid.add(seatButton, j, i - 1); // Indeksy w GridPane zaczynają się od 0
             }
         }
 
@@ -102,5 +107,24 @@ public class SeatsPage implements Page {
 
     public VBox getPage() {
         return seatsPage;
+    }
+
+    // Metoda konwertująca liczbę na zapis rzymski
+    private String toRoman(int number) {
+        String[] romanNumerals = {
+            "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
+        };
+        int[] arabicValues = {
+            1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1
+        };
+
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < arabicValues.length; i++) {
+            while (number >= arabicValues[i]) {
+                result.append(romanNumerals[i]);
+                number -= arabicValues[i];
+            }
+        }
+        return result.toString();
     }
 }

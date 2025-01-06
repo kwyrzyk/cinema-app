@@ -167,3 +167,18 @@
     -fx-border-color: black;
     -fx-padding: 5;
 }
+
+.seat-btn {
+    -fx-cursor: hand;
+    -fx-padding: 5px;
+    -fx-pref-width: 40px;
+    -fx-pref-height: 40px;
+}
+
+.row-label {
+    -fx-alignment: center; /* Wyśrodkowanie tekstu */
+    -fx-font-size: 16px;  /* Rozmiar czcionki */
+    -fx-text-fill: white; /* Kolor tekstu */
+    -fx-pref-width: 50px; /* Szerokość etykiety */
+    -fx-pref-height: 50px; /* Wysokość etykiety */
+}

@@ -23,7 +23,7 @@ public class FilmRepository {
         // Query to get the film's actors
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
                              "FROM actors a " +
-                             "JOIN emp_film_actors fa ON a.id_actor = fa.id_actor " +
+                             "JOIN film_actors fa ON a.id_actor = fa.id_actor " +
                              "WHERE fa.id_film = " + filmId;
 
         String tagsQuery = "SELECT t.id_tag, t.name " +
@@ -58,7 +58,7 @@ public class FilmRepository {
         ResultSet tagsResult = DatabaseManager.runSelectQuery(tagsQuery);
         List<Tag> tags = new ArrayList<>();
         while(tagsResult.next()){
-            int tagId = tagsResult.getInt("id_tag");
+            int tagId = tagsResult.getInt("id_tag"); 
             String name = tagsResult.getString("name");
             tags.add(new Tag(tagId, name));
         }
@@ -75,7 +75,7 @@ public class FilmRepository {
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating, pegi FROM films";
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
                              "FROM actors a " +
-                             "JOIN emp_film_actors fa ON a.id_actor = fa.id_actor " +
+                             "JOIN film_actors fa ON a.id_actor = fa.id_actor " +
                              "WHERE fa.id_film =";
     
         String tagsQuery = "SELECT t.id_tag, t.name " +
