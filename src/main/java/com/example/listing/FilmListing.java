@@ -13,9 +13,11 @@ public class FilmListing {
     public FilmListing() {
         // Initialize films list by fetching data from the database
         this.films = FilmRepository.getAllFilms();
-    
     }
 
+    public void update() {
+        this.films = FilmRepository.getAllFilms();
+    }
     // Method to get the list of films
     public List<Film> getFilms() {
         return films;

@@ -6,6 +6,7 @@ import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
+import com.example.database.ShowingRepository;
 import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
@@ -49,6 +50,7 @@ public class Controller {
     private DiscountListing discountListing = new DiscountListing();
     private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
     private OrderHistoryPage orderHistoryPage;
+    public SeatsPage seatsPage;
 
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
@@ -232,6 +234,12 @@ public class Controller {
                         alert.setContentText("Your payment was processed successfully!");
                         alert.showAndWait();
                         if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
+                        for ( PricedItem item : basket.getItems()) {    
+                            if (item.isTicket()) {
+                                ShowingRepository.reserveSeat(item.getTicketId());
+                            }
+                        }
+                        filmListing.update();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
@@ -254,9 +262,11 @@ public class Controller {
                     alert.setContentText("Your busket is now empty!");
                     alert.showAndWait();
                     basket.clear();
-                    BasketPage backetPage = new BasketPage(basket);
+                    BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
-                    container.getChildren().add(backetPage.getPage());
+                    container.getChildren().add(basketPage.getPage());
+                    filmListing.update();
+                    
                 }
             }
         }
@@ -285,6 +295,7 @@ public class Controller {
             optionsBar.getChildren().add(categoryList);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
+            this.repertoirePage = new RepertoirePage(this, this.filmListing);
             container.getChildren().add(repertoirePage.getPage());
         } else if (buttonId.equals("ticketsBtn")) {
             addOption("Buy", "buyBtn", this::handleOptionClick);

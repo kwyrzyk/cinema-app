@@ -58,7 +58,7 @@ public class FilmRepository {
         ResultSet tagsResult = DatabaseManager.runSelectQuery(tagsQuery);
         List<Tag> tags = new ArrayList<>();
         while(tagsResult.next()){
-            int tagId = tagsResult.getInt("id_tag");
+            int tagId = tagsResult.getInt("id_tag"); 
             String name = tagsResult.getString("name");
             tags.add(new Tag(tagId, name));
         }

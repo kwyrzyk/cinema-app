@@ -99,6 +99,7 @@ public class FilmPage implements Page {
                     container = (VBox) parent;
                     container.getChildren().clear();
                     container.getChildren().add(seatsPage.getPage()); // Przekazanie nowej strony do kontrolera
+                    this.controller.seatsPage = seatsPage;
                 });
 
     
