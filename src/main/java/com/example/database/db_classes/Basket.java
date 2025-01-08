@@ -94,7 +94,7 @@ public class Basket {
     public int findIndexByTicketId(int ticketId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getDrinkId() == ticketId && item.getName().equals(name)) {
+            if (item.getTicketId() == ticketId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -114,11 +114,9 @@ public class Basket {
 
     // Metoda do usuwania biletów z koszyka
 public boolean removeTicket(Ticket ticket) {
-    // Tworzymy PricedItem odpowiadający danemu Ticket
-    PricedItem pricedItem = new PricedItem(ticket);
 
     // Szukamy indeksu w koszyku odpowiadającego temu PricedItem
-    int index = items.indexOf(pricedItem);
+    int index = findIndexByTicketId(ticket.getId(), ticket.getName());
     if (index == -1) {
         return false; // Jeśli biletu nie ma w koszyku, zwracamy false
     }

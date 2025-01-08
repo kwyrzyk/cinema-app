@@ -65,7 +65,7 @@ public class ShowingRepository {
     public static boolean reserveSeat(int seatId) {
         String updateQuery = "UPDATE seats " +
                              "SET status = 'reserved' " +
-                             "WHERE seat_id = ? AND status = 'available'";
+                             "WHERE id_seat = ? AND status = 'available'";
     
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {

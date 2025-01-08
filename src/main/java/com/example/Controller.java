@@ -213,6 +213,12 @@ public class Controller {
                         alert.setContentText("Your payment was processed successfully!");
                         alert.showAndWait();
                         if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
+                        for ( PricedItem item : basket.getItems()) {    
+                            if (item.isTicket()) {
+                                ShowingRepository.reserveSeat(item.getTicketId());
+                            }
+                        }
+                        filmListing.update();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
@@ -238,8 +244,7 @@ public class Controller {
                     container.getChildren().clear();
                     container.getChildren().add(basketPage.getPage());
                     filmListing.update();
-                    // seatsPage.getShowing().resetBasketSeats();
-                    // seatsPage.updateAllSeats();
+                    
                 }
             }
         }
