@@ -59,7 +59,7 @@ public class PricedItem {
                 this.discountId = id;
                 break;
             case "ticket":
-                this.showingId = id;
+                this.ticketId = id;
                 break;
             default:
                 break;
