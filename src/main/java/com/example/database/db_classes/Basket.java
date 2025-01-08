@@ -1,7 +1,9 @@
-package com.example.database.db_classes;
+package com.example.database.db_classes; 
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.database.db_classes.PricedItem;
+import com.example.database.db_classes.Ticket;
 
 public class Basket {
 
@@ -110,6 +112,31 @@ public class Basket {
         }
     }
 
+    // Metoda do usuwania biletów z koszyka
+public boolean removeTicket(Ticket ticket) {
+    // Tworzymy PricedItem odpowiadający danemu Ticket
+    PricedItem pricedItem = new PricedItem(ticket);
+
+    // Szukamy indeksu w koszyku odpowiadającego temu PricedItem
+    int index = items.indexOf(pricedItem);
+    if (index == -1) {
+        return false; // Jeśli biletu nie ma w koszyku, zwracamy false
+    }
+
+    int currentQuantity = quantities.get(index);
+    if (currentQuantity > 1) {
+        // Zmniejszamy ilość biletu, jeśli jest większa od 1
+        quantities.set(index, currentQuantity - 1);
+    } else {
+        // Jeśli ilość wynosi 1, całkowicie usuwamy bilet z koszyka
+        items.remove(index);
+        quantities.remove(index);
+    }
+
+    return true; // Sukces
+}
+
+
     public int findIndexByDiscountId(int discountId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
@@ -165,6 +192,7 @@ public class Basket {
         return totalQuantity;
     }
 
+    
 
     public void clear() {
         items.clear();

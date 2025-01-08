@@ -18,6 +18,15 @@ public class Showing {
         this.seats = seats;
     }
 
+    public void resetBasketSeats() {
+        for (Seat seat : seats) {
+            if (seat.getStatus().equals("inBasket")) {
+                seat.setStatus("available");
+            }
+        }
+    }
+    
+
 
     // Getters and Setters
     public int getId() { return id; }

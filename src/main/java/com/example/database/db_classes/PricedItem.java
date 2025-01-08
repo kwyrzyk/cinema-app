@@ -8,7 +8,7 @@ public class PricedItem {
     private int foodId = -1;
     private int drinkId = -1;
     private int ticketId = -1;
-    private int  discountId= -1;
+    private int  discountId = -1;
     public static final Price ticketPrice = new Price(20.0);
 
     // Constructor to initialize name and price

@@ -7,7 +7,6 @@ import com.example.database.db_classes.Seat;
 import com.example.database.db_classes.Showing;
 import com.example.database.db_classes.Ticket;
 
-
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -20,13 +19,17 @@ import javafx.scene.Node;
 public class SeatsPage implements Page {
     private final VBox seatsPage;
     private final Controller controller;
+    private final GridPane seatsGrid; // Siatka miejsc
+    private final List<Seat> seats; // Lista miejsc (aktualizowana przy każdej zmianie)
+    private final Showing showing; // Seans, dla którego wyświetlamy miejsca
 
     public SeatsPage(Controller controller, Showing showing, Page filmPage, Film filmInfo) {
         this.controller = controller;
-        List<Seat> seats = showing.getSeats();
+        this.seats = showing.getSeats();
+        this.showing = showing;
 
         // Tworzenie siatki miejsc
-        GridPane seatsGrid = new GridPane();
+        seatsGrid = new GridPane();
         seatsGrid.setHgap(10); // Odstęp poziomy między siedzeniami
         seatsGrid.setVgap(10); // Odstęp pionowy między rzędami
         seatsGrid.setAlignment(Pos.CENTER); // Wyrównanie siatki na środku
@@ -45,6 +48,7 @@ public class SeatsPage implements Page {
             for (int j = 1; j <= maxSeatNumber; j++) {
                 final int rowNumber = i;
                 final int seatNumber = j;
+
                 // Szukamy miejsca o danym numerze rzędu i miejsca w rzędzie
                 Seat seat = seats.stream()
                         .filter(s -> s.getRowNumber() == rowNumber && s.getSeatNumber() == seatNumber)
@@ -56,25 +60,20 @@ public class SeatsPage implements Page {
 
                 if (seat != null) {
                     // Ustawiamy kolor w zależności od statusu miejsca
-                    switch (seat.getStatus()) {
-                        case "available":
-                            seatButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
-                            break;
-                        case "reserved":
-                            seatButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-                            break;
-                        default:
-                            seatButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
-                    }
+                    updateSeatStyle(seatButton, seat);
 
                     // Dodanie akcji kliknięcia
                     seatButton.setOnAction(e -> {
-                        System.out.println("Selected seat: Row " + rowNumber + ", Seat " + seatNumber);
                         if (seat.getStatus().equals("available")) {
+                            seat.setStatus("inBasket");
                             Ticket ticket = new Ticket(filmInfo, showing, seat);
                             controller.basket.addTicket(ticket);
-                            seatButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+                        } else if (seat.getStatus().equals("inBasket")) {
+                            seat.setStatus("available");
+                            Ticket ticket = new Ticket(filmInfo, showing, seat);
+                            controller.basket.removeTicket(ticket); // Używamy nowej metody
                         }
+                        updateAllSeats(); // Uaktualniamy wszystkie miejsca
                     });
                 } else {
                     // Miejsce nie istnieje (puste pole w siatce)
@@ -91,8 +90,8 @@ public class SeatsPage implements Page {
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("back-btn");
         backButton.setId("repertoireBackBtn");
-        backButton.setOnAction( e -> {
-            Parent parent = (backButton).getParent().getParent().getParent();
+        backButton.setOnAction(e -> {
+            Parent parent = backButton.getParent().getParent().getParent();
             VBox container = (VBox) parent;
             container.getChildren().clear();
             container.getChildren().add(new FilmPage(controller, filmInfo).getPage());
@@ -113,6 +112,10 @@ public class SeatsPage implements Page {
         return seatsPage;
     }
 
+    public Showing getShowing() {
+        return showing;
+    }
+
     // Metoda konwertująca liczbę na zapis rzymski
     private String toRoman(int number) {
         String[] romanNumerals = {
@@ -131,4 +134,42 @@ public class SeatsPage implements Page {
         }
         return result.toString();
     }
+
+    // Metoda aktualizująca styl przycisku w zależności od statusu siedzenia
+    public void updateSeatStyle(Button seatButton, Seat seat) {
+        switch (seat.getStatus()) {
+            case "available":
+                seatButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+                break;
+            case "reserved":
+                seatButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                break;
+            case "inBasket":
+                seatButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+                break;
+            default:
+                seatButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
+        }
+    }
+
+    // Metoda aktualizująca wszystkie miejsca w siatce
+    public void updateAllSeats() {
+        for (Node node : seatsGrid.getChildren()) {
+            if (node instanceof Button) {
+                Button seatButton = (Button) node;
+                int row = GridPane.getRowIndex(seatButton) + 1;
+                int col = GridPane.getColumnIndex(seatButton);
+
+                Seat seat = seats.stream()
+                        .filter(s -> s.getRowNumber() == row && s.getSeatNumber() == col)
+                        .findFirst()
+                        .orElse(null);
+
+                if (seat != null) {
+                    updateSeatStyle(seatButton, seat);
+                }
+            }
+        }
+    }
 }
+

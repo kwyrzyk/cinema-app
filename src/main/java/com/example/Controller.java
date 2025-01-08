@@ -45,6 +45,7 @@ public class Controller {
     private DrinksListing drinksListing = new DrinksListing();
     private DiscountListing discountListing = new DiscountListing();
     private AccoutOptionsPage accountPage = new AccoutOptionsPage(this, accountsListing);
+    public SeatsPage seatsPage;
 
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
@@ -232,9 +233,12 @@ public class Controller {
                     alert.setContentText("Your busket is now empty!");
                     alert.showAndWait();
                     basket.clear();
-                    BasketPage backetPage = new BasketPage(basket);
+                    BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
-                    container.getChildren().add(backetPage.getPage());
+                    container.getChildren().add(basketPage.getPage());
+                    filmListing = new FilmListing();
+                    seatsPage.getShowing().resetBasketSeats();
+                    seatsPage.updateAllSeats();
                 }
             }
         }
