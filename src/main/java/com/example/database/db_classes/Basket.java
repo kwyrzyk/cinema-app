@@ -238,3 +238,24 @@ public boolean removeTicket(Ticket ticket) {
         return sb.toString();
     }
 }
+
+// public void finalizeReservation() {
+//     for (PricedItem item : items) {
+//         if (item.getTicketId() != -1) {
+//             Ticket ticket = (Ticket) item;
+//             Showing showing = ticket.getShowing(); // Pobieramy pokaz z biletu
+//             Seat seat = ticket.getSeat(); // Pobieramy miejsce z biletu
+            
+//             // Rezerwacja miejsca w bazie danych
+//             boolean success = ShowingRepository.reserveSeat(
+//                 showing.getShowingId(),
+//                 seat.getRowNumber(),
+//                 seat.getSeatNumber()
+//             );
+            
+//             if (!success) {
+//                 System.err.println("Failed to reserve seat: Row " + seat.getRowNumber() + ", Seat " + seat.getSeatNumber());
+//             }
+//         }
+//     }
+// }

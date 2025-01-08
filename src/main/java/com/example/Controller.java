@@ -6,6 +6,7 @@ import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
+import com.example.database.ShowingRepository;
 import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
@@ -236,9 +237,9 @@ public class Controller {
                     BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
                     container.getChildren().add(basketPage.getPage());
-                    filmListing = new FilmListing();
-                    seatsPage.getShowing().resetBasketSeats();
-                    seatsPage.updateAllSeats();
+                    filmListing.update();
+                    // seatsPage.getShowing().resetBasketSeats();
+                    // seatsPage.updateAllSeats();
                 }
             }
         }
@@ -267,6 +268,7 @@ public class Controller {
             optionsBar.getChildren().add(categoryList);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
+            this.repertoirePage = new RepertoirePage(this, this.filmListing);
             container.getChildren().add(repertoirePage.getPage());
         } else if (buttonId.equals("ticketsBtn")) {
             addOption("Buy", "buyBtn", this::handleOptionClick);
