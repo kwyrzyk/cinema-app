@@ -62,19 +62,17 @@ public class ShowingRepository {
         return showings;
     }
 
-    public static boolean reserveSeat(int showingId, int rowNumber, int seatNumber) {
+    public static boolean reserveSeat(int seatId) {
         String updateQuery = "UPDATE seats " +
                              "SET status = 'reserved' " +
-                             "WHERE showing_id = ? AND row_number = ? AND seat_number = ? AND status = 'available'";
+                             "WHERE seat_id = ? AND status = 'available'";
     
         try (Connection connection = DatabaseManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
     
             // Set the parameters for the query
-            preparedStatement.setInt(1, showingId);
-            preparedStatement.setInt(2, rowNumber);
-            preparedStatement.setInt(3, seatNumber);
-    
+            preparedStatement.setInt(1, seatId);
+            
             // Execute the update
             int rowsAffected = preparedStatement.executeUpdate();
     
