@@ -35,7 +35,7 @@ public class ShowingRepository {
                     Timestamp showTimeStamp = showingRs.getTimestamp("show_time");
                     LocalDateTime showTime = showTimeStamp.toLocalDateTime();
                     Timestamp endTimeStamp = showingRs.getTimestamp("end_time");
-                    LocalDateTime endTime = showTimeStamp.toLocalDateTime();
+                    LocalDateTime endTime = endTimeStamp.toLocalDateTime();
 
 
                     // Fetch seats for the showing
