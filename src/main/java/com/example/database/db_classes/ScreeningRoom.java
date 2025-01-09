@@ -6,6 +6,14 @@ public class ScreeningRoom {
     private int numRows;
     private int seatsPerRow;
 
+
+    public ScreeningRoom(int id, String name, int numRows, int seatsPerRow){
+        this.id = id;
+        this.name = name;
+        this.numRows = numRows;
+        this.seatsPerRow = seatsPerRow;
+    }
+
     // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
