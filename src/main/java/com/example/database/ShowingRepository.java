@@ -19,7 +19,7 @@ public class ShowingRepository {
      */
     static public List<Showing> getShowingsByFilmIdWithSeats(int filmId) throws SQLException {
         List<Showing> showings = new ArrayList<>();
-        String showingQuery = "SELECT id_showing, id_room, show_time FROM showing WHERE id_film = ?";
+        String showingQuery = "SELECT id_showing, id_room, show_time, end_time FROM showing WHERE id_film = ?";
         String seatQuery = "SELECT id_seat, id_showing, row_number, seat_number, status " +
                            "FROM seats WHERE id_showing = ?";
 
@@ -34,6 +34,9 @@ public class ShowingRepository {
                     int roomId = showingRs.getInt("id_room");
                     Timestamp showTimeStamp = showingRs.getTimestamp("show_time");
                     LocalDateTime showTime = showTimeStamp.toLocalDateTime();
+                    Timestamp endTimeStamp = showingRs.getTimestamp("end_time");
+                    LocalDateTime endTime = showTimeStamp.toLocalDateTime();
+
 
                     // Fetch seats for the showing
                     List<Seat> seats = new ArrayList<>();
@@ -53,7 +56,7 @@ public class ShowingRepository {
                     }
 
                     // Create Showing object and add to the list
-                    Showing showing = new Showing(showingId, filmId, roomId, showTime, seats);
+                    Showing showing = new Showing(showingId, filmId, roomId, showTime, endTime, seats);
                     showings.add(showing);
                 }
             }
