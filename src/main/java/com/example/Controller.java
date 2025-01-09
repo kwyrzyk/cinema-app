@@ -12,14 +12,14 @@ import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
-import com.example.database.db_classes.Tag;
 import com.example.database.db_classes.PricedItem;
+import com.example.database.db_classes.Tag;
+import com.example.listing.AccountListing;
+import com.example.listing.DiscountListing;
 import com.example.listing.DrinksListing;
+import com.example.listing.FilmListing;
 import com.example.listing.FoodListing;
 import com.example.listing.OrderHistoryListing;
-import com.example.listing.DiscountListing;
-import com.example.listing.AccountListing;
-import com.example.listing.FilmListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,6 +39,7 @@ public class Controller {
     private FilmListing filmListing = new FilmListing();
     private int accountId = 0;
 
+    private final List<Tag> listOfTags = TagsRepository.getAllTags();
     private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
@@ -60,7 +61,7 @@ public class Controller {
     
 
 
-    private final List<Tag> listOTags = TagsRepository.getAllTags();
+    
 
     @FXML
     private Label label;
@@ -72,8 +73,6 @@ public class Controller {
     private VBox newSidebar;
     @FXML
     private VBox container;
-    @FXML
-    private ListView<String> categoryList;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -99,6 +98,10 @@ public class Controller {
         return this.accountId;
     }
 
+    public List<Tag> getListOfTags(){
+        return this.listOfTags;
+    }
+
     private void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
@@ -111,6 +114,10 @@ public class Controller {
         Button clickedOption = (Button) event.getSource();
         String buttonId = clickedOption.getId();
         switch (buttonId){
+            case "repertoireBackBtn" ->{    
+                this.container.getChildren().clear();
+                container.getChildren().add(this.repertoirePage.getBackPage());
+            }
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
                 FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket, listOfFoods);
@@ -279,23 +286,13 @@ public class Controller {
         optionsBar.getChildren().clear();
         container.getChildren().clear();
 
-        if(buttonId.equals("repertoireBackBtn")){
+        if(buttonId.equals("repertoireBtn")) {
             addOption("Category", "categoryBtn", this::handleOptionClick);
-            ListView<String> categoryList = repertoirePage.getCategoryList();
-            categoryList.setId("categoryList");
-            optionsBar.getChildren().add(categoryList);
+            ListView<Tag> categoryListView = repertoirePage.getCategoryList();
+            categoryListView.setId("categoryList");
+            optionsBar.getChildren().add(categoryListView);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
-            this.repertoirePage = new RepertoirePage(this, this.filmListing);
-            container.getChildren().add(repertoirePage.getPage());
-        } else if (buttonId.equals("repertoireBtn")) {
-            addOption("Category", "categoryBtn", this::handleOptionClick);
-            ListView<String> categoryList = repertoirePage.getCategoryList();
-            categoryList.setId("categoryList");
-            optionsBar.getChildren().add(categoryList);
-            addOption("Type", "typeBtn", this::handleOptionClick);
-            addOption("Other", "otherBtn", this::handleOptionClick);
-            this.repertoirePage = new RepertoirePage(this, this.filmListing);
             container.getChildren().add(repertoirePage.getPage());
         } else if (buttonId.equals("ticketsBtn")) {
             addOption("Buy", "buyBtn", this::handleOptionClick);
