@@ -2,8 +2,6 @@ package com.example.database.db_classes;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.database.db_classes.PricedItem;
-import com.example.database.db_classes.Ticket;
 
 public class Basket {
 

@@ -64,15 +64,38 @@ public class SeatsPage implements Page {
 
                     // Dodanie akcji kliknięcia
                     seatButton.setOnAction(e -> {
-                        if (seat.getStatus().equals("available")) {
-                            seat.setStatus("inBasket");
-                            Ticket ticket = new Ticket(filmInfo, showing, seat);
-                            controller.basket.addTicket(ticket);
-                        } else if (seat.getStatus().equals("inBasket")) {
-                            seat.setStatus("available");
-                            controller.basket.removeTicket(new Ticket(filmInfo, showing, seat));
+                        if (controller.modifyTicketMode) {
+                            // Modyfikacja biletu
+                            if (seat.getStatus().equals("available")) {
+                                seat.setStatus("inBasket");
+                                Ticket ticket = new Ticket(filmInfo, showing, seat);
+                                controller.basket.addTicket(ticket);
+                                Seat modifyingSeat = seats.stream()
+                                    .filter(s -> s.getId() == controller.modifyingTicket.getTicketId())
+                                    .findFirst()
+                                    .orElse(null);
+                                if (modifyingSeat != null) {
+                                    modifyingSeat.setStatus("available");
+                                }
+                                updateAllSeats(); // Uaktualniamy wszystkie miejsca
+                                controller.modifyTicketMode = false;
+                                controller.basket.removeItem(controller.modifyingTicket);
+                                controller.container.getChildren().clear();
+                                controller.container.getChildren().add(new BasketPage(controller.basket).getPage());
+                                return;
+                            }
+                        } else {
+                            // Dodanie/usunięcie biletu do/z koszyka
+                            if (seat.getStatus().equals("available")) {
+                                seat.setStatus("inBasket");
+                                Ticket ticket = new Ticket(filmInfo, showing, seat);
+                                controller.basket.addTicket(ticket);
+                            } else if (seat.getStatus().equals("inBasket")) {
+                                seat.setStatus("available");
+                                controller.basket.removeTicket(new Ticket(filmInfo, showing, seat));
+                            }
+                            updateAllSeats(); // Uaktualniamy wszystkie miejsca
                         }
-                        updateAllSeats(); // Uaktualniamy wszystkie miejsca
                     });
                 } else {
                     // Miejsce nie istnieje (puste pole w siatce)

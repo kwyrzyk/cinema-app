@@ -12,6 +12,7 @@ import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
+import com.example.database.db_classes.Price;
 import com.example.database.db_classes.PricedItem;
 import com.example.database.db_classes.Tag;
 import com.example.listing.AccountListing;
@@ -38,9 +39,11 @@ public class Controller {
     private Scene scene;
     private FilmListing filmListing = new FilmListing();
     private int accountId = 0;
+    public Boolean modifyTicketMode = false;
+    public PricedItem modifyingTicket;
 
     private final List<Tag> listOfTags = TagsRepository.getAllTags();
-    private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
+    public RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
     private AccountListing accountsListing = new AccountListing();
@@ -273,7 +276,7 @@ public class Controller {
             }
             case "modifyTicketBtn" ->{
                 if (basket.containsTickets()) {
-                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(basket);
+                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this, basket);
                     container.getChildren().clear();
                     container.getChildren().add(modifyBasketPage.getPage());
                 } else {

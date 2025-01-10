@@ -2,8 +2,11 @@ package com.example;
 
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.PricedItem;
+import com.example.database.db_classes.Tag;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -11,8 +14,10 @@ import java.util.List;
 public class ModifyBasketPage implements Page {
     private final VBox basketBox;
     private final Basket basket;
+    private final Controller controller;
 
-    public ModifyBasketPage(Basket basket) {
+    public ModifyBasketPage(Controller controller, Basket basket) {
+        this.controller = controller;
         this.basket = basket;
 
         // Główna kontenerka dla elementów na stronie
@@ -46,7 +51,16 @@ public class ModifyBasketPage implements Page {
 
                 // Placeholder action for button click
                 ticketLabel.setOnMouseClicked(e -> {
-                    System.out.println("Clicked on ticket: " + ticket.getName());
+                    controller.modifyTicketMode = true;
+                    controller.modifyingTicket = ticket;
+                    // addOption("Category", "categoryBtn", this::handleOptionClick);
+                    // ListView<Tag> categoryListView = repertoirePage.getCategoryList();
+                    // categoryListView.setId("categoryList");
+                    // optionsBar.getChildren().add(categoryListView);
+                    // addOption("Type", "typeBtn", this::handleOptionClick);
+                    // addOption("Other", "otherBtn", this::handleOptionClick);
+                    controller.container.getChildren().clear();
+                    controller.container.getChildren().add(controller.repertoirePage.getBackPage());
                 });
 
                 basketBox.getChildren().add(ticketLabel);
