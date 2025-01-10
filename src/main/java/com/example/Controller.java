@@ -40,6 +40,7 @@ public class Controller {
     private int accountId = 0;
 
     private final List<Tag> listOfTags = TagsRepository.getAllTags();
+    private final List<Integer> listOfPegi = List.of(3, 7, 12, 16, 18);
     private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
@@ -98,6 +99,10 @@ public class Controller {
         return this.listOfTags;
     }
 
+    public List<Integer> getListOfPegi(){
+        return this.listOfPegi;
+    }
+
     private void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
@@ -114,6 +119,7 @@ public class Controller {
                 this.container.getChildren().clear();
                 container.getChildren().add(this.repertoirePage.getBackPage());
             }
+            case "pegiBtn" -> repertoirePage.togglePegiList();
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
                 FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket, listOfFoods);
@@ -287,6 +293,10 @@ public class Controller {
             ListView<Tag> categoryListView = repertoirePage.getCategoryList();
             categoryListView.setId("categoryList");
             optionsBar.getChildren().add(categoryListView);
+            addOption("Pegi", "pegiBtn", this::handleOptionClick);
+            ListView<Integer> listPegi = repertoirePage.getPegiList();
+            listPegi.setId("pegiList");
+            optionsBar.getChildren().add(listPegi);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
             container.getChildren().add(repertoirePage.getBackPage());

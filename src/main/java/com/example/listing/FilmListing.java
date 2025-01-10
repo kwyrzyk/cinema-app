@@ -21,7 +21,6 @@ public class FilmListing {
         this.films = FilmRepository.getAllFilms();
     }
 
-
     public List<Film> getFilmsByTag(Tag tag) {
         List<Film> filmsWithTag = new ArrayList<>();
         for (Film film : films){
@@ -34,6 +33,16 @@ public class FilmListing {
 
         }
         return filmsWithTag;
+    }
+
+    public List<Film> getFilmsByPegi(Integer pegi){
+        List<Film> filmsWithPegi = new ArrayList<>();
+        for (Film film : films){
+            if(film.getPegi()<=pegi){
+                filmsWithPegi.add(film);
+            }
+        }
+        return filmsWithPegi;
     }
     // Method to get the list of films
     public List<Film> getFilms() {

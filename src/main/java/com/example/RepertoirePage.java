@@ -15,11 +15,15 @@ import javafx.scene.layout.VBox;
 public class RepertoirePage implements Page {
     private final ListView<Tag> categoryList = new ListView<>();
     private boolean isCategoryListVisible = false;
+    private boolean isPegiListVisible = false;
     private Movie sessionListGenerator;
     private VBox sessionListVbox;
     private List<Tag> listOfTags;
+    private final List<Film> allFilms;
+    private final ListView<Integer> listPegi = new ListView<>();
+    private final List<Integer> listOfPegi;
     FilmListing filmListing;
-    List<Film> allFilms;
+    
 
     private Controller controller;
     
@@ -28,6 +32,7 @@ public class RepertoirePage implements Page {
         this.listOfTags = controller.getListOfTags();
         this.filmListing = filmListing;
         this.allFilms = filmListing.getFilms();
+        this.listOfPegi = this.controller.getListOfPegi();
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");
@@ -40,6 +45,22 @@ public class RepertoirePage implements Page {
                     setText(null);
                 } else {
                     setText(item.getName());
+                }
+            }
+        });
+
+        listPegi.setVisible(false);
+        listPegi.setManaged(false);
+        listPegi.getStyleClass().add("lists");
+        listPegi.setOnMouseClicked(this::handlePegiClick);
+        listPegi.setCellFactory(param -> new ListCell<Integer>() {
+            @Override
+            protected void updateItem(Integer pegi, boolean empty) {
+                super.updateItem(pegi, empty);
+                if (empty || pegi == null) {
+                    setText(null);
+                } else {
+                    setText(pegi.toString());
                 }
             }
         });
@@ -70,7 +91,21 @@ public class RepertoirePage implements Page {
         return layout;
     }
 
+    public void togglePegiList() {
+        if (isPegiListVisible) {
+            listPegi.setVisible(false);
+            listPegi.setManaged(false);
+            listPegi.getItems().clear();
+        } else {
+            listPegi.getItems().clear();
+            listPegi.getItems().addAll(listOfPegi);
+            listPegi.setPrefHeight((listOfPegi.size()) * 24); // Dostosuj wysokość
+            listPegi.setVisible(true);
+            listPegi.setManaged(true);
+        }
 
+        isPegiListVisible = !isPegiListVisible;
+    }
 
     public void toggleCategoryList() {
         if (isCategoryListVisible) {
@@ -80,7 +115,7 @@ public class RepertoirePage implements Page {
         } else {
             categoryList.getItems().clear();
             categoryList.getItems().addAll(listOfTags);
-            categoryList.setPrefHeight((listOfTags.size() + 1) * 24); // Dostosuj wysokość
+            categoryList.setPrefHeight((listOfTags.size()) * 24); // Dostosuj wysokość
             categoryList.setVisible(true);
             categoryList.setManaged(true);
         }
@@ -99,7 +134,22 @@ public class RepertoirePage implements Page {
         }
     }
 
+    private void handlePegiClick(MouseEvent event) {
+        Integer selectedPegi = listPegi.getSelectionModel().getSelectedItem();
+        if (selectedPegi != null) {
+            System.out.println("Selected Pegi: " + selectedPegi);
+            List<Film> filmsWithPegi = this.filmListing.getFilmsByPegi(selectedPegi);
+            makeRepertoireContent(filmsWithPegi);
+            this.controller.container.getChildren().clear();
+            this.controller.container.getChildren().add(this.getPage());
+        }
+    }
+
     public ListView<Tag> getCategoryList() {
-        return categoryList;
+        return this.categoryList;
+    }
+
+    public ListView<Integer> getPegiList() {
+        return this.listPegi;
     }
 }
