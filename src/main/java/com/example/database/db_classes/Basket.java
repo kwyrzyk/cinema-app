@@ -1,7 +1,9 @@
-package com.example.database.db_classes;
+package com.example.database.db_classes; 
 
 import java.util.ArrayList;
 import java.util.List;
+import com.example.database.db_classes.PricedItem;
+import com.example.database.db_classes.Ticket;
 
 public class Basket {
 
@@ -13,6 +15,7 @@ public class Basket {
         this.items = new ArrayList<>();
         this.quantities = new ArrayList<>();
     }
+
 
     // Method to add an item to the basket
     public void addItem(PricedItem item) {
@@ -26,6 +29,14 @@ public class Basket {
             quantities.set(index, quantities.get(index) + 1);
         }
     }
+
+
+    public void addNewItemInQuantity(PricedItem item, int quantity){
+        items.add(item);
+        quantities.add(quantity);
+    }
+
+
     // Method to remove an item from the basket
     public boolean removeItem(PricedItem item) {
         int index = items.indexOf(item);
@@ -43,6 +54,7 @@ public class Basket {
         }
         return true; // Item successfully removed
     }
+
 
 
     public int findIndexByFoodId(int foodId, String name) {
@@ -89,10 +101,10 @@ public class Basket {
     }
 
     
-    public int findIndexByShowingId(int showingId, String name) {
+    public int findIndexByTicketId(int ticketId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getDrinkId() == showingId && item.getName().equals(name)) {
+            if (item.getTicketId() == ticketId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -100,15 +112,60 @@ public class Basket {
     }
     
     // Method to add a Ticket item to the basket
-    public void addTicket(Showing showingItem) {
-        PricedItem pricedItem = new PricedItem(showingItem);
-        int index = findIndexByShowingId(showingItem.getId(), pricedItem.getName());
+    public void addTicket(Ticket ticketItem) {
+        PricedItem pricedItem = new PricedItem(ticketItem);
+        int index = findIndexByTicketId(ticketItem.getId(), pricedItem.getName());
         if(index == -1){
             addItem(pricedItem);
         }else{
             quantities.set(index, quantities.get(index) + 1);
         }
     }
+
+    // Metoda do usuwania biletów z koszyka
+public boolean removeTicket(Ticket ticket) {
+
+    // Szukamy indeksu w koszyku odpowiadającego temu PricedItem
+    int index = findIndexByTicketId(ticket.getId(), ticket.getName());
+    if (index == -1) {
+        return false; // Jeśli biletu nie ma w koszyku, zwracamy false
+    }
+
+    int currentQuantity = quantities.get(index);
+    if (currentQuantity > 1) {
+        // Zmniejszamy ilość biletu, jeśli jest większa od 1
+        quantities.set(index, currentQuantity - 1);
+    } else {
+        // Jeśli ilość wynosi 1, całkowicie usuwamy bilet z koszyka
+        items.remove(index);
+        quantities.remove(index);
+    }
+
+    return true; // Sukces
+}
+
+
+    public int findIndexByDiscountId(int discountId, String name) {
+        for (int i = 0; i < items.size(); i++) {
+            PricedItem item = items.get(i);
+            if (item.getDrinkId() == discountId && item.getName().equals(name)) {
+                return i; // Return the index if a match is found
+            }
+        }
+        return -1; // Return -1 if no match is found
+    }
+
+
+    public void addDiscount(Discount discountItem) {
+        PricedItem pricedItem = new PricedItem(discountItem);
+        int index = findIndexByDiscountId(discountItem.getIdDiscount(), pricedItem.getName());
+        if(index == -1){
+            addItem(pricedItem);
+        }else{
+            quantities.set(index, quantities.get(index) + 1);
+        }
+    }
+
 
     // Method to get the list of items
     public List<PricedItem> getItems() {
@@ -124,8 +181,9 @@ public class Basket {
     public double getTotalPrice() {
         double total = 0;
         for (int i = 0; i < items.size(); i++) {
-            total += items.get(i).getPrice().getDollars() + items.get(i).getPrice().getCents() / 100.0;
-            total *= quantities.get(i); // Multiply by quantity of this item
+            double price = items.get(i).getPrice().getDollars() + items.get(i).getPrice().getCents() / 100.0;
+            price *= quantities.get(i); // Multiply by quantity of this item
+            total += price;
         }
         return total;
     }
@@ -133,6 +191,16 @@ public class Basket {
     public boolean isEmpty() {
         return items.isEmpty();
     }
+
+    public int getTotalQuantity() {
+        int totalQuantity = 0;
+        for (int quantity : quantities) {
+            totalQuantity += quantity;
+        }
+        return totalQuantity;
+    }
+
+    
 
     public void clear() {
         items.clear();
@@ -178,3 +246,24 @@ public class Basket {
         return sb.toString();
     }
 }
+
+// public void finalizeReservation() {
+//     for (PricedItem item : items) {
+//         if (item.getTicketId() != -1) {
+//             Ticket ticket = (Ticket) item;
+//             Showing showing = ticket.getShowing(); // Pobieramy pokaz z biletu
+//             Seat seat = ticket.getSeat(); // Pobieramy miejsce z biletu
+            
+//             // Rezerwacja miejsca w bazie danych
+//             boolean success = ShowingRepository.reserveSeat(
+//                 showing.getShowingId(),
+//                 seat.getRowNumber(),
+//                 seat.getSeatNumber()
+//             );
+            
+//             if (!success) {
+//                 System.err.println("Failed to reserve seat: Row " + seat.getRowNumber() + ", Seat " + seat.getSeatNumber());
+//             }
+//         }
+//     }
+// }

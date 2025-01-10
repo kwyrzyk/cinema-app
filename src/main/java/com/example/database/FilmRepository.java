@@ -7,7 +7,9 @@ import java.util.List;
 
 import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
-import com.example.database.db_classes.Showing;;
+import com.example.database.db_classes.Showing;
+import com.example.database.db_classes.Tag;
+
 
 public class FilmRepository {
     // Constructor
@@ -21,8 +23,13 @@ public class FilmRepository {
         // Query to get the film's actors
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
                              "FROM actors a " +
-                             "JOIN emp_film_actors fa ON a.id_actor = fa.id_actor " +
+                             "JOIN film_actors fa ON a.id_actor = fa.id_actor " +
                              "WHERE fa.id_film = " + filmId;
+
+        String tagsQuery = "SELECT t.id_tag, t.name " +
+                        "FROM tags t " +
+                        "JOIN film_tags ft ON t.id_tag = ft.id_tag " +
+                        "WHERE ft.id_film = " + filmId;
 
         // Execute film query
         ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery);
@@ -48,10 +55,18 @@ public class FilmRepository {
             actors.add(new Actor(actorId, name, surname, role));
         }
 
+        ResultSet tagsResult = DatabaseManager.runSelectQuery(tagsQuery);
+        List<Tag> tags = new ArrayList<>();
+        while(tagsResult.next()){
+            int tagId = tagsResult.getInt("id_tag"); 
+            String name = tagsResult.getString("name");
+            tags.add(new Tag(tagId, name));
+        }
+
         List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
 
         // Return a Film object with all details
-        return new Film(id, title, shortDescription, longDescription, rating, actors, showings, pegi);
+        return new Film(id, title, shortDescription, longDescription, rating, actors, showings, tags, pegi);
     }
 
       // Method to get a list of all films
@@ -60,9 +75,15 @@ public class FilmRepository {
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating, pegi FROM films";
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
                              "FROM actors a " +
-                             "JOIN emp_film_actors fa ON a.id_actor = fa.id_actor " +
+                             "JOIN film_actors fa ON a.id_actor = fa.id_actor " +
                              "WHERE fa.id_film =";
     
+        String tagsQuery = "SELECT t.id_tag, t.name " +
+                            "FROM tags t " +
+                            "JOIN film_tags ft ON t.id_tag = ft.id_tag " +
+                            "WHERE ft.id_film = ";
+     
+
         try {
             ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery);
             if (filmResult == null) {
@@ -79,7 +100,8 @@ public class FilmRepository {
                 int pegi = filmResult.getInt("pegi");
 
                 String fullActorsQuery = actorsQuery + filmId;
-    
+                String fullTagsQuery = tagsQuery + filmId;
+
                 ResultSet actorsResult = DatabaseManager.runSelectQuery(fullActorsQuery);
                 if (actorsResult == null) {
                     System.err.println("Error: actorsResult is null for filmId " + filmId);
@@ -95,9 +117,18 @@ public class FilmRepository {
                     actors.add(new Actor(actorId, name, surname, role));
                 }
     
+                
+                ResultSet tagsResult = DatabaseManager.runSelectQuery(fullTagsQuery);
+                List<Tag> tags = new ArrayList<>();
+                while(tagsResult.next()){
+                    int tagId = tagsResult.getInt("id_tag");
+                    String name = tagsResult.getString("name");
+                    tags.add(new Tag(tagId, name));
+                }
+
                 List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
 
-                films.add(new Film(filmId, title, shortDescription, longDescription, rating, actors, showings, pegi));
+                films.add(new Film(filmId, title, shortDescription, longDescription, rating, actors, showings, tags, pegi));
             }
         } catch (SQLException e) {
             e.printStackTrace();

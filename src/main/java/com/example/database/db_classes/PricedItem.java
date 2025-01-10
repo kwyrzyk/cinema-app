@@ -5,10 +5,10 @@ public class PricedItem {
     private String name;
     private Price price;
 
-
-    private int foodId;
-    private int drinkId;
-    private int showingId;
+    private int foodId = -1;
+    private int drinkId = -1;
+    private int ticketId = -1;
+    private int  discountId = -1;
     public static final Price ticketPrice = new Price(20.0);
 
     // Constructor to initialize name and price
@@ -17,33 +17,55 @@ public class PricedItem {
         this.price = price;
     }
 
-
-    public PricedItem(Food foodItem, String size){
-        this.name = foodItem.getName() + ": "+ size;
+    // Constructor for food item
+    public PricedItem(Food foodItem, String size) {
+        this.name = foodItem.getName() + ": " + size;
         this.price = foodItem.getPrices().get(size);
         this.foodId = foodItem.getIdFood();
     }
 
-
-    public PricedItem(Drink drinkItem, String size){
+    // Constructor for drink item
+    public PricedItem(Drink drinkItem, String size) {
         this.name = drinkItem.getName() + ": " + size;
         this.price = drinkItem.getPrices().get(size);
         this.drinkId = drinkItem.getIdDrink();
     }
 
 
-    public PricedItem(Showing showingItem){
-        this.name = String.valueOf(showingItem.getFilmId()) + " " +   showingItem.getShowTime();
-        this.price = ticketPrice;
-        this.showingId = showingItem.getId();
+
+    public PricedItem(Discount discountItem){
+        this.name = discountItem.toString();
+        this.price = discountItem.getPrice();
+        this.discountId = discountItem.getIdDiscount();
     }
 
 
+    public PricedItem(Ticket ticketItem){
+        this.name = ticketItem.getName();
+        this.price = ticketPrice;
+        this.ticketId = ticketItem.getId();
+    }
 
     // Constructor to initialize name and price using a double value
-    public PricedItem(String name, double price) {
+    public PricedItem(String name, String type, double price, int id) {
+        switch (type) {
+            case "food":
+                this.foodId = id;
+                break;
+            case "drink":
+                this.foodId = id;
+                break;
+            case "discount":
+                this.discountId = id;
+                break;
+            case "ticket":
+                this.ticketId = id;
+                break;
+            default:
+                break;
+        }
         this.name = name;
-        this.price = new Price(price); // Create a Price object from the double value
+        this.price = new Price(price); 
     }
 
     // Getter for name
@@ -56,7 +78,7 @@ public class PricedItem {
         return price;
     }
 
-
+    // Getter for foodId
     public int getFoodId() {
         return foodId;
     }
@@ -66,9 +88,37 @@ public class PricedItem {
         return drinkId;
     }
 
-    // Getter for showingId
-    public int getShowingId() {
-        return showingId;
+    // Getter for ticketId
+    public int getTicketId() {
+        return ticketId;
+    }
+
+    // Check if the item is a food item
+    public boolean isFood() {
+        return foodId != -1; // Food items have a valid foodId
+    }
+
+    // Check if the item is a drink item
+    public boolean isDrink() {
+        return drinkId != -1; // Drink items have a valid drinkId
+    }
+
+    // Check if the item is a showing (e.g., movie ticket)
+    public boolean isTicket() {
+        return ticketId != -1; // Showings have a valid showingId
+    }
+
+    public boolean isDiscount() {
+        return discountId != -1; // Showings have a valid showingId
+    }
+
+    // ToString method for better debugging
+    @Override
+    public String toString() {
+        return "PricedItem{name='" + name + "', price=" + price + ", foodId=" + foodId + ", drinkId=" + drinkId + ", ticketId=" + ticketId + '}';
+    }
+    public int getDiscountId(){
+        return discountId;
     }
 
 }

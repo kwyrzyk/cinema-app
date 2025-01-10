@@ -7,16 +7,22 @@ public class Account {
     private String email;
     private String phoneNumber; // Added phoneNumber field
 
+    private Price balance;
+    private int loyalty_points;
+
     // Default constructor
     public Account() {}
 
     // Parameterized constructor
-    public Account(int idAccount, String login, String password, String email, String phoneNumber) {
+    public Account(int idAccount, String login, String password, String email, String phoneNumber, int loyalty_points, Price balance) {
         this.idAccount = idAccount;
         this.login = login;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
+
+        this.balance = balance;
+        this.loyalty_points = loyalty_points;
     }
 
     // Getters and setters
@@ -60,4 +66,19 @@ public class Account {
         this.phoneNumber = phoneNumber;
     }
 
+    public Price getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Price balance) {
+        this.balance = balance;
+    }
+
+    public int getLoyaltyPoints() {
+        return loyalty_points;
+    }
+
+    public void setLoyaltyPoints(int loyalty_points) {
+        this.loyalty_points = loyalty_points;
+    }
 }

@@ -9,6 +9,9 @@ CREATE SEQUENCE seq_room_id START WITH 1 INCREMENT BY 1;
 
 CREATE SEQUENCE seq_seat_id START WITH 1 INCREMENT BY 1;
 
+CREATE SEQUENCE seq_tag_id START WITH 1 INCREMENT BY 1;
+
+
 
 -- Create the 'films' table with smaller data types for descriptions
 CREATE TABLE films (
@@ -30,8 +33,8 @@ CREATE TABLE actors (
     birth_date DATE
 );
 
--- Create the junction table 'emp_film_actors'
-CREATE TABLE emp_film_actors (
+-- Create the junction table 'film_actors'
+CREATE TABLE film_actors (
     id_film INT NOT NULL,
     id_actor INT NOT NULL,
     role VARCHAR2(255),
@@ -69,6 +72,109 @@ CREATE TABLE seats (
     CONSTRAINT unique_seat UNIQUE (id_showing, row_number, seat_number) -- Ensure unique seats per showing
 );
 
--- Create a sequence for generating IDs (Oracle does not support AUTO_INCREMENT)
-CREATE SEQUENCE seq_film_id START WITH 1 INCREMENT BY 1;
-CREATE SEQUENCE seq_actor_id START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE tags (
+    id_tag INT PRIMARY KEY,
+    name VARCHAR2(255) NOT NULL UNIQUE -- Unique tag name
+);
+
+
+CREATE TABLE film_tags (
+    id_film INT NOT NULL, -- Foreign key to films table
+    id_tag INT NOT NULL,  -- Foreign key to tags table
+    PRIMARY KEY (id_film, id_tag), -- Composite primary key to ensure no duplicate tag for a film
+    FOREIGN KEY (id_film) REFERENCES films(id_film) ON DELETE CASCADE,
+    FOREIGN KEY (id_tag) REFERENCES tags(id_tag) ON DELETE CASCADE
+);
+
+
+
+-- Create a trigger to automatically assign IDs for tags
+CREATE OR REPLACE TRIGGER trg_tag_id
+BEFORE INSERT ON tags
+FOR EACH ROW
+BEGIN
+    :NEW.id_tag := seq_tag_id.NEXTVAL;
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER trg_film_id
+BEFORE INSERT ON films
+FOR EACH ROW
+BEGIN
+    :NEW.id_film := seq_film_id.NEXTVAL;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_actor_id
+BEFORE INSERT ON actors
+FOR EACH ROW
+BEGIN
+    :NEW.id_actor := seq_actor_id.NEXTVAL;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_room_id
+BEFORE INSERT ON screening_room
+FOR EACH ROW
+BEGIN
+    :NEW.id_room := seq_room_id.NEXTVAL;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER trg_showing_id
+BEFORE INSERT ON showing
+FOR EACH ROW
+BEGIN
+    :NEW.id_showing := seq_showing_id.NEXTVAL;
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER trg_seat_id
+BEFORE INSERT ON seats
+FOR EACH ROW
+BEGIN
+    :NEW.id_seat := seq_seat_id.NEXTVAL;
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER insert_seats_for_showing
+AFTER INSERT ON showing
+FOR EACH ROW
+DECLARE
+    -- Use %TYPE to dynamically match the column types
+    v_num_rows screening_room.num_rows%TYPE;
+    v_seats_per_row screening_room.seats_per_row%TYPE;
+    v_row_number screening_room.num_rows%TYPE;
+    v_seat_number screening_room.seats_per_row%TYPE;
+BEGIN
+    -- Retrieve the number of rows and seats per row from the screening_room table
+    SELECT num_rows, seats_per_row
+    INTO v_num_rows, v_seats_per_row
+    FROM screening_room
+    WHERE id_room = :NEW.id_room;
+
+    -- Loop through each row and seat
+    FOR v_row_number IN 1..v_num_rows LOOP
+        FOR v_seat_number IN 1..v_seats_per_row LOOP
+            INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
+            VALUES (
+                SEQ_SEAT_ID.NEXTVAL,  -- Assuming a sequence for unique seat IDs
+                :NEW.id_showing,
+                v_row_number,
+                v_seat_number,
+                'available'  -- Default status
+            );
+        END LOOP;
+    END LOOP;
+END;
+/

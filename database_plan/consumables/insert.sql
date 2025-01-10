@@ -30,9 +30,13 @@ INSERT INTO drinks_prices (id_drink, portion_size, price) VALUES (3, 'Small', 2.
 -- Insert sample data into discounts table
 INSERT INTO discounts (price) VALUES (10.00);    -- 
 INSERT INTO discounts (price) VALUES (25.00);    -- 
+INSERT INTO discounts (price, start_time, end_time) VALUES (15.00, TO_DATE('08:30', 'HH24:MI'), TO_DATE('22:00', 'HH24:MI'));
+INSERT INTO discounts (price, start_time, end_time) VALUES (20.00, TO_DATE('15:00', 'HH24:MI'), TO_DATE('20:00', 'HH24:MI'));
 
 -- Insert sample data into discounts_positions table
 -- Discount 1 applies to 2 medium popcorns (ID 1 from food_prices) and 3 small sodas (ID 1 from drinks_prices)
 -- Discount 2 applies to 1 large nachos (ID 2 from food_prices) and 2 small waters (ID 2 from drinks_prices)
 INSERT INTO discounts_positions (id_discount, id_food_price, id_drink_price, food_count, drinks_count) VALUES (1, 2, 1, 2, 3);   -- Discount 1: 2 medium popcorn and 3 small sodas
 INSERT INTO discounts_positions (id_discount, id_food_price, id_drink_price, food_count, drinks_count) VALUES (2, 3, 2, 1, 2);   -- Discount 2: 1 large nachos and 2 small waters
+INSERT INTO discounts_positions (id_discount, id_food_price, id_drink_price, food_count, drinks_count) VALUES (3, NULL, 0, 2, 2);
+INSERT INTO discounts_positions (id_discount, id_food_price, id_drink_price, food_count, drinks_count) VALUES (4, 2, 1, 4, 1);

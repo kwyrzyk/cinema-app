@@ -2,12 +2,17 @@ package com.example.database.db_classes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalTime;
 
 public class Discount {
     private int idDiscount;
     private Price price;
     private List<DiscountItem> foodItems;
     private List<DiscountItem> drinkItems;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private boolean is_time_limited = false;
+
 
     // Constructor
     public Discount(int idDiscount, double price) {
@@ -23,6 +28,54 @@ public class Discount {
         this.price = price;
         this.foodItems = new ArrayList<>();
         this.drinkItems = new ArrayList<>();
+    }
+
+
+    public Discount(int idDiscount, double price, LocalTime startTime, LocalTime endTime) {
+        this.idDiscount = idDiscount;
+        this.price = new Price(price);
+        this.is_time_limited = true;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.foodItems = new ArrayList<>();
+        this.drinkItems = new ArrayList<>();
+    }
+    
+    
+    public Discount(int idDiscount, Price price, LocalTime startTime, LocalTime endTime) {
+        this.idDiscount = idDiscount;
+        this.price = price;
+        this.is_time_limited = true;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.foodItems = new ArrayList<>();
+        this.drinkItems = new ArrayList<>();
+    }
+
+
+    // time setters and getters
+    public boolean is_time_limited(){
+        return is_time_limited;
+    }
+    
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        if(this.is_time_limited == true){
+            this.startTime = startTime;
+        }
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        if(this.is_time_limited == true){
+            this.endTime = endTime;
+        }
     }
 
     // Getters and Setters
@@ -54,6 +107,25 @@ public class Discount {
 
     public void addDrinkItem(int drinkPriceId, String name, int drinkCount) {
         this.drinkItems.add(new DiscountItem(drinkPriceId, name, drinkCount));
+    }
+
+    // Method to check if a specific food item (by ID) is part of the discount
+    public boolean containsFoodItemById(int foodItemId) {
+        return foodItems.stream()
+                        .anyMatch(item -> item.getIdItem() == foodItemId);
+    }
+
+    // Method to check if a specific drink item (by ID) is part of the discount
+    public boolean containsDrinkItemById(int drinkItemId) {
+        return drinkItems.stream()
+                        .anyMatch(item -> item.getIdItem() == drinkItemId);
+    }
+
+    public boolean isDiscountActive(LocalTime currentTime) {
+        if (is_time_limited) {
+            return (currentTime.isAfter(startTime) && currentTime.isBefore(endTime));
+        }
+        return true; // Always active if not time-limited
     }
 
     // To String method (for printing object details)

@@ -1,9 +1,11 @@
 package com.example.listing;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.database.FilmRepository;
 import com.example.database.db_classes.Film;
-
-import java.util.List;
+import com.example.database.db_classes.Tag;
 
 public class FilmListing {
 
@@ -13,9 +15,26 @@ public class FilmListing {
     public FilmListing() {
         // Initialize films list by fetching data from the database
         this.films = FilmRepository.getAllFilms();
-    
     }
 
+    public void update() {
+        this.films = FilmRepository.getAllFilms();
+    }
+
+
+    public List<Film> getFilmsByTag(Tag tag) {
+        List<Film> filmsWithTag = new ArrayList<>();
+        for (Film film : films){
+            for (Tag a : film.getTags()){
+                if (a.getName().equals(tag.getName())){
+                    filmsWithTag.add(film);
+                    break;
+                }
+            }
+
+        }
+        return filmsWithTag;
+    }
     // Method to get the list of films
     public List<Film> getFilms() {
         return films;

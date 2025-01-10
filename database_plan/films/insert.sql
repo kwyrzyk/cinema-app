@@ -8,6 +8,25 @@ VALUES (seq_film_id.NEXTVAL, 'Inception', 'A skilled thief is given a chance to 
 INSERT INTO films (id_film, title, short_description, long_description, rating, pegi)
 VALUES (seq_film_id.NEXTVAL, 'Interstellar', 'A team of explorers travel through a wormhole in space to ensure humanity’s survival.', 'In a dystopian future where Earth’s resources are dwindling, a team of astronauts travel through a wormhole in search of a new habitable planet for humans to colonize.', 8.6, 12);
 
+INSERT INTO tags (name) VALUES ('Sci-Fi');
+INSERT INTO tags (name) VALUES ('Adventure');
+INSERT INTO tags (name) VALUES ('Action');
+
+
+
+-- Tags for 'Interstellar'
+INSERT INTO film_tags (id_film, id_tag) VALUES (1, (SELECT id_tag FROM tags WHERE name = 'Sci-Fi'));
+INSERT INTO film_tags (id_film, id_tag) VALUES (1, (SELECT id_tag FROM tags WHERE name = 'Adventure'));
+
+-- Tags for 'Inception'
+INSERT INTO film_tags (id_film, id_tag) VALUES (2, (SELECT id_tag FROM tags WHERE name = 'Sci-Fi'));
+INSERT INTO film_tags (id_film, id_tag) VALUES (2, (SELECT id_tag FROM tags WHERE name = 'Action'));
+
+-- Tags for 'The Matrix'
+INSERT INTO film_tags (id_film, id_tag) VALUES (3, (SELECT id_tag FROM tags WHERE name = 'Sci-Fi'));
+INSERT INTO film_tags (id_film, id_tag) VALUES (3, (SELECT id_tag FROM tags WHERE name = 'Action'));
+
+
 -- Insert some actors
 INSERT INTO actors (id_actor, name, surname, birth_date)
 VALUES (seq_actor_id.NEXTVAL, 'Keanu', 'Reeves', TO_DATE('1964-09-02', 'YYYY-MM-DD'));
@@ -19,21 +38,21 @@ INSERT INTO actors (id_actor, name, surname, birth_date)
 VALUES (seq_actor_id.NEXTVAL, 'Matthew', 'McConaughey', TO_DATE('1969-11-04', 'YYYY-MM-DD'));
 
 -- Insert actor roles for films
-INSERT INTO emp_film_actors (id_film, id_actor, role)
+INSERT INTO film_actors (id_film, id_actor, role)
 VALUES (1, 1, 'Neo');
 
-INSERT INTO emp_film_actors (id_film, id_actor, role)
+INSERT INTO film_actors (id_film, id_actor, role)
 VALUES (2, 2, 'Cobb');
 
-INSERT INTO emp_film_actors (id_film, id_actor, role)
+INSERT INTO film_actors (id_film, id_actor, role)
 VALUES (3, 3, 'Cooper');
 
 -- Insert screening rooms
 INSERT INTO screening_room (id_room, name, num_rows, seats_per_row)
-VALUES (seq_room_id.NEXTVAL, 'Room A', 10, 20);
+VALUES (seq_room_id.NEXTVAL, 'Room A', 8, 10);
 
 INSERT INTO screening_room (id_room, name, num_rows, seats_per_row)
-VALUES (seq_room_id.NEXTVAL, 'Room B', 15, 25);
+VALUES (seq_room_id.NEXTVAL, 'Room B', 10, 10);
 
 -- Insert showings for films
 INSERT INTO showing (id_showing, id_film, id_room, show_time)
@@ -45,9 +64,13 @@ VALUES (seq_showing_id.NEXTVAL, 2, 2, TO_DATE('2024-12-01 20:30', 'YYYY-MM-DD HH
 INSERT INTO showing (id_showing, id_film, id_room, show_time)
 VALUES (seq_showing_id.NEXTVAL, 3, 1, TO_DATE('2024-12-02 17:00', 'YYYY-MM-DD HH24:MI'));
 
+
+INSERT INTO showing (id_showing, id_film, id_room, show_time)
+VALUES (seq_showing_id.NEXTVAL, 3, 1, TO_DATE('2024-12-29 19:00', 'YYYY-MM-DD HH24:MI'));
+
 -- Insert some seats for showings
 -- Room A seats (for 'The Matrix' showing)
-INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
+/*INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
 VALUES (seq_seat_id.NEXTVAL, 1, 1, 1, 'available');
 
 INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
@@ -68,4 +91,4 @@ INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
 VALUES (seq_seat_id.NEXTVAL, 3, 1, 1, 'available');
 
 INSERT INTO seats (id_seat, id_showing, row_number, seat_number, status)
-VALUES (seq_seat_id.NEXTVAL, 3, 1, 2, 'available');
+VALUES (seq_seat_id.NEXTVAL, 3, 1, 2, 'available');*/
