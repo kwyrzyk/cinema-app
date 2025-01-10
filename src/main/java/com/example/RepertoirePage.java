@@ -1,6 +1,5 @@
 package com.example;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.database.db_classes.Film;
@@ -45,11 +44,11 @@ public class RepertoirePage implements Page {
             }
         });
 
-        makeRepertoireContent(this.filmListing);
+        makeRepertoireContent(this.allFilms);
     }
 
-    public void makeRepertoireContent(FilmListing newListing){
-        this.sessionListGenerator = new Movie(this.controller, newListing);
+    public void makeRepertoireContent(List<Film> Films){
+        this.sessionListGenerator = new Movie(this.controller, Films);
         this.sessionListVbox = sessionListGenerator.getSessionListVBox();
         this.sessionListVbox.getStyleClass().add("content");
     }
@@ -63,8 +62,7 @@ public class RepertoirePage implements Page {
     }
 
     public VBox getBackPage() {
-        this.filmListing.setFilms(allFilms);
-        makeRepertoireContent(this.filmListing);
+        makeRepertoireContent(this.allFilms);
         HBox main = new HBox(this.sessionListVbox);
 
         VBox layout = new VBox(main);
@@ -94,24 +92,11 @@ public class RepertoirePage implements Page {
         Tag selectedTag = categoryList.getSelectionModel().getSelectedItem();
         if (selectedTag != null) {
             System.out.println("Selected tag: " + selectedTag.getName());
-            List<Film> newFilms = filterMovie(selectedTag);
-            FilmListing newListing = this.filmListing;
-            newListing.setFilms(newFilms);
-            makeRepertoireContent(newListing);
+            List<Film> filmsWithTags = this.filmListing.getFilmsByTag(selectedTag);
+            makeRepertoireContent(filmsWithTags);
             this.controller.container.getChildren().clear();
             this.controller.container.getChildren().add(this.getPage());
         }
-    }
-
-    public List<Film> filterMovie(Tag tag) {
-        List<Film> listOfFilteredFilms = new ArrayList<>();
-
-        for(Film film : this.allFilms){
-            if( film.getTags().contains(tag) ){
-                listOfFilteredFilms.add(film);
-            }
-        }
-        return listOfFilteredFilms;
     }
 
     public ListView<Tag> getCategoryList() {

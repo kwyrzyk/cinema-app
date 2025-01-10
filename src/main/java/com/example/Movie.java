@@ -16,15 +16,13 @@ import javafx.util.Callback;
 
 public class Movie {
 
-    private final FilmListing filmListing;
     private final List<Film> listOfFilms;
 
     private Controller controller;
 
-    public Movie(Controller controller, FilmListing filmListing) {
+    public Movie(Controller controller, List<Film> listOfFilms) {
         this.controller = controller;
-        this.filmListing = filmListing;
-        this.listOfFilms = filmListing.getFilms();
+        this.listOfFilms = listOfFilms;
     }
 
     public List<Film> getlistOfFilms() {
@@ -76,7 +74,7 @@ public class Movie {
 
         searchButton.setOnAction(e -> {
             String query = searchField.getText().toLowerCase();
-            List<Film> filteredFilms = filmListing.getFilms().stream()
+            List<Film> filteredFilms = listOfFilms.stream()
                     .filter(film -> film.getTitle().toLowerCase().contains(query))
                     .toList();
 
