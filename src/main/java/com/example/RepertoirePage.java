@@ -83,7 +83,7 @@ public class RepertoirePage implements Page {
     }
 
     public VBox getBackPage() {
-        makeRepertoireContent(this.allFilms);
+        makeRepertoireContent(this.filmListing.getFilms());
         HBox main = new HBox(this.sessionListVbox);
 
         VBox layout = new VBox(main);

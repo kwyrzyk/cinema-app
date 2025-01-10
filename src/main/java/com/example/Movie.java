@@ -3,7 +3,6 @@ package com.example;
 import java.util.List;
 
 import com.example.database.db_classes.Film;
-import com.example.listing.FilmListing;
 
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

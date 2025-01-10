@@ -22,3 +22,15 @@ VALUES (1, 79.99, TO_DATE('2024-01-03', 'YYYY-MM-DD'));
 
 INSERT INTO orders (id_account, price, order_date) 
 VALUES (3, 29.99, TO_DATE('2024-01-04', 'YYYY-MM-DD'));
+
+
+-- Insert data into rewards_trigger table
+-- id_reward will be auto-generated using the orders_seq sequence
+INSERT INTO point_rewards (name, points_price) 
+VALUES ('Branded Mug', 45);
+
+INSERT INTO point_rewards (name, points_price) 
+VALUES ('Baseball Cap', 30);
+
+INSERT INTO point_rewards (name, points_price) 
+VALUES ('Key ring', 10);

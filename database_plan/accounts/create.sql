@@ -18,6 +18,12 @@ CREATE SEQUENCE seq_reservations_id
     INCREMENT BY 1;
 
 
+CREATE SEQUENCE seq_rewards_id
+    START WITH 1
+    INCREMENT BY 1;
+
+
+
 -- Create the accounts table
 CREATE TABLE accounts (
     id_account NUMBER PRIMARY KEY, -- We will assign this using the sequence
@@ -72,7 +78,7 @@ CREATE TABLE order_item (
     id_order INT NOT NULL, -- Foreign key referencing the orders table
     price DECIMAL(10, 2) NOT NULL
     quantity INT DEFAULT 1 NOT NULL, -- Quantity with a default value of 1
-    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) -- Foreign key constraint
+    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) ON DELETE CASCADE
 );
 
 -- Create a trigger to auto-populate reservations from the sequence
@@ -121,5 +127,19 @@ END;
 /
 
 
+CREATE TABLE point_rewards (
+    id_reward INT DEFAULT seq_rewards_id.NEXTVAL PRIMARY KEY,
+    name VARCHAR2(255) NOT NULL,
+    points_price INT NOT NULL
+);
 
 
+CREATE OR REPLACE TRIGGER rewards_trigger
+    BEFORE INSERT ON point_rewards
+    FOR EACH ROW
+BEGIN
+    IF :NEW.id_reward IS NULL THEN
+        SELECT seq_rewards_id.NEXTVAL INTO :NEW.id_reward FROM dual;
+    END IF;
+END;
+/
