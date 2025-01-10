@@ -72,7 +72,7 @@ CREATE TABLE order_item (
     id_order INT NOT NULL, -- Foreign key referencing the orders table
     price DECIMAL(10, 2) NOT NULL
     quantity INT DEFAULT 1 NOT NULL, -- Quantity with a default value of 1
-    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) -- Foreign key constraint
+    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) ON DELETE CASCADE
 );
 
 -- Create a trigger to auto-populate reservations from the sequence

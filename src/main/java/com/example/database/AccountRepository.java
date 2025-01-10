@@ -374,5 +374,36 @@ public class AccountRepository {
 
         return basket;
     }
+
+
+    public static boolean removeOrderById(int orderId){
+        String deleteQuery = """
+            DELETE FROM orders
+            WHERE id_order = ?
+            """;
+
+        try (Connection connection = DatabaseManager.getConnection();
+                PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+                    
+            connection.setAutoCommit(false);
+            statement.setInt(1, orderId);
+            int deletedOrders = statement.executeUpdate();
+
+            if(deletedOrders == 1){
+                connection.commit();
+                return true;
+            }else{
+                System.out.println("No order found with the given ID.");
+                connection.rollback(); // Rollback if the order does not exist
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+
     
 }
