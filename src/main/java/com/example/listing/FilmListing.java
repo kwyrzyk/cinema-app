@@ -1,9 +1,9 @@
 package com.example.listing;
 
+import java.util.List;
+
 import com.example.database.FilmRepository;
 import com.example.database.db_classes.Film;
-
-import java.util.List;
 
 public class FilmListing {
 
@@ -17,6 +17,10 @@ public class FilmListing {
 
     public void update() {
         this.films = FilmRepository.getAllFilms();
+    }
+
+    public void setFilms(List<Film> newFilms) {
+        this.films = newFilms;
     }
     // Method to get the list of films
     public List<Film> getFilms() {

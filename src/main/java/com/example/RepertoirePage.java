@@ -1,7 +1,9 @@
 package com.example;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Tag;
 import com.example.listing.FilmListing;
 
@@ -17,12 +19,16 @@ public class RepertoirePage implements Page {
     private Movie sessionListGenerator;
     private VBox sessionListVbox;
     private List<Tag> listOfTags;
+    FilmListing filmListing;
+    List<Film> allFilms;
 
     private Controller controller;
     
     public RepertoirePage(Controller controller, FilmListing filmListing) {
         this.controller = controller;
         this.listOfTags = controller.getListOfTags();
+        this.filmListing = filmListing;
+        this.allFilms = filmListing.getFilms();
         categoryList.setVisible(false);
         categoryList.setManaged(false);
         categoryList.getStyleClass().add("lists");
@@ -39,11 +45,14 @@ public class RepertoirePage implements Page {
             }
         });
 
-        this.sessionListGenerator = new Movie(this.controller, filmListing);
+        makeRepertoireContent(this.filmListing);
+    }
+
+    public void makeRepertoireContent(FilmListing newListing){
+        this.sessionListGenerator = new Movie(this.controller, newListing);
         this.sessionListVbox = sessionListGenerator.getSessionListVBox();
         this.sessionListVbox.getStyleClass().add("content");
     }
-
     @Override
     public VBox getPage() {
         HBox main = new HBox(this.sessionListVbox);
@@ -54,8 +63,8 @@ public class RepertoirePage implements Page {
     }
 
     public VBox getBackPage() {
-        this.sessionListVbox = this.sessionListGenerator.getSessionListVBox();
-        this.sessionListVbox.getStyleClass().add("content");
+        this.filmListing.setFilms(allFilms);
+        makeRepertoireContent(this.filmListing);
         HBox main = new HBox(this.sessionListVbox);
 
         VBox layout = new VBox(main);
@@ -85,7 +94,24 @@ public class RepertoirePage implements Page {
         Tag selectedTag = categoryList.getSelectionModel().getSelectedItem();
         if (selectedTag != null) {
             System.out.println("Selected tag: " + selectedTag.getName());
+            List<Film> newFilms = filterMovie(selectedTag);
+            FilmListing newListing = this.filmListing;
+            newListing.setFilms(newFilms);
+            makeRepertoireContent(newListing);
+            this.controller.container.getChildren().clear();
+            this.controller.container.getChildren().add(this.getPage());
         }
+    }
+
+    public List<Film> filterMovie(Tag tag) {
+        List<Film> listOfFilteredFilms = new ArrayList<>();
+
+        for(Film film : this.allFilms){
+            if( film.getTags().contains(tag) ){
+                listOfFilteredFilms.add(film);
+            }
+        }
+        return listOfFilteredFilms;
     }
 
     public ListView<Tag> getCategoryList() {

@@ -59,10 +59,6 @@ public class Controller {
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     
-
-
-    
-
     @FXML
     private Label label;
     @FXML
@@ -72,7 +68,7 @@ public class Controller {
     @FXML
     private VBox newSidebar;
     @FXML
-    private VBox container;
+    public VBox container;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -281,7 +277,7 @@ public class Controller {
     @FXML
     public void handleSidebarClick(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
-        String buttonId = clickedButton.getId(); // Pobierz fx:id przycisku
+        String buttonId = clickedButton.getId();
 
         optionsBar.getChildren().clear();
         container.getChildren().clear();
@@ -293,7 +289,7 @@ public class Controller {
             optionsBar.getChildren().add(categoryListView);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
-            container.getChildren().add(repertoirePage.getPage());
+            container.getChildren().add(repertoirePage.getBackPage());
         } else if (buttonId.equals("ticketsBtn")) {
             addOption("Buy", "buyBtn", this::handleOptionClick);
             addOption("Change", "changeBtn", this::handleOptionClick);

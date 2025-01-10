@@ -1,13 +1,15 @@
 package com.example;
 
 import java.util.List;
+
 import com.example.database.db_classes.Film;
 import com.example.listing.FilmListing;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
@@ -25,13 +27,22 @@ public class Movie {
         this.listOfFilms = filmListing.getFilms();
     }
 
+    public List<Film> getlistOfFilms() {
+        return this.listOfFilms;
+    }
+
     public VBox getSessionListVBox() {
+        return getSessionListVBox(this.listOfFilms);
+    }
+
+    public VBox getSessionListVBox(List<Film> films) {
         // Pobranie listy filmów z FilmListing
+        List<Film> filmsToUse = (films != null) ? films : this.listOfFilms;
         ListView<Film> filmListView = new ListView<>();
         filmListView.getStyleClass().add("lists");
 
         // Ustawienie listy filmów w ListView
-        filmListView.getItems().addAll(listOfFilms);
+        filmListView.getItems().addAll(filmsToUse);
 
         // Dostosowanie komórek ListView
         filmListView.setCellFactory(new Callback<ListView<Film>, ListCell<Film>>() {
