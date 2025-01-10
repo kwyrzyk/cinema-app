@@ -55,6 +55,10 @@ public class SeatsPage implements Page {
                         .findFirst()
                         .orElse(null);
 
+                if (controller.modifyTicketMode && seat.getId() == controller.modifyingTicket.getTicketId()){
+                    seat.setStatus("modifying");
+                }
+
                 Button seatButton = new Button();
                 seatButton.setText(String.valueOf(seatNumber)); // Wyświetla numer miejsca
 
@@ -82,6 +86,10 @@ public class SeatsPage implements Page {
                                 controller.basket.removeItem(controller.modifyingTicket);
                                 controller.container.getChildren().clear();
                                 controller.container.getChildren().add(new BasketPage(controller.basket).getPage());
+                                controller.optionsBar.getChildren().clear();
+                                controller.addOption("Pay", "payBtn", controller::handleOptionClick);
+                                controller.addOption("Remove All", "removeAllBtn", controller::handleOptionClick);
+                                controller.addOption("Modify ticket", "modifyTicketBtn", controller::handleOptionClick);
                                 return;
                             }
                         } else {
@@ -95,6 +103,7 @@ public class SeatsPage implements Page {
                                 controller.basket.removeTicket(new Ticket(filmInfo, showing, seat));
                             }
                             updateAllSeats(); // Uaktualniamy wszystkie miejsca
+                            
                         }
                     });
                 } else {
@@ -168,6 +177,9 @@ public class SeatsPage implements Page {
                 break;
             case "inBasket":
                 seatButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
+                break;
+            case "modifying":
+                seatButton.setStyle("-fx-background-color: orange; -fx-text-fill: black;");
                 break;
             default:
                 seatButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");

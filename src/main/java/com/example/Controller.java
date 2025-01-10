@@ -67,7 +67,7 @@ public class Controller {
     @FXML
     private VBox sideBar;
     @FXML
-    private VBox optionsBar;
+    public VBox optionsBar;
     @FXML
     private VBox newSidebar;
     @FXML
@@ -89,6 +89,10 @@ public class Controller {
         return this.scene;
     }
 
+    public VBox getOptionsBar(){
+        return this.optionsBar;
+    }
+
     public void login(int Id){
         this.accountId = Id;
     }
@@ -101,7 +105,7 @@ public class Controller {
         return this.listOfTags;
     }
 
-    private void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
+    public void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
         optionButton.setOnAction(action);
@@ -287,10 +291,22 @@ public class Controller {
                     alert.showAndWait();
                 }
             }
+            case "cancelBtn" ->{
+                modifyTicketMode = false;
+                modifyingTicket = null;
+                container.getChildren().clear();
+                container.getChildren().add(new BasketPage(basket).getPage());
+                optionsBar.getChildren().clear();
+                addOption("Pay", "payBtn", this::handleOptionClick);
+                addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+                addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
+            }
         }
     }
     @FXML
     public void handleSidebarClick(ActionEvent event) {
+        if (modifyTicketMode) { return;}
+
         Button clickedButton = (Button) event.getSource();
         String buttonId = clickedButton.getId();
 
