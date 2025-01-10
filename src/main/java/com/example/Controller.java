@@ -262,7 +262,7 @@ public class Controller {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Remove Successful");
                     alert.setHeaderText(null);
-                    alert.setContentText("Your busket is now empty!");
+                    alert.setContentText("Your basket is now empty!");
                     alert.showAndWait();
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
