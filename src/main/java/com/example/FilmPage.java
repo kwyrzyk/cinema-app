@@ -48,7 +48,7 @@ public class FilmPage implements Page {
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("back-btn");
         backButton.setId("repertoireBackBtn");
-        backButton.setOnAction(this.controller::handleSidebarClick);
+        backButton.setOnAction(this.controller::handleOptionClick);
 
         filmPage = new VBox();
         filmPage.getStyleClass().add("film-page");
