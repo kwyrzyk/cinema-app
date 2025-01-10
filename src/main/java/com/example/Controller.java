@@ -268,8 +268,20 @@ public class Controller {
                     BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
                     container.getChildren().add(basketPage.getPage());
-                    filmListing.update();
-                    
+                    filmListing.update();    
+                }
+            }
+            case "modifyTicketBtn" ->{
+                if (basket.containsTickets()) {
+                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(basket);
+                    container.getChildren().clear();
+                    container.getChildren().add(modifyBasketPage.getPage());
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("There is no ticket in the basket");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You do not need to modify the ticket.");
+                    alert.showAndWait();
                 }
             }
         }
@@ -305,6 +317,7 @@ public class Controller {
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+            addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
             BasketPage backetPage = new BasketPage(basket);
             container.getChildren().add(backetPage.getPage());
         } else {

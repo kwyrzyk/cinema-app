@@ -192,6 +192,16 @@ public boolean removeTicket(Ticket ticket) {
         return items.isEmpty();
     }
 
+    public boolean containsTickets() {
+        for (PricedItem item : items) {
+            if (item.getTicketId() != -1) {
+                return true; // If a ticket is found, return true
+            }
+        }
+        return false; // No tickets found, return false
+    }
+
+
     public int getTotalQuantity() {
         int totalQuantity = 0;
         for (int quantity : quantities) {
