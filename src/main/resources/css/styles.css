@@ -257,3 +257,27 @@
     -fx-background-color: #0f026e;
     -fx-cursor: hand;
 }
+
+.balance-box {
+    -fx-padding: 20px 10px; /* Odstęp wewnętrzny */
+    -fx-background-color: #17028f;
+    -fx-padding: 20px;
+}
+
+.balance-title {
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-font-size: 24px; /* Rozmiar czcionki */
+    -fx-font-weight: bold; /* Pogrubienie tekstu */
+    -fx-text-fill: #ffffff; /* Kolor tekstu */
+    -fx-padding: 10px 0; /* Odstęp między tytułem a innymi elementami */
+}
+
+.current-balance-label {
+    -fx-font-size: 16px; /* Rozmiar czcionki */
+    -fx-text-fill: #ffffff; /* Kolor tekstu */
+}
+
+.top-up-btn-box {
+    -fx-alignment: top-center;
+}
