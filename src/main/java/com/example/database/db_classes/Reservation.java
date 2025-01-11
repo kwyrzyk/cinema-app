@@ -17,4 +17,12 @@ public class Reservation {
     LocalDateTime getEndTime(){ return endTime; }
     ScreeningRoom getRoom(){ return room; }
 
+    @Override
+    public String toString() {
+        return "Reservation{" +
+               "startTime=" + startTime +
+               ", endTime=" + endTime +
+               ", room=" + (room != null ? room.getName() : "Unknown room") + 
+               '}';
+    }
 }

@@ -202,7 +202,7 @@ public class Controller {
                     container.getChildren().add(balancePage.getPage());
                 }
             }
-            case "reservationsBtn" -> {
+            case "reserveRoomBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getLoginContainer());
@@ -216,6 +216,22 @@ public class Controller {
                     RoomReservationPage reservationPage = new RoomReservationPage(this);
                     container.getChildren().clear();
                     container.getChildren().add(reservationPage.getPage());
+                }
+            }
+            case "reservationsBtn" -> {
+                if (accountId == 0){
+                    container.getChildren().clear();
+                    container.getChildren().add(loginPage.getLoginContainer());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("You are not loged in");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You need to log in first.");
+                    alert.showAndWait();
+                    System.out.println("Order history");
+                } else {
+                    ReservationsPage reservationsPage = new ReservationsPage(this);
+                    container.getChildren().clear();
+                    container.getChildren().add(reservationsPage.getPage());
                 }
             }
             case "payBtn" -> {
@@ -380,6 +396,7 @@ public class Controller {
             addOption("Options", "optionsBtn", this::handleOptionClick);
             addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
             addOption("Balance", "balanceBtn", this::handleOptionClick);
+            addOption("Reserve room", "reserveRoomBtn", this::handleOptionClick);
             addOption("Reservations", "reservationsBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);

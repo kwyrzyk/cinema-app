@@ -16,7 +16,7 @@ public class ReservationRepository {
 
         String query = """
                         SELECT r.reservation_id, r.start_time, r.end_time, sr.name, sr.num_rows, sr.seats_per_row 
-                        fromreservation r JOIN screening_room sr on r.id_room = sr.id_room 
+                        from reservations r JOIN screening_room sr on r.id_room = sr.id_room 
                         and r.id_account = """ + accountId;
 
         
