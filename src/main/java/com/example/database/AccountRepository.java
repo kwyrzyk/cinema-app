@@ -24,25 +24,30 @@ public class AccountRepository {
     }
 
     // Method to get an account by its ID
-    static public Account getAccountById(int accountId) throws SQLException {
+    static public Account getAccountById(int accountId){
         String accountQuery = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance  FROM accounts WHERE id_account = " + accountId;
 
-        ResultSet accountResult = DatabaseManager.runSelectQuery(accountQuery);
+        try(ResultSet accountResult = DatabaseManager.runSelectQuery(accountQuery)){
 
         if (!accountResult.next()) {
             return null; // No account found with the given ID
         }
 
-        // Extract account details
-        int idAccount = accountResult.getInt("id_account");
-        String login = accountResult.getString("login");
-        String password = accountResult.getString("password");
-        String email = accountResult.getString("email");
-        String phoneNumber = accountResult.getString("phone_number");
-        int loyalty_points = accountResult.getInt("loyalty_points");
-        Price balance = new Price(accountResult.getDouble("balance"));
+            // Extract account details
+            int idAccount = accountResult.getInt("id_account");
+            String login = accountResult.getString("login");
+            String password = accountResult.getString("password");
+            String email = accountResult.getString("email");
+            String phoneNumber = accountResult.getString("phone_number");
+            int loyalty_points = accountResult.getInt("loyalty_points");
+            Price balance = new Price(accountResult.getDouble("balance"));
+            return new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Database error: " + e.getMessage());
+            return new Account();
+        }
 
-        return new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance);
     }
 
     // Method to get all accounts

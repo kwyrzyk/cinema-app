@@ -33,6 +33,19 @@ public class AccountListing {
         return null; // Return null if the account is not found
     }
 
+
+    public boolean updateAccount(int accountId){
+        for(int i = 0; i < this.accounts.size() ; ++i){
+            if(accounts.get(i).getIdAccount() == accountId){
+                Account acc = AccountRepository.getAccountById(accountId);
+                accounts.set(i, acc);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public Account getAccountByLogin(String login) {
         // Search through the accounts list
         for (Account account : accounts) {
