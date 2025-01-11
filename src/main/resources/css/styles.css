@@ -281,3 +281,30 @@
 .top-up-btn-box {
     -fx-alignment: top-center;
 }
+
+.reservation-box {
+    -fx-padding: 20px 10px; /* Odstęp wewnętrzny */
+    -fx-background-color: #17028f;
+    -fx-padding: 20px;
+    -fx-aligment: center;
+}
+
+.page-title {
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 10px 0;
+}
+
+.info-label {
+    -fx-font-size: 16px; 
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+}
+
+.reservation-btn-box {
+    -fx-alignment: top-center;
+}

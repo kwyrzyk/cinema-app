@@ -351,9 +351,9 @@ public class Controller {
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
             container.getChildren().add(repertoirePage.getBackPage());
-        } else if (buttonId.equals("ticketsBtn")) {
-            addOption("Buy", "buyBtn", this::handleOptionClick);
-            addOption("Change", "changeBtn", this::handleOptionClick);
+        } else if (buttonId.equals("roomsBtn")) {
+            RoomReservationPage reservationPage = new RoomReservationPage(this);
+            container.getChildren().add(reservationPage.getPage());
         } else if (buttonId.equals("foodBtn")) {
             addOption("Snacks", "snacksBtn", this::handleOptionClick);
             addOption("Drinks", "drinksBtn", this::handleOptionClick);
@@ -368,8 +368,8 @@ public class Controller {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
             addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
-            BasketPage backetPage = new BasketPage(basket);
-            container.getChildren().add(backetPage.getPage());
+            BasketPage basketPage = new BasketPage(basket);
+            container.getChildren().add(basketPage.getPage());
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
         }
