@@ -62,6 +62,7 @@ public class OrderHistoryPage implements Page {
                         if (response == buttonYes) {
                             System.out.println("Refunding order: " + order.getOrder_id());
                             historyBox.getChildren().remove(orderLabel); 
+                            AccountRepository.removeOrderById(order.getOrder_id());
                             AccountRepository.addBalance(controller.getAccountId(), order.getPrice().toDouble());
                             controller.getAccountListing().updateAccount(controller.getAccountId());
                         }
