@@ -1,9 +1,47 @@
 package com.example.database;
 
+import com.example.database.db_classes.Reservation;
+import com.example.database.db_classes.ScreeningRoom;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.*;
+import java.time.LocalDateTime;
 
 public class ReservationRepository {
  
+
+    public static List<Reservation> getAllReservationsByAccountId(int accountId){
+        List<Reservation> reservations = new ArrayList<>();
+
+        String query = """
+                        SELECT r.reservation_id, r.start_time, r.end_time, sr.name, sr.num_rows, sr.seats_per_row 
+                        fromreservation r JOIN screening_room sr on r.id_room = sr.id_room 
+                        and r.id_account = """ + accountId;
+
+        
+        try{
+            ResultSet reservationResult = DatabaseManager.runSelectQuery(query);
+            
+            while(reservationResult.next()){
+                LocalDateTime startTime = reservationResult.getObject("start_time", LocalDateTime.class);
+                LocalDateTime endTime = reservationResult.getObject("end_time", LocalDateTime.class);
+                
+                int id = reservationResult.getInt("id_room");
+                String name = reservationResult.getString("name");
+                int numRows = reservationResult.getInt("num_rows");
+                int seatsPerRow = reservationResult.getInt("seats_per_row");
+
+                ScreeningRoom room = new ScreeningRoom(id, name, numRows, seatsPerRow);
+                reservations.add(new Reservation(startTime, endTime, room));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Database error: " + e.getMessage());
+        }
+        return reservations; 
+    }
+
     public static boolean reserve_if_possible(int screeningRoomId, int accountId, String startTime, String endTime) {
         String conflictCheckQuery = """
                 SELECT COUNT(*)
