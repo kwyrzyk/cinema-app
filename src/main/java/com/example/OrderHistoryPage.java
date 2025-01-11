@@ -3,6 +3,8 @@ package com.example;
 import com.example.database.AccountRepository;
 import com.example.database.db_classes.OrderHistoryRecord;
 import com.example.database.db_classes.PricedItem;
+import com.example.listing.AccountListing;
+
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -61,6 +63,7 @@ public class OrderHistoryPage implements Page {
                             System.out.println("Refunding order: " + order.getOrder_id());
                             historyBox.getChildren().remove(orderLabel); 
                             AccountRepository.addBalance(controller.getAccountId(), order.getPrice().toDouble());
+                            controller.getAccountListing().updateAccount(controller.getAccountId());
                         }
                     });
                 });
