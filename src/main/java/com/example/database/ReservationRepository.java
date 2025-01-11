@@ -47,21 +47,20 @@ public class ReservationRepository {
                 SELECT COUNT(*)
                 FROM (
                     -- Check for conflicts in the reservation table
-                    SELECT screening_room_id
-                    FROM reservation
-                    WHERE screening_room_id = ?
+                    SELECT id_room
+                    FROM reservations
+                    WHERE id_room = ?
                     AND (start_time < TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS')
                     AND end_time > TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'))
 
                     UNION ALL
 
-                    -- Check for conflicts in the showing table
-                    SELECT screening_room_id
+                    SELECT id_room
                     FROM showing
-                    WHERE screening_room_id = ?
-                    AND (showtime < TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS')
+                    WHERE id_room = ?
+                    AND (show_time < TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS')
                     AND end_time > TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'))
-                ) conflicts;
+                ) conflicts
             """;
 
 
@@ -71,6 +70,10 @@ public class ReservationRepository {
             checkStmt.setInt(1, screeningRoomId);
             checkStmt.setString(2, endTime);  
             checkStmt.setString(3, startTime); 
+
+            checkStmt.setInt(4, screeningRoomId);
+            checkStmt.setString(5, endTime);  
+            checkStmt.setString(6, startTime);
             ResultSet rs = checkStmt.executeQuery();
             rs.next();
             int conflictCount = rs.getInt(1);
@@ -79,7 +82,7 @@ public class ReservationRepository {
 
             if (conflictCount == 0) {
                 String insertQuery = """
-                    INSERT INTO reservation (screening_room_id, account_id, start_time, end_time)
+                    INSERT INTO reservations (id_room, id_account, start_time, end_time)
                     VALUES (?, ?, TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'), TO_TIMESTAMP(?, 'YYYY-MM-DD HH24:MI:SS'))
                 """;
                 PreparedStatement insertStmt = connection.prepareStatement(insertQuery);
