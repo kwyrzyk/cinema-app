@@ -109,6 +109,10 @@ public class Controller {
         return this.listOfPegi;
     }
 
+    public AccountListing getAccountListing(){
+        return this.accountsListing;
+    }
+
     public void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);

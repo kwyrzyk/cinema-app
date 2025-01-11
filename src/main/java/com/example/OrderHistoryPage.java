@@ -1,8 +1,15 @@
 package com.example;
 
+import com.example.database.AccountRepository;
 import com.example.database.db_classes.OrderHistoryRecord;
+import com.example.database.db_classes.PricedItem;
+import com.example.listing.AccountListing;
+
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -39,10 +46,32 @@ public class OrderHistoryPage implements Page {
                 Label orderLabel = new Label(
                     "Date: " + order.getDate() + "\n" + order.getBasket().toString()
                 );
+                
+                orderLabel.setOnMouseClicked(event -> {
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmationAlert.setTitle("Order refund");
+                    confirmationAlert.setHeaderText(null);
+                    confirmationAlert.setContentText("Do you want to refund this order?");
+                    
+                    ButtonType buttonYes = new ButtonType("Yes");
+                    ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    confirmationAlert.getButtonTypes().setAll(buttonYes, buttonNo);
+    
+                    // Oczekiwanie na wybór użytkownika
+                    confirmationAlert.showAndWait().ifPresent(response -> {
+                        if (response == buttonYes) {
+                            System.out.println("Refunding order: " + order.getOrder_id());
+                            historyBox.getChildren().remove(orderLabel); 
+                            AccountRepository.removeOrderById(order.getOrder_id());
+                            AccountRepository.addBalance(controller.getAccountId(), order.getPrice().toDouble());
+                            controller.getAccountListing().updateAccount(controller.getAccountId());
+                        }
+                    });
+                });
                 orderLabel.getStyleClass().add("order-label");
                 orderLabel.setWrapText(true); // Zawijanie tekstu w przypadku długiego opisu
                 orderLabel.setMaxWidth(600); // Maksymalna szerokość etykiety
-                historyBox.getChildren().add(orderLabel);
+                historyBox.getChildren().add(orderLabel); 
             }
         }
 

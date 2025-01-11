@@ -120,6 +120,7 @@
 
 .lists .list-cell:hover {
     -fx-background-color: #0f026e;
+    -fx-cursor: hand;
 }
 
 .bartek{
@@ -194,6 +195,12 @@
     -fx-padding: 5px; /* Odstęp między zamówieniami */
 }
 
+.order-label:hover {
+    -fx-background-color: #0f026e;
+    -fx-cursor: hand;
+}
+
+
 .order-history-scrollpane {
     -fx-background-color: transparent; /* Usuwa białe tło */
     -fx-padding: 0; /* Usuwa odstępy wewnętrzne */
@@ -248,4 +255,5 @@
 
 .modify-ticket-label:hover {
     -fx-background-color: #0f026e;
+    -fx-cursor: hand;
 }
