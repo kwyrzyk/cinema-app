@@ -54,6 +54,7 @@ public class Controller {
     private DiscountListing discountListing = new DiscountListing();
     private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
     private OrderHistoryPage orderHistoryPage;
+    private BalancePage balancePage;
     public SeatsPage seatsPage;
 
     public Basket basket = new Basket();
@@ -183,6 +184,22 @@ public class Controller {
                     this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
                     container.getChildren().clear();
                     container.getChildren().add(orderHistoryPage.getPage());
+                }
+            }
+            case "balanceBtn" -> {
+                if (accountId == 0){
+                    container.getChildren().clear();
+                    container.getChildren().add(loginPage.getLoginContainer());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("You are not loged in");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You need to log in first.");
+                    alert.showAndWait();
+                    System.out.println("Balance");
+                } else {
+                    this.balancePage = new BalancePage(this);
+                    container.getChildren().clear();
+                    container.getChildren().add(balancePage.getPage());
                 }
             }
             case "payBtn" -> {
@@ -346,6 +363,7 @@ public class Controller {
             addOption("Register", "registerBtn", this::handleOptionClick);
             addOption("Options", "optionsBtn", this::handleOptionClick);
             addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
+            addOption("Balance", "balanceBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);
