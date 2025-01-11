@@ -202,6 +202,22 @@ public class Controller {
                     container.getChildren().add(balancePage.getPage());
                 }
             }
+            case "reservationsBtn" -> {
+                if (accountId == 0){
+                    container.getChildren().clear();
+                    container.getChildren().add(loginPage.getLoginContainer());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("You are not loged in");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You need to log in first.");
+                    alert.showAndWait();
+                    System.out.println("Order history");
+                } else {
+                    RoomReservationPage reservationPage = new RoomReservationPage(this);
+                    container.getChildren().clear();
+                    container.getChildren().add(reservationPage.getPage());
+                }
+            }
             case "payBtn" -> {
                 int totalQuantity = basket.getTotalQuantity();
                 boolean[] goToPayment = { true };
@@ -364,6 +380,7 @@ public class Controller {
             addOption("Options", "optionsBtn", this::handleOptionClick);
             addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
             addOption("Balance", "balanceBtn", this::handleOptionClick);
+            addOption("Reservations", "reservationsBtn", this::handleOptionClick);
         } else if (buttonId.equals("basketBtn")) {
             addOption("Pay", "payBtn", this::handleOptionClick);
             addOption("Remove All", "removeAllBtn", this::handleOptionClick);

@@ -149,6 +149,8 @@ public class RoomReservationPage implements Page {
 
                     System.out.println("Start time: " + startTime);
                     System.out.println("End time: " + endTime);
+                    System.out.println("Selected room: " + selectedRoom.getId());
+                    System.out.println("Account ID: " + controller.getAccountId());
     
                     if (endDateTime.isBefore(startDateTime)) {
                         Alert errorAlert = new Alert(Alert.AlertType.ERROR, "End time cannot be before start time.");
@@ -156,12 +158,17 @@ public class RoomReservationPage implements Page {
                     } else {
                         // Tutaj dodaj logikę zapisu rezerwacji do bazy danych
                         boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime);
-                        Alert successAlert = new Alert(Alert.AlertType.INFORMATION, 
+                        if (reservationSuccesful) {
+                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION, 
                             "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 
                             "\nDate: " + selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + 
                             "\nFrom: " + startDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + 
                             "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-                        successAlert.showAndWait();
+                            successAlert.showAndWait();
+                        } else {
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Room is already reserved for this time.");
+                            errorAlert.showAndWait();
+                        }
                     }
                 }
             }
