@@ -70,7 +70,7 @@ public class RoomReservationPage implements Page {
         // ComboBox do wyboru pokoju
         Label roomLabel = new Label("Select room:");
         ComboBox<ScreeningRoom> roomComboBox = new ComboBox<>();
-        List<ScreeningRoom> rooms = ScreeningRoomRepository.getAllScreeningRooms();
+        List<ScreeningRoom> rooms = ScreeningRoomRepository.getAllScreeningRooms(controller.databaseManager.getConnection());
         roomComboBox.getItems().addAll(rooms);
     
         // Ustawienie, jak będą wyświetlane elementy w ComboBox
@@ -157,7 +157,7 @@ public class RoomReservationPage implements Page {
                         errorAlert.showAndWait();
                     } else {
                         // Tutaj dodaj logikę zapisu rezerwacji do bazy danych
-                        boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime);
+                        boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime, controller.databaseManager.getConnection());
                         if (reservationSuccesful) {
                             Alert successAlert = new Alert(Alert.AlertType.INFORMATION, 
                             "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 

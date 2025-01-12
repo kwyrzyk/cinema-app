@@ -94,7 +94,7 @@ public class PointsRewardsMenu {
                         empty_alert.setHeaderText(null);
                         empty_alert.setContentText("You got the reward for " + reward.getPointsPrice() + " points");
                         empty_alert.showAndWait();
-                        AccountRepository.takeLoyaltyPoints(controller.getAccountId(), reward.getPointsPrice());
+                        AccountRepository.takeLoyaltyPoints(controller.getAccountId(), reward.getPointsPrice(), controller.databaseManager.getConnection());
                         controller.getAccountListing().updateAccount(controller.getAccountId());
                     } else {
                         Alert empty_alert = new Alert(Alert.AlertType.WARNING);

@@ -1,5 +1,6 @@
 package com.example.database;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class FilmRepository {
     public FilmRepository(DatabaseManager dbManager) {
     }
 
-    static public Film getFilmById(int filmId) throws SQLException {
+    static public Film getFilmById(int filmId, Connection connection) throws SQLException {
         // Query to get the film's basic info
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating, pegi FROM films WHERE id_film = " + filmId;
 
@@ -32,7 +33,7 @@ public class FilmRepository {
                         "WHERE ft.id_film = " + filmId;
 
         // Execute film query
-        ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery);
+        ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery, connection);
         if (!filmResult.next()) {
             return null; // No film found with the given ID
         }
@@ -45,7 +46,7 @@ public class FilmRepository {
         double rating = filmResult.getDouble("rating");
         int pegi = filmResult.getInt("pegi");
         // Execute actors query
-        ResultSet actorsResult = DatabaseManager.runSelectQuery(actorsQuery);
+        ResultSet actorsResult = DatabaseManager.runSelectQuery(actorsQuery, connection);
         List<Actor> actors = new ArrayList<>();
         while (actorsResult.next()) {
             int actorId = actorsResult.getInt("id_actor");
@@ -55,7 +56,7 @@ public class FilmRepository {
             actors.add(new Actor(actorId, name, surname, role));
         }
 
-        ResultSet tagsResult = DatabaseManager.runSelectQuery(tagsQuery);
+        ResultSet tagsResult = DatabaseManager.runSelectQuery(tagsQuery, connection);
         List<Tag> tags = new ArrayList<>();
         while(tagsResult.next()){
             int tagId = tagsResult.getInt("id_tag"); 
@@ -63,14 +64,14 @@ public class FilmRepository {
             tags.add(new Tag(tagId, name));
         }
 
-        List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
+        List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId, connection);
 
         // Return a Film object with all details
         return new Film(id, title, shortDescription, longDescription, rating, actors, showings, tags, pegi);
     }
 
       // Method to get a list of all films
-      public static List<Film> getAllFilms() {
+      public static List<Film> getAllFilms(Connection connection) {
         List<Film> films = new ArrayList<>();
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating, pegi FROM films";
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
@@ -85,7 +86,7 @@ public class FilmRepository {
      
 
         try {
-            ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery);
+            ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery, connection);
             if (filmResult == null) {
                 System.err.println("Error: filmResult is null.");
                 return films;
@@ -102,7 +103,7 @@ public class FilmRepository {
                 String fullActorsQuery = actorsQuery + filmId;
                 String fullTagsQuery = tagsQuery + filmId;
 
-                ResultSet actorsResult = DatabaseManager.runSelectQuery(fullActorsQuery);
+                ResultSet actorsResult = DatabaseManager.runSelectQuery(fullActorsQuery, connection);
                 if (actorsResult == null) {
                     System.err.println("Error: actorsResult is null for filmId " + filmId);
                     continue; // Przejdź do następnego filmu
@@ -118,7 +119,7 @@ public class FilmRepository {
                 }
     
                 
-                ResultSet tagsResult = DatabaseManager.runSelectQuery(fullTagsQuery);
+                ResultSet tagsResult = DatabaseManager.runSelectQuery(fullTagsQuery, connection);
                 List<Tag> tags = new ArrayList<>();
                 while(tagsResult.next()){
                     int tagId = tagsResult.getInt("id_tag");
@@ -126,7 +127,7 @@ public class FilmRepository {
                     tags.add(new Tag(tagId, name));
                 }
 
-                List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
+                List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId, connection);
 
                 films.add(new Film(filmId, title, shortDescription, longDescription, rating, actors, showings, tags, pegi));
             }

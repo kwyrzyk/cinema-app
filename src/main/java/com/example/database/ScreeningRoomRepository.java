@@ -8,14 +8,14 @@ import com.example.database.db_classes.ScreeningRoom;
 
 public class ScreeningRoomRepository {
     
-    public static List<ScreeningRoom> getAllScreeningRooms(){
+    public static List<ScreeningRoom> getAllScreeningRooms(Connection connection){
 
         String query = "SELECT id_room, name, num_rows, seats_per_row from screening_room";
 
         List<ScreeningRoom> ScreeningRooms = new ArrayList<>();
 
         try{
-            ResultSet screeningRoomsResault = DatabaseManager.runSelectQuery(query);
+            ResultSet screeningRoomsResault = DatabaseManager.runSelectQuery(query, connection);
             
             if(screeningRoomsResault == null){
                 System.err.println("Error: screeningRoomsResult is null.");

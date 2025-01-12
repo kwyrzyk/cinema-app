@@ -17,8 +17,10 @@ public class DrinksMenu {
 
     private final List<Drink> listOfDrinks;
     public Basket basket;
-
-    public DrinksMenu(DrinkRepository drinkRepository, Basket basket, List<Drink> listOfDrinks) {
+    private Controller controller;
+    
+    public DrinksMenu(Controller controller, Basket basket, List<Drink> listOfDrinks) {
+        this.controller = controller;
         this.basket = basket;
         this.listOfDrinks = listOfDrinks;
     }
@@ -54,7 +56,7 @@ public class DrinksMenu {
 
         searchButton.setOnAction(e -> {
             String query = searchField.getText().toLowerCase();
-            List<Drink> filteredDrinks = DrinkRepository.getAllDrinks().stream()
+            List<Drink> filteredDrinks = DrinkRepository.getAllDrinks(controller.databaseManager.getConnection()).stream()
                     .filter(drink -> drink.getName().toLowerCase().contains(query))
                     .toList();
 

@@ -3,6 +3,7 @@ package com.example.database;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Connection;
@@ -13,9 +14,11 @@ import java.sql.Statement;
 
 public class DatabaseManagerTest {
 
+    private static DatabaseManager databaseManager = new DatabaseManager();
+
     @Test
     public void testGetConnection() {
-        try (Connection connection = DatabaseManager.getConnection()) {
+        try (Connection connection = databaseManager.getConnection()) {
             assertNotNull(connection, "Connection should not be null");
             assertFalse(connection.isClosed(), "Connection should be open");
         } catch (SQLException e) {
@@ -39,7 +42,7 @@ public class DatabaseManagerTest {
     @BeforeAll
     public static void setupDatabase() throws SQLException {
         // Create the test table
-        try (Connection connection = DatabaseManager.getConnection();
+        try (Connection connection = databaseManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(CREATE_TABLE_SQL);
         }
@@ -48,14 +51,14 @@ public class DatabaseManagerTest {
     @Test
     public void testDatabaseOperations() throws SQLException {
         // Insert a record into the table
-        try (Connection connection = DatabaseManager.getConnection();
+        try (Connection connection = databaseManager.getConnection();
              Statement statement = connection.createStatement()) {
             int rowsInserted = statement.executeUpdate(INSERT_SQL);
             assertEquals(1, rowsInserted, "One row should have been inserted.");
         }
 
         // Query the table and verify the data
-        try (ResultSet rs = DatabaseManager.runSelectQuery(SELECT_SQL)) {
+        try (ResultSet rs = DatabaseManager.runSelectQuery(SELECT_SQL, databaseManager.getConnection())) {
             assertNotNull(rs, "ResultSet should not be null.");
             assertTrue(rs.next(), "ResultSet should have at least one row.");
             assertEquals(1, rs.getInt("id"), "ID should match the inserted value.");
@@ -66,7 +69,7 @@ public class DatabaseManagerTest {
     @AfterAll
     public static void cleanupDatabase() throws SQLException {
         // Drop the test table
-        try (Connection connection = DatabaseManager.getConnection();
+        try (Connection connection = databaseManager.getConnection();
              Statement statement = connection.createStatement()) {
             statement.execute(DROP_TABLE_SQL);
             }   

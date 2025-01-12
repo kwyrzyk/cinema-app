@@ -1,6 +1,7 @@
 package com.example.listing;
 
 import com.example.database.AccountRepository;
+import com.example.database.DatabaseManager;
 import com.example.database.db_classes.Account;
 
 import java.util.ArrayList;
@@ -8,16 +9,18 @@ import java.util.List;
 
 public class AccountListing {
     private List<Account> accounts; // List to store accounts
+    private DatabaseManager databaseManager;
 
     // Constructor initializes the accounts list
-    public AccountListing() {
+    public AccountListing(DatabaseManager dbManager) {
         accounts = new ArrayList<>();
+        this.databaseManager = dbManager;
         //loadAllAccounts();
     }
 
     // Load all accounts from the database into the list
     public void loadAllAccounts() {
-        List<Account> allAccounts = AccountRepository.getAllAccounts();
+        List<Account> allAccounts = AccountRepository.getAllAccounts(databaseManager.getConnection());
         this.accounts.clear(); // Clear the list before adding the new data
         this.accounts.addAll(allAccounts);
     }
@@ -37,7 +40,7 @@ public class AccountListing {
     public boolean updateAccount(int accountId){
         for(int i = 0; i < this.accounts.size() ; ++i){
             if(accounts.get(i).getIdAccount() == accountId){
-                Account acc = AccountRepository.getAccountById(accountId);
+                Account acc = AccountRepository.getAccountById(accountId, databaseManager.getConnection());
                 accounts.set(i, acc);
                 return true;
             }
@@ -59,7 +62,7 @@ public class AccountListing {
 
     // Add a new account and update the list
     public boolean addAccount(String login, String password, String email, String phoneNumber) {
-        boolean success = AccountRepository.addAccount(login, password, email, phoneNumber);
+        boolean success = AccountRepository.addAccount(login, password, email, phoneNumber, databaseManager.getConnection());
         if (success) {
             // After adding to the database, load the updated list
             loadAllAccounts();
@@ -69,7 +72,7 @@ public class AccountListing {
 
     public boolean changeLogin(int accountId, String newLogin) {
         // Call the repository method to update the login
-        boolean success = AccountRepository.changeLogin(accountId, newLogin);
+        boolean success = AccountRepository.changeLogin(accountId, newLogin, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if the login change is successful
             loadAllAccounts();
@@ -79,7 +82,7 @@ public class AccountListing {
 
     public boolean changePassword(int accountId, String newPassword) {
         // Call the repository method to update the password
-        boolean success = AccountRepository.changePassword(accountId, newPassword);
+        boolean success = AccountRepository.changePassword(accountId, newPassword, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if the password change is successful
             loadAllAccounts();
@@ -89,7 +92,7 @@ public class AccountListing {
 
     public boolean changeEmail(int accountId, String newEmail) {
         // Call the repository method to update the email
-        boolean success = AccountRepository.changeEmail(accountId, newEmail);
+        boolean success = AccountRepository.changeEmail(accountId, newEmail, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if the email change is successful
             loadAllAccounts();
@@ -99,7 +102,7 @@ public class AccountListing {
     
     public boolean changePhoneNumber(int accountId, String newPhoneNumber) {
         // Call the repository method to update the phone number
-        boolean success = AccountRepository.changePhone(accountId, newPhoneNumber);
+        boolean success = AccountRepository.changePhone(accountId, newPhoneNumber, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if the phone number change is successful
             loadAllAccounts();
@@ -109,7 +112,7 @@ public class AccountListing {
         
     public boolean addPoints(int accountId, int points) {
         // Call the repository method to add points
-        boolean success = AccountRepository.addLoyaltyPoints(accountId, points);
+        boolean success = AccountRepository.addLoyaltyPoints(accountId, points, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if adding points was successful
             loadAllAccounts();
@@ -119,7 +122,7 @@ public class AccountListing {
     
     public boolean takePoints(int accountId, int points) {
         // Call the repository method to add points
-        boolean success = AccountRepository.takeLoyaltyPoints(accountId, points);
+        boolean success = AccountRepository.takeLoyaltyPoints(accountId, points, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if adding points was successful
             loadAllAccounts();
@@ -129,7 +132,7 @@ public class AccountListing {
 
     public boolean addBalance(int accountId, double balance) {
         // Call the repository method to add points
-        boolean success = AccountRepository.addBalance(accountId, balance);
+        boolean success = AccountRepository.addBalance(accountId, balance, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if adding points was successful
             loadAllAccounts();
@@ -139,7 +142,7 @@ public class AccountListing {
     
     public boolean takeBalance(int accountId, double balance) {
         // Call the repository method to add points
-        boolean success = AccountRepository.takeBalance(accountId, balance);
+        boolean success = AccountRepository.takeBalance(accountId, balance, databaseManager.getConnection());
         if (success) {
             // Reload the updated list of accounts if adding points was successful
             loadAllAccounts();

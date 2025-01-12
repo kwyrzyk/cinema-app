@@ -24,10 +24,10 @@ public class AccountRepository {
     }
 
     // Method to get an account by its ID
-    static public Account getAccountById(int accountId){
+    static public Account getAccountById(int accountId, Connection connection){
         String accountQuery = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance  FROM accounts WHERE id_account = " + accountId;
 
-        try(ResultSet accountResult = DatabaseManager.runSelectQuery(accountQuery)){
+        try(ResultSet accountResult = DatabaseManager.runSelectQuery(accountQuery, connection)){
 
         if (!accountResult.next()) {
             return null; // No account found with the given ID
@@ -51,12 +51,12 @@ public class AccountRepository {
     }
 
     // Method to get all accounts
-    static public List<Account> getAllAccounts() {
+    static public List<Account> getAllAccounts(Connection connection) {
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance FROM accounts";
 
         try {
-            ResultSet result = DatabaseManager.runSelectQuery(query);
+            ResultSet result = DatabaseManager.runSelectQuery(query, connection);
 
             if (result == null) {
                 System.err.println("Error: result is null.");
@@ -84,10 +84,10 @@ public class AccountRepository {
     }
 
     // Method to add a new account
-    static public boolean addAccount(String login, String password, String email, String phoneNumber) {
+    static public boolean addAccount(String login, String password, String email, String phoneNumber, Connection connection) {
         String insertQuery = "INSERT INTO accounts (login, password, email, phone_number) VALUES (?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = DatabaseManager.getConnection().prepareStatement(insertQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, password);
             preparedStatement.setString(3, email);
@@ -102,12 +102,11 @@ public class AccountRepository {
         }
     }
 
-    static private boolean changeColumn(String columnName, int accountId, String newData){
+    static private boolean changeColumn(String columnName, int accountId, String newData, Connection connection){
         String updateQuery = "UPDATE accounts SET " + columnName + " = ? WHERE id_account = ?";
 
         // Use try-with-resources to manage resources
-        try (Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             // Set the parameters for the query
             preparedStatement.setString(1, newData); // Set the new login
@@ -125,30 +124,29 @@ public class AccountRepository {
     }
 
     // Method to change the login for a given account ID
-    static public boolean changeLogin(int accountId, String newLogin) {
-    return changeColumn(new String("login"), accountId, newLogin);
+    static public boolean changeLogin(int accountId, String newLogin, Connection connection) {
+    return changeColumn(new String("login"), accountId, newLogin, connection);
     }
 
-    static public boolean changePassword(int accountId, String newLogin) {
-        return changeColumn(new String("password"), accountId, newLogin);
+    static public boolean changePassword(int accountId, String newLogin, Connection connection) {
+        return changeColumn(new String("password"), accountId, newLogin, connection);
     }
 
-    static public boolean changeEmail(int accountId, String newLogin) {
-        return changeColumn(new String("email"), accountId, newLogin);
+    static public boolean changeEmail(int accountId, String newLogin, Connection connection) {
+        return changeColumn(new String("email"), accountId, newLogin, connection);
     }
 
-    static public boolean changePhone(int accountId, String newLogin) {
-        return changeColumn(new String("phone_number"), accountId, newLogin);
+    static public boolean changePhone(int accountId, String newLogin, Connection connection) {
+        return changeColumn(new String("phone_number"), accountId, newLogin, connection);
     }
 
     // Method to add loyalty points to a given account ID
-    static public boolean addLoyaltyPoints(int accountId, int pointsToAdd) {
+    static public boolean addLoyaltyPoints(int accountId, int pointsToAdd, Connection connection) {
         // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET loyalty_points = loyalty_points + ? WHERE id_account = ?";
 
         // Use try-with-resources to manage resources
-        try (Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             // Set the parameters for the query
             preparedStatement.setInt(1, pointsToAdd); // Set the amount of points to add
@@ -165,13 +163,12 @@ public class AccountRepository {
         }
     }
 
-    static public boolean takeLoyaltyPoints(int accountId, int pointsToTake) {
+    static public boolean takeLoyaltyPoints(int accountId, int pointsToTake, Connection connection) {
         // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET loyalty_points = loyalty_points - ? WHERE id_account = ?";
 
         // Use try-with-resources to manage resources
-        try (Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             // Set the parameters for the query
             preparedStatement.setInt(1, pointsToTake); // Set the amount of points to add
@@ -188,13 +185,12 @@ public class AccountRepository {
         }
     }
 
-    static public boolean addBalance(int accountId, double balanceToAdd) {
+    static public boolean addBalance(int accountId, double balanceToAdd, Connection connection) {
         // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE id_account = ?";
 
         // Use try-with-resources to manage resources
-        try (Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             // Set the parameters for the query
             preparedStatement.setDouble(1, balanceToAdd); // Set the amount of points to add
@@ -212,13 +208,12 @@ public class AccountRepository {
     }
 
 
-    static public boolean takeBalance(int accountId, double balanceToAdd) {
+    static public boolean takeBalance(int accountId, double balanceToAdd, Connection connection) {
         // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE id_account = ?";
 
         // Use try-with-resources to manage resources
-        try (Connection connection = DatabaseManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
             // Set the parameters for the query
             preparedStatement.setDouble(1, balanceToAdd); // Set the amount of points to add
@@ -236,7 +231,7 @@ public class AccountRepository {
     }
 
     
-    static public boolean addOrder(int accountId, Basket basket) {
+    static public boolean addOrder(int accountId, Basket basket, Connection connection) {
         List<PricedItem> items = basket.getItems();
         List<Integer> quantities = basket.getQuantities();
 
@@ -247,7 +242,7 @@ public class AccountRepository {
         double price = basket.getTotalPrice();
         
         int orderId = -1;
-        try (Connection connection = DatabaseManager.getConnection()) {
+        try{
             // Disable auto-commit for transaction
             connection.setAutoCommit(false);
 
@@ -316,13 +311,12 @@ public class AccountRepository {
     }    
 
 
-    public static List<OrderHistoryRecord> getAllOrdersHistory(int accountId){
+    public static List<OrderHistoryRecord> getAllOrdersHistory(int accountId, Connection connection){
 
         List<OrderHistoryRecord> orders = new ArrayList<>();
         String query = "SELECT id_order, price, order_date FROM orders WHERE id_account = ?";
 
-        try (Connection connection = DatabaseManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, accountId);
 
@@ -332,7 +326,7 @@ public class AccountRepository {
                     double price = resultSet.getDouble("price");
                     Date orderDate = resultSet.getDate("order_date");
 
-                    Basket basket = getOrderItemsByOrderId(idOrder);
+                    Basket basket = getOrderItemsByOrderId(idOrder, connection);
 
                     orders.add(new OrderHistoryRecord(idOrder, price, orderDate, basket));
                 }
@@ -345,7 +339,7 @@ public class AccountRepository {
     }
     
         // Query to get all items for a given order ID
-    public static Basket getOrderItemsByOrderId(int orderId) {
+    public static Basket getOrderItemsByOrderId(int orderId, Connection connection) {
         String query = """
             SELECT item_name, item_type, item_reference_id, price, quantity
             FROM order_item
@@ -354,8 +348,7 @@ public class AccountRepository {
 
         Basket basket = new Basket();
 
-        try (Connection connection = DatabaseManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
 
             statement.setInt(1, orderId);
 
@@ -378,14 +371,13 @@ public class AccountRepository {
     }
 
 
-    public static boolean removeOrderById(int orderId){
+    public static boolean removeOrderById(int orderId, Connection connection){
         String deleteQuery = """
             DELETE FROM orders
             WHERE id_order = ?
             """;
 
-        try (Connection connection = DatabaseManager.getConnection();
-                PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+        try (PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
                     
             connection.setAutoCommit(false);
             statement.setInt(1, orderId);

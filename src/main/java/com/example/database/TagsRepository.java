@@ -8,17 +8,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.sql.Connection;
 
 public class TagsRepository {
 
-    public static List<Tag> getAllTags(){
+    public static List<Tag> getAllTags(Connection connection){
 
         String query = "SELECT name, id_tag FROM tags";
 
         List<Tag> tags = new ArrayList<>();
 
         try{
-            ResultSet tagsResault = DatabaseManager.runSelectQuery(query);
+            ResultSet tagsResault = DatabaseManager.runSelectQuery(query, connection);
             
             if(tagsResault == null){
                 System.err.println("Error: tagsResult is null.");

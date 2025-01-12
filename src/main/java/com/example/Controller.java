@@ -1,5 +1,6 @@
 package com.example;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.example.database.AccountRepository;
@@ -26,6 +27,7 @@ import com.example.listing.OrderHistoryListing;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -36,35 +38,38 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Controller {
+    public DatabaseManager databaseManager = new DatabaseManager();
     private Stage stage;
     private Scene scene;
-    private FilmListing filmListing = new FilmListing();
+    private FilmListing filmListing = new FilmListing(databaseManager);
     private int accountId = 0;
     public Boolean modifyTicketMode = false;
     public PricedItem modifyingTicket;
 
-    private final List<Tag> listOfTags = TagsRepository.getAllTags();
+
+    private final List<Tag> listOfTags = TagsRepository.getAllTags(databaseManager.getConnection());
     private final List<Integer> listOfPegi = List.of(3, 7, 12, 16, 18);
     public RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
-    public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
-    private AccountListing accountsListing = new AccountListing();
+    public OrderHistoryListing orderHistoryListing = new OrderHistoryListing(databaseManager);
+    private AccountListing accountsListing = new AccountListing(databaseManager);
     
     private LoginPage loginPage = new LoginPage( this, accountsListing);
     private RegisterPage registerPage = new RegisterPage(accountsListing);
-    private DrinksListing drinksListing = new DrinksListing();
-    private DiscountListing discountListing = new DiscountListing();
+    private DrinksListing drinksListing = new DrinksListing(databaseManager);
+    private DiscountListing discountListing = new DiscountListing(databaseManager);
     private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;
     
     public Basket basket = new Basket();
-    private FoodListing foodListing = new FoodListing();
+    private FoodListing foodListing = new FoodListing(databaseManager);
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
-    private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards();
+    private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards(databaseManager.getConnection());
    
+    
     @FXML
     private Label label;
     @FXML
@@ -135,12 +140,12 @@ public class Controller {
             case "pegiBtn" -> repertoirePage.togglePegiList();
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
-                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket, listOfFoods);
+                FoodMenu foodMenu = new FoodMenu(this, basket, listOfFoods);
                 container.getChildren().clear();
                 container.getChildren().add(foodMenu.getFoodListVBox());
             }
             case "drinksBtn" -> {
-                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket, listOfDrinks);
+                DrinksMenu drinkMenu = new DrinksMenu(this, basket, listOfDrinks);
                 container.getChildren().clear();
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
@@ -324,14 +329,14 @@ public class Controller {
                         }
                         alert.showAndWait();
                         if(accountId != 0){
-                            AccountRepository.addOrder(accountId, basket);
-                            AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints);
+                            AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
+                            AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
                             accountsListing.updateAccount(accountId);
                             orderHistoryListing.loadOrderHistory(accountId);
                         }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
-                                ShowingRepository.reserveSeat(item.getId());
+                                ShowingRepository.reserveSeat(item.getId(), databaseManager.getConnection());
                             }
                         }
                         filmListing.update();

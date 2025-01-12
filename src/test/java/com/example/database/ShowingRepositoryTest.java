@@ -10,11 +10,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class ShowingRepositoryTest {
 
+    private static DatabaseManager databaseManager = new DatabaseManager();
+
     @Test
     public void testGetShowingsByFilmIdWithSeats() throws SQLException {
         // Test retrieving showings for a given film ID
         int filmId = 1; // Use an example film ID
-        List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId);
+        List<Showing> showings = ShowingRepository.getShowingsByFilmIdWithSeats(filmId, databaseManager.getConnection());
 
         // Assert the showings list is not null
         assertNotNull(showings, "Showings list should not be null");

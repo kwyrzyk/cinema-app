@@ -5,6 +5,7 @@ import com.example.database.db_classes.Price;
 
 import javafx.util.Pair;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,12 +22,12 @@ public class FoodRepository {
     }
 
     // Method to get a food item by its ID
-    static public Food getFoodById(int foodId) throws SQLException {
+    static public Food getFoodById(int foodId, Connection connection) throws SQLException {
         // Query to get the food's basic info
         String foodQuery = "SELECT id_food, name FROM foods WHERE id_food = " + foodId;
     
         // Execute food query
-        ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
+        ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery, connection);
         
         // Check if the ResultSet is null or empty
         if (foodResult == null) {
@@ -45,7 +46,7 @@ public class FoodRepository {
     
         // Query to get the prices for the food item
         String pricesQuery = "SELECT id_food_price, portion_size, price FROM food_prices WHERE id_food = " + foodId;
-        ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery);
+        ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery, connection);
     
         // Map to hold portion size and price
         HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
@@ -65,13 +66,13 @@ public class FoodRepository {
     }
     
     // Method to get a list of all foods
-    static public List<Food> getAllFoods() {
+    static public List<Food> getAllFoods(Connection connection) {
         List<Food> foods = new ArrayList<>();
         String foodQuery = "SELECT id_food, name FROM foods";
         String pricesQuery = "SELECT id_food_price, portion_size, price FROM food_prices WHERE id_food =";
 
         try {
-            ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
+            ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery, connection);
             if (foodResult == null) {
                 System.err.println("Error: foodResult is null.");
                 return foods;
@@ -83,7 +84,7 @@ public class FoodRepository {
 
                 // Query to get the prices for this food item
                 String fullPricesQuery = pricesQuery + foodId;
-                ResultSet pricesResult = DatabaseManager.runSelectQuery(fullPricesQuery);
+                ResultSet pricesResult = DatabaseManager.runSelectQuery(fullPricesQuery, connection);
 
                 if (pricesResult == null) {
                     System.err.println("Error: pricesResult is null for foodId " + foodId);
