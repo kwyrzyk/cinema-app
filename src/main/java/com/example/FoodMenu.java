@@ -10,6 +10,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import javafx.util.Pair;
 import javafx.scene.control.Label;
 
 public class FoodMenu {
@@ -83,9 +84,9 @@ public class FoodMenu {
             VBox content = new VBox();
             content.setId("foodItem");
             content.getChildren().add(new Label("Name: " + food.getName()));
-            for (Map.Entry<String, Price> entry : food.getPrices().entrySet()) {
+            for (Map.Entry<String, Pair<Integer, Price>> entry : food.getPrices().entrySet()) {
                 String size = entry.getKey();
-                Price price = entry.getValue();
+                Price price = entry.getValue().getValue();
                 Label sizePriceLabel = new Label("Size: " + size + " Price: " + price);
                 sizePriceLabel.setOnMousePressed(event -> {
                     basket.addFood(food, size);

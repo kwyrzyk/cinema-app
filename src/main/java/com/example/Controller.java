@@ -61,8 +61,7 @@ public class Controller {
     private FoodListing foodListing = new FoodListing();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
-    private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
-    
+   
     @FXML
     private Label label;
     @FXML
@@ -143,7 +142,7 @@ public class Controller {
                 container.getChildren().add(drinkMenu.getDrinkListVBox());
             }
             case "discountsBtn" ->{
-                DiscountsMenu discountsMenu = new DiscountsMenu(basket, listOfDiscounts);
+                DiscountsMenu discountsMenu = new DiscountsMenu(basket, discountListing.getActiveDiscounts());
                 container.getChildren().clear();
                 container.getChildren().add(discountsMenu.getDiscountListVBox());
             }
@@ -219,7 +218,7 @@ public class Controller {
                         PricedItem firstItem = basket.getItems().get(0);
             
                         // Sprawdzenie, czy produkt znajduje się w zestawie
-                        Discount matchingDiscount = listOfDiscounts.stream()
+                        Discount matchingDiscount = discountListing.getActiveDiscounts().stream()
                                 .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getFoodId()))
                                                  || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getDrinkId())))
                                 .findFirst()

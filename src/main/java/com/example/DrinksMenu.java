@@ -5,6 +5,7 @@ import com.example.database.DrinkRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Price;
+import javafx.util.Pair;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
@@ -77,9 +78,9 @@ public class DrinksMenu {
                 VBox content = new VBox();
                 content.setId("drinkItem");
                 content.getChildren().add(new Label("Name:" + drink.getName()));
-                for(Map.Entry<String, Price> entry :drink.getPrices().entrySet()){
+                for(Map.Entry<String, Pair<Integer, Price>> entry :drink.getPrices().entrySet()){
                     String size = entry.getKey();
-                    Price price = entry.getValue();
+                    Price price = entry.getValue().getValue();
                     Label sizePriceLabel = new Label("Size: " + size + " Price: " + price);
                     sizePriceLabel.setOnMousePressed(event -> {
                         basket.addDrink(drink, size);
