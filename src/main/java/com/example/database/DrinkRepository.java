@@ -3,12 +3,13 @@ package com.example.database;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Price;
 
+import javafx.util.Pair;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class DrinkRepository {
@@ -35,22 +36,20 @@ public class DrinkRepository {
         String name = drinkResult.getString("name");
 
         // Query to get the prices for the drink item
-        String pricesQuery = "SELECT portion_size, price FROM drinks_prices WHERE id_drink = " + drinkId;
+        String pricesQuery = "SELECT id_drink_price, portion_size, price FROM drinks_prices WHERE id_drink = " + drinkId;
         ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery);
 
-        // Map to hold portion size and price
-        Map<String, Price> prices = new HashMap<>();
+        HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
         while (pricesResult.next()) {
+            int id = pricesResult.getInt("id_drink_price");
             String portionSize = pricesResult.getString("portion_size");
             Price price = new Price(pricesResult.getDouble("price"));
-            prices.put(portionSize, price);
+            prices.put(portionSize, new Pair<Integer, Price>(id, price));
         }
-
-        // Return a Drink object with all details
+    
         Drink drink = new Drink(idDrink, name);
-        for (Map.Entry<String, Price> entry : prices.entrySet()) {
-            drink.addPrice(entry.getKey(), entry.getValue());  // Add prices to the drink object
-        }
+    
+        drink.setPrices(prices);
 
         return drink;
     }
@@ -59,7 +58,7 @@ public class DrinkRepository {
     static public List<Drink> getAllDrinks() {
         List<Drink> drinks = new ArrayList<>();
         String drinkQuery = "SELECT id_drink, name FROM drinks";
-        String pricesQuery = "SELECT portion_size, price FROM drinks_prices WHERE id_drink =";
+        String pricesQuery = "SELECT id_drink_price, portion_size, price FROM drinks_prices WHERE id_drink =";
 
         try {
             ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
@@ -81,20 +80,18 @@ public class DrinkRepository {
                     continue;
                 }
 
-                // Map to hold portion size and price
-                Map<String, Price> prices = new HashMap<>();
+                HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
                 while (pricesResult.next()) {
+                    int id = pricesResult.getInt("id_drink_price");
                     String portionSize = pricesResult.getString("portion_size");
                     Price price = new Price(pricesResult.getDouble("price"));
-                    prices.put(portionSize, price);
+                    prices.put(portionSize, new Pair<Integer, Price>(id, price));
                 }
-
-                // Create a Drink object and add prices
+            
                 Drink drink = new Drink(drinkId, name);
-                for (Map.Entry<String, Price> entry : prices.entrySet()) {
-                    drink.addPrice(entry.getKey(), entry.getValue());  // Add prices to the drink object
-                }
-
+            
+                drink.setPrices(prices);
+        
                 drinks.add(drink);  // Add the drink object to the list
             }
         } catch (SQLException e) {

@@ -3,12 +3,13 @@ package com.example.database;
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.Price;
 
+import javafx.util.Pair;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 
@@ -43,23 +44,23 @@ public class FoodRepository {
         String name = foodResult.getString("name");
     
         // Query to get the prices for the food item
-        String pricesQuery = "SELECT portion_size, price FROM food_prices WHERE id_food = " + foodId;
+        String pricesQuery = "SELECT id_food_price, portion_size, price FROM food_prices WHERE id_food = " + foodId;
         ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery);
     
         // Map to hold portion size and price
-        Map<String, Price> prices = new HashMap<>();
+        HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
         while (pricesResult.next()) {
+            int id = pricesResult.getInt("id_food_price");
             String portionSize = pricesResult.getString("portion_size");
             Price price = new Price(pricesResult.getDouble("price"));
-            prices.put(portionSize, price);
+            prices.put(portionSize, new Pair<Integer, Price>(id, price));
         }
     
         // Return a Food object with all details
         Food food = new Food(idFood, name);
-        for (Map.Entry<String, Price> entry : prices.entrySet()) {
-            food.addPrice(entry.getKey(), entry.getValue());  // Add prices to the food object
-        }
     
+        food.setPrices(prices);
+
         return food;
     }
     
@@ -67,7 +68,7 @@ public class FoodRepository {
     static public List<Food> getAllFoods() {
         List<Food> foods = new ArrayList<>();
         String foodQuery = "SELECT id_food, name FROM foods";
-        String pricesQuery = "SELECT portion_size, price FROM food_prices WHERE id_food =";
+        String pricesQuery = "SELECT id_food_price, portion_size, price FROM food_prices WHERE id_food =";
 
         try {
             ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
@@ -90,18 +91,19 @@ public class FoodRepository {
                 }
 
                 // Map to hold portion size and price
-                Map<String, Price> prices = new HashMap<>();
+                HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
                 while (pricesResult.next()) {
+                    int id = pricesResult.getInt("id_food_price");
                     String portionSize = pricesResult.getString("portion_size");
                     Price price = new Price(pricesResult.getDouble("price"));
-                    prices.put(portionSize, price);
+                    prices.put(portionSize, new Pair<Integer, Price>(id, price));
                 }
-
-                // Create a Food object and add prices
+            
+                // Return a Food object with all details
                 Food food = new Food(foodId, name);
-                for (Map.Entry<String, Price> entry : prices.entrySet()) {
-                    food.addPrice(entry.getKey(), entry.getValue());  // Add prices to the food object
-                }
+            
+                food.setPrices(prices);
+
 
                 foods.add(food);  // Add the food object to the list
             }
