@@ -269,8 +269,8 @@ public class Controller {
             
                         // Sprawdzenie, czy produkt znajduje się w zestawie
                         Discount matchingDiscount = discountListing.getActiveDiscounts().stream()
-                                .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getFoodId()))
-                                                 || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getDrinkId())))
+                                .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getId()))
+                                                 || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getId())))
                                 .findFirst()
                                 .orElse(null);
             
@@ -331,7 +331,7 @@ public class Controller {
                         }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
-                                ShowingRepository.reserveSeat(item.getTicketId());
+                                ShowingRepository.reserveSeat(item.getId());
                             }
                         }
                         filmListing.update();

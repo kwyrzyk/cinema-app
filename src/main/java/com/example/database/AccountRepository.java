@@ -282,17 +282,14 @@ public class AccountRepository {
                     String type = "";            
                     if(item.isFood()){
                         type = "food";
-                        id = item.getFoodId();
                     }else if(item.isDrink()){
                         type = "drink";
-                        id = item.getDrinkId();
                     }else if(item.isTicket()){
                         type = "ticket";
-                        id = item.getTicketId();
                     }else if(item.isDiscount()){
                         type = "discount";
-                        id = item.getDiscountId();
                     }
+                    id = item.getId();
 
                     itemStatement.setString(1, type);
                     itemStatement.setInt(2, id);
