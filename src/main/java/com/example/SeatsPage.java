@@ -55,7 +55,7 @@ public class SeatsPage implements Page {
                         .findFirst()
                         .orElse(null);
 
-                if (controller.modifyTicketMode && seat.getId() == controller.modifyingTicket.getTicketId()){
+                if (controller.modifyTicketMode && seat.getId() == controller.modifyingTicket.getId()){
                     seat.setStatus("modifying");
                 }
 
@@ -75,7 +75,7 @@ public class SeatsPage implements Page {
                                 Ticket ticket = new Ticket(filmInfo, showing, seat);
                                 controller.basket.addTicket(ticket);
                                 Seat modifyingSeat = seats.stream()
-                                    .filter(s -> s.getId() == controller.modifyingTicket.getTicketId())
+                                    .filter(s -> s.getId() == controller.modifyingTicket.getId())
                                     .findFirst()
                                     .orElse(null);
                                 if (modifyingSeat != null) {

@@ -2,11 +2,9 @@ package com.example;
 
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.PricedItem;
-import com.example.database.db_classes.Tag;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class ModifyBasketPage implements Page {
 
         // Dodanie biletów do widoku
         List<PricedItem> tickets = basket.getItems().stream()
-                .filter(item -> item.getTicketId() != -1)
+                .filter(item -> item.getId() != -1)
                 .map(item -> (PricedItem) item)
                 .toList();
 

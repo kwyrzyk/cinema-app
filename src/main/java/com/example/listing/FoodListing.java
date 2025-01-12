@@ -1,18 +1,22 @@
 package com.example.listing;
 
+import com.example.database.DatabaseManager;
 import com.example.database.FoodRepository;
 import com.example.database.db_classes.Food;
+
 
 import java.util.List;
 
 public class FoodListing {
 
     private List<Food> foods;
+    private DatabaseManager databaseManager;
 
     // Constructor
-    public FoodListing() {
+    public FoodListing(DatabaseManager databaseManager) {
         // Initialize foods list by fetching data from the database
-        this.foods = FoodRepository.getAllFoods();
+        this.databaseManager = databaseManager;
+        this.foods = FoodRepository.getAllFoods(this.databaseManager.getConnection());
     }
 
     // Method to get the list of foods

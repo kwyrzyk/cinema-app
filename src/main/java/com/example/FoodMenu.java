@@ -17,11 +17,12 @@ public class FoodMenu {
 
     private final List<Food> listOfFoods;
     private Basket basket;
+    private Controller controller;
 
-    public FoodMenu(FoodRepository foodRepository, Basket basket, List<Food> listOfFoods) {
+    public FoodMenu(Controller controller, Basket basket, List<Food> listOfFoods) {
         this.basket = basket;
         this.listOfFoods = listOfFoods;
-
+        this.controller = controller;
         if (this.basket == null) {
             System.err.println("Basket is null in FoodMenu constructor!");
         }
@@ -60,7 +61,7 @@ public class FoodMenu {
 
         searchButton.setOnAction(e -> {
             String query = searchField.getText().toLowerCase();
-            List<Food> filteredFoods = FoodRepository.getAllFoods().stream()
+            List<Food> filteredFoods = FoodRepository.getAllFoods(controller.databaseManager.getConnection()).stream()
                     .filter(food -> food.getName().toLowerCase().contains(query))
                     .toList();
 

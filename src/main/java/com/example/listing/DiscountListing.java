@@ -1,5 +1,6 @@
 package com.example.listing;
 
+import com.example.database.DatabaseManager;
 import com.example.database.DiscountRepository;
 import com.example.database.db_classes.Discount;
 
@@ -9,11 +10,13 @@ import java.time.LocalTime;
 
 public class DiscountListing {
     private List<Discount> discounts;
-    
+    private DatabaseManager databaseManager;
 
 
-    public DiscountListing(){
-        this.discounts = DiscountRepository.getAllDiscounts();
+
+    public DiscountListing(DatabaseManager databaseManager){
+        this.databaseManager = databaseManager;
+        this.discounts = DiscountRepository.getAllDiscounts(this.databaseManager.getConnection());
     }
 
     public List<Discount> getDiscounts() {

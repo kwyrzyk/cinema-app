@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class ReservationRepository {
  
 
-    public static List<Reservation> getAllReservationsByAccountId(int accountId){
+    public static List<Reservation> getAllReservationsByAccountId(int accountId, Connection connection){
         List<Reservation> reservations = new ArrayList<>();
 
         String query = """
@@ -21,7 +21,7 @@ public class ReservationRepository {
 
         
         try{
-            ResultSet reservationResult = DatabaseManager.runSelectQuery(query);
+            ResultSet reservationResult = DatabaseManager.runSelectQuery(query, connection);
             
             while(reservationResult.next()){
                 LocalDateTime startTime = reservationResult.getObject("start_time", LocalDateTime.class);
@@ -42,7 +42,7 @@ public class ReservationRepository {
         return reservations; 
     }
 
-    public static boolean reserve_if_possible(int screeningRoomId, int accountId, String startTime, String endTime) {
+    public static boolean reserve_if_possible(int screeningRoomId, int accountId, String startTime, String endTime, Connection connection) {
         String conflictCheckQuery = """
                 SELECT COUNT(*)
                 FROM (
@@ -64,8 +64,7 @@ public class ReservationRepository {
             """;
 
 
-        try(Connection connection = DatabaseManager.getConnection();
-        PreparedStatement checkStmt = connection.prepareStatement(conflictCheckQuery))  {
+        try(PreparedStatement checkStmt = connection.prepareStatement(conflictCheckQuery))  {
             
             checkStmt.setInt(1, screeningRoomId);
             checkStmt.setString(2, endTime);  

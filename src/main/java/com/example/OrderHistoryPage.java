@@ -156,10 +156,10 @@ public class OrderHistoryPage implements Page {
                             historyBox.getChildren().remove(orderLabel);
 
                             // Aktualizacja w bazie: usunięcie zamówienia
-                            AccountRepository.removeOrderById(order.getOrder_id());
+                            AccountRepository.removeOrderById(order.getOrder_id(), controller.databaseManager.getConnection());
                             // Zwracamy środki na konto
-                            AccountRepository.addBalance(controller.getAccountId(), moneyToRefund.toDouble());
-                            AccountRepository.takeLoyaltyPoints(controller.getAccountId(), pointsToRemove);
+                            AccountRepository.addBalance(controller.getAccountId(), moneyToRefund.toDouble(), controller.databaseManager.getConnection());
+                            AccountRepository.takeLoyaltyPoints(controller.getAccountId(), pointsToRemove, controller.databaseManager.getConnection());
                             // Odświeżamy widok konta
                             controller.getAccountListing().updateAccount(controller.getAccountId());
                         }

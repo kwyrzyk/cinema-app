@@ -1,18 +1,14 @@
 package com.example;
 
-import com.example.database.db_classes.OrderHistoryRecord;
 import com.example.database.db_classes.Price;
 import com.example.database.db_classes.Account;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 
-import java.beans.VetoableChangeListener;
 import java.util.List;
 
 public class BalancePage implements Page {

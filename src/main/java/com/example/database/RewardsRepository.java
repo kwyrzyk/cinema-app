@@ -1,5 +1,6 @@
 package com.example.database;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -10,12 +11,12 @@ import java.util.List;
 
 public class RewardsRepository {
     
-    public static List<PointsReward> getAllPointsRewards(){
+    public static List<PointsReward> getAllPointsRewards(Connection connection){
         List<PointsReward> rewards = new ArrayList<>();
         String query = "SELECT id_reward, name, points_price FROM point_rewards";
 
         try{
-            ResultSet rewardsResault = DatabaseManager.runSelectQuery(query);
+            ResultSet rewardsResault = DatabaseManager.runSelectQuery(query, connection);
             
             if(rewardsResault == null){
                 System.err.println("Error: rewardsResult is null.");

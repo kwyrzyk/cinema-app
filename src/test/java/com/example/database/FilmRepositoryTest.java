@@ -12,12 +12,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FilmRepositoryTest {
 
+    private static DatabaseManager databaseManager = new DatabaseManager();
+
+
     @Test
     public void testGetFilmById() throws SQLException {
         // Test retrieving a film by ID
         int filmId = 1; // Example film ID
 
-        Film film = FilmRepository.getFilmById(filmId);
+        Film film = FilmRepository.getFilmById(filmId, databaseManager.getConnection());
 
         // Assert the film is not null
         assertNotNull(film, "Film should not be null for ID " + filmId);
@@ -55,7 +58,7 @@ public class FilmRepositoryTest {
     @Test
     public void testGetAllFilms() throws SQLException {
         // Test retrieving all films
-        List<Film> films = FilmRepository.getAllFilms();
+        List<Film> films = FilmRepository.getAllFilms(databaseManager.getConnection());
 
         // Assert the films list is not null and has at least one film
         assertNotNull(films, "Films list should not be null");

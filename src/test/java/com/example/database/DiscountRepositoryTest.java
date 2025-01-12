@@ -8,10 +8,12 @@ import java.util.List;
 
 public class DiscountRepositoryTest {
 
+    private static DatabaseManager databaseManager = new DatabaseManager();
+
     @Test
     public void testGetDiscountById() throws Exception {
         // Test retrieving discount by ID
-        Discount discount = DiscountRepository.getDiscountById(1);
+        Discount discount = DiscountRepository.getDiscountById(1, databaseManager.getConnection());
 
         // Assert the discount is not null
         assertNotNull(discount, "Discount should not be null for ID 1");
@@ -23,7 +25,7 @@ public class DiscountRepositoryTest {
     @Test
     public void testGetAllDiscounts() throws Exception {
         // Test retrieving all discounts
-        List<Discount> discounts = DiscountRepository.getAllDiscounts();
+        List<Discount> discounts = DiscountRepository.getAllDiscounts(databaseManager.getConnection());
 
         // Assert the list is not null and has at least one item
         assertNotNull(discounts, "Discounts list should not be null");

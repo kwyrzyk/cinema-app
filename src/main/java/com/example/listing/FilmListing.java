@@ -3,6 +3,7 @@ package com.example.listing;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.database.DatabaseManager;
 import com.example.database.FilmRepository;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Tag;
@@ -10,15 +11,17 @@ import com.example.database.db_classes.Tag;
 public class FilmListing {
 
     private List<Film> films;
+    private DatabaseManager databaseManager;
 
     // Constructor
-    public FilmListing() {
+    public FilmListing(DatabaseManager databaseManager) {
+        this.databaseManager = databaseManager;
         // Initialize films list by fetching data from the database
-        this.films = FilmRepository.getAllFilms();
+        this.films = FilmRepository.getAllFilms(this.databaseManager.getConnection());
     }
 
     public void update() {
-        this.films = FilmRepository.getAllFilms();
+        this.films = FilmRepository.getAllFilms(this.databaseManager.getConnection());
     }
 
     public List<Film> getFilmsByTag(Tag tag) {

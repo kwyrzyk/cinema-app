@@ -1,14 +1,15 @@
 package com.example.database.db_classes;
 
+
 public class PricedItem {
 
     private String name;
     private Price price;
 
-    private int foodId = -1;
-    private int drinkId = -1;
-    private int ticketId = -1;
-    private int  discountId = -1;
+    private  ItemType type;
+
+    private int id = -1;
+
     public static final Price ticketPrice = new Price(20.0);
 
     // Constructor to initialize name and price
@@ -19,16 +20,21 @@ public class PricedItem {
 
     // Constructor for food item
     public PricedItem(Food foodItem, String size) {
+        
         this.name = foodItem.getName() + ": " + size;
         this.price = foodItem.getPriceForSize(size);
-        this.foodId = foodItem.getIdForSize(size);
+
+        this.type = ItemType.FOOD;
+        this.id = foodItem.getIdForSize(size);
     }
 
     // Constructor for drink item
     public PricedItem(Drink drinkItem, String size) {
         this.name = drinkItem.getName() + ": " + size;
         this.price = drinkItem.getPriceForSize(size);
-        this.drinkId = drinkItem.getIdForSize(size);
+
+        this.type = ItemType.DRINK;
+        this.id = drinkItem.getIdForSize(size);
     }
 
 
@@ -36,34 +42,41 @@ public class PricedItem {
     public PricedItem(Discount discountItem){
         this.name = discountItem.toString();
         this.price = discountItem.getPrice();
-        this.discountId = discountItem.getIdDiscount();
+
+
+        this.type = ItemType.DISCOUNT;
+        this.id = discountItem.getIdDiscount();
     }
 
 
     public PricedItem(Ticket ticketItem){
         this.name = ticketItem.getName();
         this.price = ticketPrice;
-        this.ticketId = ticketItem.getId();
+
+
+        this.type = ItemType.TICKET;
+        this.id = ticketItem.getId();
     }
 
     // Constructor to initialize name and price using a double value
     public PricedItem(String name, String type, double price, int id) {
         switch (type) {
             case "food":
-                this.foodId = id;
+                this.type = ItemType.FOOD;
                 break;
             case "drink":
-                this.foodId = id;
+                this.type = ItemType.DRINK;
                 break;
             case "discount":
-                this.discountId = id;
+                this.type = ItemType.DISCOUNT;
                 break;
             case "ticket":
-                this.ticketId = id;
+                this.type = ItemType.TICKET;
                 break;
             default:
                 break;
         }
+        this.id = id;
         this.name = name;
         this.price = new Price(price); 
     }
@@ -78,47 +91,30 @@ public class PricedItem {
         return price;
     }
 
-    // Getter for foodId
-    public int getFoodId() {
-        return foodId;
+    public int getId(){
+        return id;
     }
 
-    // Getter for drinkId
-    public int getDrinkId() {
-        return drinkId;
-    }
-
-    // Getter for ticketId
-    public int getTicketId() {
-        return ticketId;
-    }
-
-    // Check if the item is a food item
     public boolean isFood() {
-        return foodId != -1; // Food items have a valid foodId
+        return type == ItemType.FOOD; 
     }
 
-    // Check if the item is a drink item
     public boolean isDrink() {
-        return drinkId != -1; // Drink items have a valid drinkId
+        return type == ItemType.DRINK; 
     }
 
-    // Check if the item is a showing (e.g., movie ticket)
     public boolean isTicket() {
-        return ticketId != -1; // Showings have a valid showingId
+        return type == ItemType.TICKET;
     }
 
     public boolean isDiscount() {
-        return discountId != -1; // Showings have a valid showingId
+        return type == ItemType.DISCOUNT;
     }
 
     // ToString method for better debugging
     @Override
     public String toString() {
-        return "PricedItem{name='" + name + "', price=" + price + ", foodId=" + foodId + ", drinkId=" + drinkId + ", ticketId=" + ticketId + '}';
-    }
-    public int getDiscountId(){
-        return discountId;
+        return "PricedItem{name='" + name + "', price=" + price + ", Id=" + id + '}';
     }
 
 }

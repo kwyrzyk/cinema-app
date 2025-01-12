@@ -11,9 +11,16 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class DatabaseManager {
-    
+
+    private Connection connection;
+
+
+    public Connection getConnection(){
+        return connection;
+    }
+
     // Get connection to Oracle Database
-    public static Connection getConnection() throws SQLException{
+    public DatabaseManager(){
         Properties properties = new Properties();
         
          try (InputStream input = DatabaseManager.class.getClassLoader().getResourceAsStream("db.properties")) {
@@ -29,25 +36,27 @@ public class DatabaseManager {
             String username = properties.getProperty("db.username");
             String password = properties.getProperty("db.password");
             
-            return DriverManager.getConnection(url, username, password);
+            this.connection =  DriverManager.getConnection(url, username, password);
             
         } catch (IOException ex) {
-            throw new SQLException("No database properties found", ex);
+            ex.printStackTrace();
+            System.err.println("Database error: " + ex.getMessage());
+            this.connection = null;
         } catch (SQLException e) {
-            throw new SQLException("Unable to connect to the database", e);
+            e.printStackTrace();
+            System.err.println("Database error: " + e.getMessage());
+            this.connection = null;
         }
         
     }
 
     // Run a SELECT query and return a result set
-    public static ResultSet runSelectQuery(String sql) {
-        Connection conn = null;
+    public static ResultSet runSelectQuery(String sql, Connection conn) {
         Statement stmt = null;
         ResultSet rs = null;
         
         try {
             // Get database connection
-            conn = getConnection();
             
             // Create statement and execute query
             stmt = conn.createStatement();

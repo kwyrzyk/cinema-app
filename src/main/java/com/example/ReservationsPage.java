@@ -34,7 +34,7 @@ public class ReservationsPage implements Page {
         title.getStyleClass().add("page-title");
         reservationsBox.getChildren().addAll(title);
 
-        List<Reservation> reservations = ReservationRepository.getAllReservationsByAccountId(controller.getAccountId());
+        List<Reservation> reservations = ReservationRepository.getAllReservationsByAccountId(controller.getAccountId(), controller.databaseManager.getConnection());
         for (Reservation reservation : reservations) {
             Label reservationLabel = new Label(reservation.toString()); // Wyświetl tekstową reprezentację rezerwacji
             reservationLabel.getStyleClass().add("item");
