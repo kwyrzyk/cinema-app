@@ -19,10 +19,8 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation{" +
-               "startTime=" + startTime +
-               ", endTime=" + endTime +
-               ", room=" + (room != null ? room.getName() : "Unknown room") + 
-               '}';
+        return "Room: " + room.getName() + 
+                "\nStart time: " + startTime +
+                "\nEnd time" + endTime;
     }
 }

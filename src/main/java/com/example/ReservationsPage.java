@@ -31,16 +31,16 @@ public class ReservationsPage implements Page {
 
         // Tytuł strony
         Label title = new Label("Your reservations");
-        title.getStyleClass().add("reservations-title");
+        title.getStyleClass().add("page-title");
+        reservationsBox.getChildren().addAll(title);
 
         List<Reservation> reservations = ReservationRepository.getAllReservationsByAccountId(controller.getAccountId());
         for (Reservation reservation : reservations) {
             Label reservationLabel = new Label(reservation.toString()); // Wyświetl tekstową reprezentację rezerwacji
-            reservationLabel.getStyleClass().add("reservation-item");
+            reservationLabel.getStyleClass().add("item");
             reservationsBox.getChildren().add(reservationLabel);
         }
         
-        reservationsBox.getChildren().addAll(title);
     }
 
     public VBox getPage() {
