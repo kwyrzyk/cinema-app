@@ -15,7 +15,7 @@ public class ReservationRepository {
         List<Reservation> reservations = new ArrayList<>();
 
         String query = """
-                        SELECT r.reservation_id, r.start_time, r.end_time, sr.name, sr.num_rows, sr.seats_per_row 
+                        SELECT r.reservation_id, r.start_time, r.end_time, sr.id_room, sr.name, sr.num_rows, sr.seats_per_row 
                         from reservations r JOIN screening_room sr on r.id_room = sr.id_room 
                         and r.id_account = """ + accountId;
 
