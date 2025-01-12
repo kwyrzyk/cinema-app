@@ -263,12 +263,21 @@ public class Controller {
                         }
                         
                     default:
+                        int newLoyaltyPoints = (int) (basket.getTotalPrice() / 10);
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Payment Successful");
                         alert.setHeaderText(null);
-                        alert.setContentText("Your payment was processed successfully!");
+                        if (accountId != 0) {
+                            alert.setContentText("Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                        } else {
+                            alert.setContentText("Your payment was processed successfully!");
+                        }
                         alert.showAndWait();
-                        if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
+                        if(accountId != 0){
+                            AccountRepository.addOrder(accountId, basket);
+                            AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints);
+                            accountsListing.updateAccount(accountId);
+                        }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
                                 ShowingRepository.reserveSeat(item.getTicketId());
