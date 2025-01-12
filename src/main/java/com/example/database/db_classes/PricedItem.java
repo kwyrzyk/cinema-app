@@ -20,15 +20,15 @@ public class PricedItem {
     // Constructor for food item
     public PricedItem(Food foodItem, String size) {
         this.name = foodItem.getName() + ": " + size;
-        this.price = foodItem.getPrices().get(size);
-        this.foodId = foodItem.getIdFood();
+        this.price = foodItem.getPriceForSize(size);
+        this.foodId = foodItem.getIdForSize(size);
     }
 
     // Constructor for drink item
     public PricedItem(Drink drinkItem, String size) {
         this.name = drinkItem.getName() + ": " + size;
-        this.price = drinkItem.getPrices().get(size);
-        this.drinkId = drinkItem.getIdDrink();
+        this.price = drinkItem.getPriceForSize(size);
+        this.drinkId = drinkItem.getIdForSize(size);
     }
 
 

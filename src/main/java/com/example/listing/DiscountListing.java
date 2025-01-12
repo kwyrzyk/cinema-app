@@ -4,13 +4,20 @@ import com.example.database.DiscountRepository;
 import com.example.database.db_classes.Discount;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.time.LocalTime;
 
 public class DiscountListing {
+    private List<Discount> discounts;
+    
 
-    // Static method to get the list of discounts
+
+    public DiscountListing(){
+        this.discounts = DiscountRepository.getAllDiscounts();
+    }
+
     public List<Discount> getDiscounts() {
-        // Fetch the list of discounts using the static method from DiscountRepository
-        return DiscountRepository.getAllDiscounts();
+        return discounts;
     }
 
     // Static method to display all the discounts
@@ -22,5 +29,10 @@ public class DiscountListing {
         }
     }
 
-    // You can add more methods to filter, sort, or display the list of discounts as needed
+    public List<Discount> getActiveDiscounts() {
+        return discounts.stream()
+                .filter(discount -> discount.isDiscountActive(LocalTime.now()))
+                .collect(Collectors.toList());
+    }
+
 }
