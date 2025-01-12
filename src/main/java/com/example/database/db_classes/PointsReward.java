@@ -12,6 +12,10 @@ public class PointsReward {
         this.points_price = points_price;
     }
 
+    @Override
+    public String toString(){
+        return name + " - " + points_price + " points";
+    }
 
     public int getId(){ return id; }
     public String getName() { return name;}
