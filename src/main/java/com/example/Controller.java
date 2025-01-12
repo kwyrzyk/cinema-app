@@ -6,12 +6,14 @@ import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.FoodRepository;
+import com.example.database.RewardsRepository;
 import com.example.database.ShowingRepository;
 import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
 import com.example.database.db_classes.Food;
+import com.example.database.db_classes.PointsReward;
 import com.example.database.db_classes.PricedItem;
 import com.example.database.db_classes.Tag;
 import com.example.listing.AccountListing;
@@ -56,11 +58,12 @@ public class Controller {
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;
-
+    
     public Basket basket = new Basket();
     private FoodListing foodListing = new FoodListing();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
+    private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards();
    
     @FXML
     private Label label;
@@ -145,6 +148,21 @@ public class Controller {
                 DiscountsMenu discountsMenu = new DiscountsMenu(basket, discountListing.getActiveDiscounts());
                 container.getChildren().clear();
                 container.getChildren().add(discountsMenu.getDiscountListVBox());
+            }
+            case "pointsRewardsBtn" ->{
+                if (accountId == 0){
+                    container.getChildren().clear();
+                    container.getChildren().add(loginPage.getLoginContainer());
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("You are not loged in");
+                    alert.setHeaderText(null);
+                    alert.setContentText("You need to log in first.");
+                    alert.showAndWait();
+                } else {
+                    PointsRewardsMenu pointsRewardsMenu = new PointsRewardsMenu(this, listOfRewards);
+                    container.getChildren().clear();
+                    container.getChildren().add(pointsRewardsMenu.getRewardListVBox());
+                }
             }
             case "signBtn"-> {
                 container.getChildren().clear();
@@ -295,12 +313,22 @@ public class Controller {
                         }
                         
                     default:
+                        int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Payment Successful");
                         alert.setHeaderText(null);
-                        alert.setContentText("Your payment was processed successfully!");
+                        if (accountId != 0) {
+                            alert.setContentText("Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                        } else {
+                            alert.setContentText("Your payment was processed successfully!");
+                        }
                         alert.showAndWait();
-                        if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
+                        if(accountId != 0){
+                            AccountRepository.addOrder(accountId, basket);
+                            AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints);
+                            accountsListing.updateAccount(accountId);
+                            orderHistoryListing.loadOrderHistory(accountId);
+                        }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
                                 ShowingRepository.reserveSeat(item.getTicketId());
@@ -311,7 +339,7 @@ public class Controller {
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
                         container.getChildren().add(backetPage.getPage());
-                        this.orderHistoryListing.loadOrderHistory(accountId);
+                        
                         break;  
                 }
             }
@@ -389,6 +417,7 @@ public class Controller {
             addOption("Snacks", "snacksBtn", this::handleOptionClick);
             addOption("Drinks", "drinksBtn", this::handleOptionClick);
             addOption("Discounts", "discountsBtn", this::handleOptionClick);
+            addOption("Points rewards", "pointsRewardsBtn", this::handleOptionClick);
         } else if (buttonId.equals("accountsBtn")) {
             addOption("Sign", "signBtn", this::handleOptionClick);
             addOption("Register", "registerBtn", this::handleOptionClick);

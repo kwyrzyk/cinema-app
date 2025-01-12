@@ -55,7 +55,8 @@ public class LoginPage {
         if(account == null) {showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with this login");}
         if(account.getPassword().equals(password)){
             showAlert(AlertType.INFORMATION, "Login Successful", "Your registration for account - " + username + "was succesful.\nYour email: "
-            + account.getEmail() + " your phone number is " + account.getPhoneNumber() + "your balance is " + account.getBalance());
+            + account.getEmail() + " your phone number is " + account.getPhoneNumber() + "your balance is " + account.getBalance() + 
+            "your loyalty points are " + account.getLoyaltyPoints());
             controller.login(account.getIdAccount());
             controller.orderHistoryListing.loadOrderHistory(account.getIdAccount());
         }else{
