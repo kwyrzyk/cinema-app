@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.database.AccountRepository;
 import com.example.database.db_classes.OrderHistoryRecord;
+import com.example.database.db_classes.Price;
 import com.example.database.db_classes.PricedItem;
 import com.example.listing.AccountListing;
 
@@ -117,7 +118,7 @@ public class OrderHistoryPage implements Page {
             historyBox.getChildren().add(noOrdersLabel);
         } else {
             // Dodajemy etykiety dla każdego zamówienia
-            for (OrderHistoryRecord order : ordersToDisplay) {
+            for (OrderHistoryRecord order : ordersToDisplay.reversed()) {
                 Label orderLabel = new Label(
                         "Date: " + order.getDate() + "\n" +
                         order.getBasket().toString()
@@ -125,18 +126,29 @@ public class OrderHistoryPage implements Page {
                 orderLabel.getStyleClass().add("order-label");
                 orderLabel.setWrapText(true);
                 orderLabel.setMaxWidth(600);
-
+                
                 // Kliknięcie w etykietę -> alert z pytaniem o refund
                 orderLabel.setOnMouseClicked(event -> {
+                    int userLoyaltyPoints = controller.getAccountListing().getAccountById(controller.getAccountId()).getLoyaltyPoints();
+                    Price moneyToRefund = order.getPrice();
+                    int loyaltyPointsToRemove = moneyToRefund.getDollars();
+                    String message = "Do you want to refund this order?";
+                    if (loyaltyPointsToRemove > userLoyaltyPoints) {
+                        moneyToRefund.subtractEquals(new Price(loyaltyPointsToRemove - userLoyaltyPoints, 0));
+                        loyaltyPointsToRemove = userLoyaltyPoints;
+                    }
+                    final int pointsToRemove = loyaltyPointsToRemove;
+                    String pointsLoseInfo = "You will lose " + loyaltyPointsToRemove + " loyalty points.";
+                    String moneyRefundInfo = "You will get " + moneyToRefund + " refunded.";
                     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmationAlert.setTitle("Order refund");
                     confirmationAlert.setHeaderText(null);
-                    confirmationAlert.setContentText("Do you want to refund this order?");
+                    confirmationAlert.setContentText(message + "\n" + moneyRefundInfo + "\n"+ pointsLoseInfo  );
 
                     ButtonType buttonYes = new ButtonType("Yes");
                     ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
                     confirmationAlert.getButtonTypes().setAll(buttonYes, buttonNo);
-
+                    
                     confirmationAlert.showAndWait().ifPresent(response -> {
                         if (response == buttonYes) {
                             System.out.println("Refunding order: " + order.getOrder_id());
@@ -146,7 +158,8 @@ public class OrderHistoryPage implements Page {
                             // Aktualizacja w bazie: usunięcie zamówienia
                             AccountRepository.removeOrderById(order.getOrder_id());
                             // Zwracamy środki na konto
-                            AccountRepository.addBalance(controller.getAccountId(), order.getPrice().toDouble());
+                            AccountRepository.addBalance(controller.getAccountId(), moneyToRefund.toDouble());
+                            AccountRepository.takeLoyaltyPoints(controller.getAccountId(), pointsToRemove);
                             // Odświeżamy widok konta
                             controller.getAccountListing().updateAccount(controller.getAccountId());
                         }

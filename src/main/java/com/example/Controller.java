@@ -263,7 +263,7 @@ public class Controller {
                         }
                         
                     default:
-                        int newLoyaltyPoints = (int) (basket.getTotalPrice() / 10);
+                        int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Payment Successful");
                         alert.setHeaderText(null);
@@ -277,6 +277,7 @@ public class Controller {
                             AccountRepository.addOrder(accountId, basket);
                             AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints);
                             accountsListing.updateAccount(accountId);
+                            orderHistoryListing.loadOrderHistory(accountId);
                         }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
@@ -288,7 +289,7 @@ public class Controller {
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
                         container.getChildren().add(backetPage.getPage());
-                        this.orderHistoryListing.loadOrderHistory(accountId);
+                        
                         break;  
                 }
             }
