@@ -48,7 +48,7 @@ public class OrderHistoryPage implements Page {
         title.getStyleClass().add("page-title");
 
         HBox searchBox = new HBox();
-        searchBox.getStyleClass().add("order-history-search-box");
+        searchBox.getStyleClass().add("search-box");
 
         TextField searchField = new TextField();
         searchField.setPromptText("Find in history...");

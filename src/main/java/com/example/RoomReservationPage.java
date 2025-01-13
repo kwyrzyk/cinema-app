@@ -135,13 +135,14 @@ public class RoomReservationPage implements Page {
                     } else {
                         boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime);
                         if (reservationSuccesful) {
-                            Controller
-                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION, 
+                            Controller.showAlert(
+                            Alert.AlertType.INFORMATION, 
+                            "Reservation successful",
                             "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 
                             "\nDate: " + selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + 
                             "\nFrom: " + startDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + 
-                            "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-                            successAlert.showAndWait();
+                            "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+                            );
                         } else {
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Room is already reserved for this time.");
                             errorAlert.showAndWait();

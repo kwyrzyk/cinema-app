@@ -63,6 +63,7 @@ public class Controller {
     private FoodListing foodListing = new FoodListing();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
+    private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards();
    
     @FXML
@@ -102,6 +103,22 @@ public class Controller {
         return this.accountId;
     }
 
+    public List<Food> getListOfFoods(){
+        return this.listOfFoods;
+    }
+
+    public List<Drink> getListOfDrinks(){
+        return this.listOfDrinks;
+    }
+
+    public List<Discount> getListOfDiscounts(){
+        return this.listOfDiscounts;
+    }
+
+    public List<PointsReward> getListOfRewards(){
+        return this.listOfRewards;
+    }
+
     public List<Tag> getListOfTags(){
         return this.listOfTags;
     }
@@ -134,19 +151,19 @@ public class Controller {
             case "pegiBtn" -> repertoirePage.togglePegiList();
             case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
-                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket, listOfFoods);
+                FoodsPage foodPage = new FoodsPage(this);
                 container.getChildren().clear();
-                container.getChildren().add(foodMenu.getFoodListVBox());
+                container.getChildren().add(foodPage.getPage());
             }
             case "drinksBtn" -> {
-                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket, listOfDrinks);
+                DrinksPage drinksPage = new DrinksPage(this);
                 container.getChildren().clear();
-                container.getChildren().add(drinkMenu.getDrinkListVBox());
+                container.getChildren().add(drinksPage.getPage());
             }
             case "discountsBtn" ->{
-                DiscountsMenu discountsMenu = new DiscountsMenu(basket, discountListing.getActiveDiscounts());
+                DiscountsPage discountsPage = new DiscountsPage(this);
                 container.getChildren().clear();
-                container.getChildren().add(discountsMenu.getDiscountListVBox());
+                container.getChildren().add(discountsPage.getPage());
             }
             case "pointsRewardsBtn" ->{
                 if (accountId == 0){
@@ -158,9 +175,9 @@ public class Controller {
                     alert.setContentText("You need to log in first.");
                     alert.showAndWait();
                 } else {
-                    PointsRewardsMenu pointsRewardsMenu = new PointsRewardsMenu(this, listOfRewards);
+                    PointsRewardsPage pointsRewardsPage = new PointsRewardsPage(this);
                     container.getChildren().clear();
-                    container.getChildren().add(pointsRewardsMenu.getRewardListVBox());
+                    container.getChildren().add(pointsRewardsPage.getPage());
                 }
             }
             case "signBtn"-> {

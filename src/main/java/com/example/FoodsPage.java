@@ -1,0 +1,118 @@
+package com.example;
+
+import com.example.database.FoodRepository;
+import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.Food;
+import com.example.database.db_classes.Price;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.util.Callback;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class FoodsPage implements Page {
+    private final VBox pageContent = new VBox();
+    private final ScrollPane scrollPane = new ScrollPane(pageContent);
+    private final VBox foodBox = new VBox(scrollPane);
+    private final VBox foodItemsBox = new VBox();
+    private final List<Food> allFoods;
+    private List<Food> displayedFoods;
+    private final Basket basket;
+
+    public FoodsPage(Controller controller) {
+        this.basket = controller.basket;
+        this.allFoods = controller.getListOfFoods();
+        this.displayedFoods = new ArrayList<>(this.allFoods);
+
+        createContent();
+    }
+
+    private void createContent() {
+        foodBox.getStyleClass().add("page");
+        scrollPane.getStyleClass().add("scroll-pane");
+        scrollPane.setFitToWidth(true);
+        pageContent.getStyleClass().add("wide-box");
+        foodItemsBox.getStyleClass().add("products-items-box");
+
+        VBox mainContainer = new VBox();
+        mainContainer.getStyleClass().add("page");
+
+        Label title = new Label("Food Menu");
+        title.getStyleClass().add("page-title");
+
+        HBox searchBox = new HBox();
+        searchBox.getStyleClass().add("search-box");
+
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search for food...");
+        searchField.getStyleClass().add("input-field");
+
+        Button searchButton = new Button("Search");
+        searchButton.getStyleClass().add("btn");
+
+        searchButton.setOnAction(event -> {
+            String query = searchField.getText().trim().toLowerCase();
+            filterFoods(query);
+        });
+
+        searchBox.getChildren().addAll(searchField, searchButton);
+
+        updateFoodsView(displayedFoods);    
+        
+        pageContent.getChildren().addAll(title, searchBox, foodItemsBox);
+    }
+
+    private void updateFoodsView(List<Food> foodsToDisplay) {
+        foodItemsBox.getChildren().clear();
+
+        if (foodsToDisplay.isEmpty()) {
+            Label noFoodsLabel = new Label("No foods available.");
+            noFoodsLabel.getStyleClass().add("no-items-label");
+            foodItemsBox.getChildren().add(noFoodsLabel);
+        } else {
+            for (Food food : foodsToDisplay) {
+                VBox foodBox = new VBox();
+                foodBox.getStyleClass().add("product-box");
+
+                Label nameLabel = new Label(food.getName());
+                nameLabel.getStyleClass().add("product-name");
+
+                VBox priceBox = new VBox();
+                for (Map.Entry<String, Pair<Integer, Price>> entry : food.getPrices().entrySet()) {
+                    String size = entry.getKey();
+                    Price price = entry.getValue().getValue();
+                    Label sizePriceLabel = new Label("Size: " + size + " - Price: " + price);
+                    sizePriceLabel.getStyleClass().add("product-price");
+
+                    sizePriceLabel.setOnMouseClicked(event -> {
+                        basket.addFood(food, size);
+                    });
+
+                    priceBox.getChildren().add(sizePriceLabel);
+                }
+
+                foodBox.getChildren().addAll(nameLabel, priceBox);
+                foodItemsBox.getChildren().add(foodBox);
+            }
+        }
+    }
+
+    private void filterFoods(String query) {
+        if (query.isEmpty()) {
+            displayedFoods = new ArrayList<>(allFoods);
+        } else {
+            displayedFoods = allFoods.stream()
+                .filter(food -> food.getName().toLowerCase().contains(query))
+                .collect(Collectors.toList());
+        }
+        updateFoodsView(displayedFoods);
+    }
+
+    public VBox getPage() {
+        return foodBox;
+    }
+}

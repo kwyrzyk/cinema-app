@@ -187,13 +187,13 @@
     -fx-cursor: hand;
 } */
 
- /* Order history */
-.order-history-search-box {
+.search-box {
     -fx-background-color: transparent;
     -fx-alignment: center;
     -fx-max-width: infinity;
     -fx-spacing: 10;
 }
+ /* Order history */
 
 .scroll-pane {
     -fx-background-color: transparent;
@@ -219,7 +219,44 @@
     -fx-max-width: infinity;
     -fx-alignment: top-center;
 }
+/* FoodPage & DrinksPage & DiscountPage & PointRewardsPage */
+.products-items-box {
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-spacing: 10;
+    -fx-padding: 20;
+}
+.product-box {
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-spacing: 5;
+}
 
+.product-name {
+    -fx-alignment: center;
+    -fx-font-size: 20;
+}
+.product-price {
+    -fx-max-width: infinity;
+    -fx-alignment: center;
+    -fx-font-size: 16;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
+    -fx-transition: all 0.3s ease;
+    -fx-border-width: 1px;
+    -fx-border-color: transparent; 
+}
+.product-price:hover {
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
+    -fx-border-color: -accent-color; 
+}
+.no-items-label {
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-padding: 20;
+    -fx-font-size: 20; /* Rozmiar czcionki */
+}
 /* ////////// */
 
 .vbox {
@@ -318,6 +355,7 @@
 }
 
 .item {
+    -fx-cursor: hand;
     -fx-background-color: transparent;
     -fx-padding: 10px;
     -fx-wrap-text: true;
