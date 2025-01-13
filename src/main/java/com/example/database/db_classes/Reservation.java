@@ -13,9 +13,9 @@ public class Reservation {
         this.room = screeningRoom;
     }
 
-    LocalDateTime getStarTime(){ return startTime; }
-    LocalDateTime getEndTime(){ return endTime; }
-    ScreeningRoom getRoom(){ return room; }
+    public LocalDateTime getStarTime(){ return startTime; }
+    public LocalDateTime getEndTime(){ return endTime; }
+    public ScreeningRoom getRoom(){ return room; }
 
     @Override
     public String toString() {

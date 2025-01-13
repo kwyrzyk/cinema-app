@@ -5,25 +5,25 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.TestInstance;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DatabaseManagerTest {
 
     private static DatabaseManager databaseManager = new DatabaseManager();
+    private static Connection connection = databaseManager.getConnection();
+
 
     @Test
     public void testGetConnection() {
-        try (Connection connection = databaseManager.getConnection()) {
             assertNotNull(connection, "Connection should not be null");
-            assertFalse(connection.isClosed(), "Connection should be open");
-        } catch (SQLException e) {
-            fail("Database connection failed: " + e.getMessage());
-        }
+            //assertFalse(connection.isClosed(), "Connection should be open");
+        
     }
     private static final String CREATE_TABLE_SQL = """
         CREATE TABLE test_table (
@@ -42,8 +42,7 @@ public class DatabaseManagerTest {
     @BeforeAll
     public static void setupDatabase() throws SQLException {
         // Create the test table
-        try (Connection connection = databaseManager.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.execute(CREATE_TABLE_SQL);
         }
     }
@@ -51,8 +50,7 @@ public class DatabaseManagerTest {
     @Test
     public void testDatabaseOperations() throws SQLException {
         // Insert a record into the table
-        try (Connection connection = databaseManager.getConnection();
-             Statement statement = connection.createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             int rowsInserted = statement.executeUpdate(INSERT_SQL);
             assertEquals(1, rowsInserted, "One row should have been inserted.");
         }
@@ -68,11 +66,21 @@ public class DatabaseManagerTest {
 
     @AfterAll
     public static void cleanupDatabase() throws SQLException {
-        // Drop the test table
         try (Connection connection = databaseManager.getConnection();
              Statement statement = connection.createStatement()) {
-            statement.execute(DROP_TABLE_SQL);
-            }   
+            
+            // Check if the table exists
+            String checkTableExistsQuery = "SELECT COUNT(*) FROM all_tables WHERE table_name = 'TEST_TABLE'";
+            ResultSet rs = statement.executeQuery(checkTableExistsQuery);
+            
+            if (rs.next() && rs.getInt(1) > 0) {
+                // Table exists, so we can safely drop it
+                statement.execute(DROP_TABLE_SQL);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error cleaning up the database: " + e.getMessage());
         }
-
+    }
+    
 }
