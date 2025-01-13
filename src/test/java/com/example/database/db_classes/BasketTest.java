@@ -2,12 +2,15 @@ package com.example.database.db_classes;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
 import java.util.List;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BasketTest {
 
     private Basket basket;
@@ -42,8 +45,6 @@ public class BasketTest {
 
     @Test
     public void testAddFoodItem() {
-        // Add a small pizza
-        
         basket.addFood(foodItem, "Small");
 
         // Check if the basket contains the added food item
@@ -66,8 +67,6 @@ public class BasketTest {
     }
 
     
-
-
     @Test
     public void testGetTotalQuantity() {
         // Add food, drink, and items to the basket
@@ -90,6 +89,7 @@ public class BasketTest {
         // Check if the discount is active during the time window
         assertTrue(timeLimitedDiscount.isDiscountActive(currentTime), "Discount should be active during the specified time window.");
     }
+
 
     @Test
     public void testClearBasket() {

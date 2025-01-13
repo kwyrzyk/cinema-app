@@ -5,13 +5,14 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.TestInstance;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DatabaseManagerTest {
 
     private static DatabaseManager databaseManager = new DatabaseManager();
