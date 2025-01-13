@@ -288,6 +288,15 @@
     -fx-padding: 20;
     -fx-font-size: 20; /* Rozmiar czcionki */
 }
+/* Seats page */
+.seats-grid {
+    -fx-hgap: 10; /* Odstęp poziomy między kolumnami */
+    -fx-vgap: 10;
+    -fx-padding: 0 0 10 0;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-position: center;
+}
 /* ////////// */
 
 .vbox {
@@ -436,7 +445,7 @@
     -fx-pref-height: 40px;
 }
 
-.row-label {
+.seats-row-label {
     -fx-alignment: center; /* Wyśrodkowanie tekstu */
     -fx-font-size: 16px;  /* Rozmiar czcionki */
     -fx-text-fill: white; /* Kolor tekstu */
