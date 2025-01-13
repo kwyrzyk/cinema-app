@@ -73,8 +73,17 @@ public class FilmPage implements Page {
         showingsBox.getStyleClass().add("wide-box");
         showingsBox.getChildren().addAll(showingsLabel, showingsItemsBox);
 
+        Button backButton = new Button("Back");
+        backButton.getStyleClass().add("btn");
+        // backButton.setId("repertoireBackBtn");
+        backButton.setOnAction(e -> {
+            controller.container.getChildren().clear();
+            controller.container.getChildren().add(new RepertoirePage(controller).getPage());
+        });
+        VBox backBtnBox = new VBox(backButton);
+        backBtnBox.getStyleClass().add("wide-box");
 
-        pageContent.getChildren().addAll(title, infoBox, showingsBox);
+        pageContent.getChildren().addAll(title, infoBox, showingsBox, backBtnBox);
     }
 
     private HBox getRow(String key, String value) {
