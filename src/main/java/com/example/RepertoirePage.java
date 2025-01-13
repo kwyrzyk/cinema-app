@@ -65,7 +65,7 @@ public class RepertoirePage implements Page {
         filmItemsBox.getChildren().clear();
 
         if (filmsToDisplay.isEmpty()) {
-            Label noFilmsLabel = new Label("No rewards available.");
+            Label noFilmsLabel = new Label("No films available.");
             noFilmsLabel.getStyleClass().add("no-items-label");
             filmItemsBox.getChildren().add(noFilmsLabel);
         } else {
@@ -77,7 +77,7 @@ public class RepertoirePage implements Page {
                 filmLabel.getStyleClass().add("product-price");
 
                 filmLabel.setOnMouseClicked(event -> {
-                    FilmPage filmPage = new FilmPage(this, film);
+                    FilmPage filmPage = new FilmPage(controller, film);
                     controller.container.getChildren().clear();
                     controller.container.getChildren().add(filmPage.getPage());
                 });

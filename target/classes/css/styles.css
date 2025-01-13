@@ -193,7 +193,38 @@
     -fx-max-width: infinity;
     -fx-spacing: 10;
 }
- /* Order history */
+/* Film Page */
+.last-info-row{
+    -fx-border-color: transparent;
+}
+.info-row {
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+    -fx-max-width: infinity;
+    -fx-border-color: -accent-color;
+    -fx-border-width: 0 0 1 0;
+    /* -fx-spacing: 10; */
+}
+.last-info-row{
+    -fx-border-color: transparent;
+}
+.info-key {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-min-width: 200;
+    -fx-padding: 10;
+}
+.info-value {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-padding: 10;
+    -fx-wrap-text: true;
+    -fx-border-color: -accent-color;
+    -fx-border-width: 0 0 0 1;
+}
+
+/* Order history */
 
 .scroll-pane {
     -fx-background-color: transparent;
