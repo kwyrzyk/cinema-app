@@ -31,4 +31,6 @@ public class Showing {
     public LocalDateTime getEndTime() {return endTime;}
     public void setShowTime(LocalDateTime showTime) { this.showTime = showTime; }
     public List<Seat> getSeats(){ return this.seats; }
+    public void setSeats(List<Seat> seats){ this.seats = seats; }
+
 }

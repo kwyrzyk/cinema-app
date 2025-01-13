@@ -10,13 +10,35 @@ import java.util.List;
 
 public class ShowingRepository {
 
-    
+    static public List<Seat> getSeatsByShowingId(int showingId, Connection connection){
+        String seatQuery = "SELECT id_seat, id_showing, row_number, seat_number, status " +
+                           "FROM seats WHERE id_showing = ?";
+        List<Seat> seats = new ArrayList<>();
+        try (PreparedStatement seatStmt = connection.prepareStatement(seatQuery)) {
+            seatStmt.setInt(1, showingId);
+            try (ResultSet seatRs = seatStmt.executeQuery()) {
+                while (seatRs.next()) {
+                    int seatId = seatRs.getInt("id_seat");
+                    int rowNumber = seatRs.getInt("row_number");
+                    int seatNumber = seatRs.getInt("seat_number");
+                    String status = seatRs.getString("status");
+
+                    Seat seat = new Seat(seatId, showingId, rowNumber, seatNumber, status);
+                    seats.add(seat);
+                }
+            }
+        }catch (SQLException e) {
+            e.getStackTrace();
+            System.err.println(e.getMessage());
+        }
+        return seats;
+    }
+
+
     static public List<Showing> getShowingsByFilmIdWithSeats(int filmId, Connection connection) throws SQLException {
         List<Showing> showings = new ArrayList<>();
         String showingQuery = "SELECT id_showing, id_room, show_time, end_time FROM showing WHERE id_film = ?";
-        String seatQuery = "SELECT id_seat, id_showing, row_number, seat_number, status " +
-                           "FROM seats WHERE id_showing = ?";
-
+        
         try (PreparedStatement showingStmt = connection.prepareStatement(showingQuery)) {
 
             showingStmt.setInt(1, filmId);
@@ -32,21 +54,7 @@ public class ShowingRepository {
 
 
                     // Fetch seats for the showing
-                    List<Seat> seats = new ArrayList<>();
-                    try (PreparedStatement seatStmt = connection.prepareStatement(seatQuery)) {
-                        seatStmt.setInt(1, showingId);
-                        try (ResultSet seatRs = seatStmt.executeQuery()) {
-                            while (seatRs.next()) {
-                                int seatId = seatRs.getInt("id_seat");
-                                int rowNumber = seatRs.getInt("row_number");
-                                int seatNumber = seatRs.getInt("seat_number");
-                                String status = seatRs.getString("status");
-
-                                Seat seat = new Seat(seatId, showingId, rowNumber, seatNumber, status);
-                                seats.add(seat);
-                            }
-                        }
-                    }
+                    List<Seat> seats = getSeatsByShowingId(showingId, connection);
 
                     // Create Showing object and add to the list
                     Showing showing = new Showing(showingId, filmId, roomId, showTime, endTime, seats);
@@ -57,6 +65,8 @@ public class ShowingRepository {
 
         return showings;
     }
+
+
 
     public static boolean reserveSeat(int seatId, Connection connection) {
         String updateQuery = "UPDATE seats " +
