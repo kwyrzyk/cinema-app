@@ -35,11 +35,11 @@ public class LoginPage {
         Label pageTitle = new Label("Sign in");
         pageTitle.getStyleClass().add("page-title");
 
-        TextField usernameField = new TextField();
+        usernameField = new TextField();
         usernameField.setPromptText("Username");
         usernameField.getStyleClass().add("input-field");
 
-        PasswordField passwordField = new PasswordField();
+        passwordField = new PasswordField();
         passwordField.setPromptText("Password");
         passwordField.getStyleClass().add("input-field");
 
@@ -78,7 +78,7 @@ public class LoginPage {
             );
             usernameField.clear();
             passwordField.clear();
-            
+
             controller.login(account.getIdAccount());
             controller.orderHistoryListing.loadOrderHistory(account.getIdAccount());
         } else {
