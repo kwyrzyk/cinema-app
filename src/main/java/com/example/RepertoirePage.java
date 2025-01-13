@@ -71,23 +71,25 @@ public class RepertoirePage implements Page {
     public void makeRepertoireContent(List<Film> Films){
         this.sessionListGenerator = new Movie(this.controller, Films);
         this.sessionListVbox = sessionListGenerator.getSessionListVBox();
-        this.sessionListVbox.getStyleClass().add("content");
+        this.sessionListVbox.getStyleClass().add("page");
     }
     @Override
     public VBox getPage() {
+        System.out.println("Repertoire page");
         HBox main = new HBox(this.sessionListVbox);
-
+        main.getStyleClass().add("page");
         VBox layout = new VBox(main);
-        layout.getStyleClass().add("newpage");
+        layout.getStyleClass().add("page");
         return layout;
     }
 
     public VBox getBackPage() {
+        System.out.println("Repertoire page");
         makeRepertoireContent(this.filmListing.getFilms());
         HBox main = new HBox(this.sessionListVbox);
 
         VBox layout = new VBox(main);
-        layout.getStyleClass().add("newpage");
+        layout.getStyleClass().add("page");
         return layout;
     }
 

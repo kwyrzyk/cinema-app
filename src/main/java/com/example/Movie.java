@@ -16,7 +16,6 @@ import javafx.util.Callback;
 public class Movie {
 
     private final List<Film> listOfFilms;
-
     private Controller controller;
 
     public Movie(Controller controller, List<Film> listOfFilms) {
@@ -29,11 +28,16 @@ public class Movie {
     }
 
     public VBox getSessionListVBox() {
+        System.out.println("Movie page");
         return getSessionListVBox(this.listOfFilms);
     }
 
     public VBox getSessionListVBox(List<Film> films) {
+        System.out.println("Movie page");
         // Pobranie listy filmów z FilmListing
+        Label pageTitle = new Label("Repertoire");
+        pageTitle.getStyleClass().add("page-title");
+
         List<Film> filmsToUse = (films != null) ? films : this.listOfFilms;
         ListView<Film> filmListView = new ListView<>();
         filmListView.getStyleClass().add("lists");
@@ -56,7 +60,8 @@ public class Movie {
 
         HBox searchPanel = createSearchPanel(filmListView);
 
-        mainContainer.getChildren().addAll(searchPanel, filmListView);
+        mainContainer.getChildren().addAll(pageTitle, searchPanel, filmListView);
+        mainContainer.getStyleClass().add("page");
 
         return mainContainer;
     }
@@ -65,11 +70,11 @@ public class Movie {
         // Pole tekstowe do wyszukiwania
         javafx.scene.control.TextField searchField = new javafx.scene.control.TextField();
         searchField.setPromptText("Enter movie name...");
-        searchField.getStyleClass().add("searchfield");
+        searchField.getStyleClass().add("input-field");
 
         // Przycisk wyszukiwania
         javafx.scene.control.Button searchButton = new javafx.scene.control.Button("Search");
-        searchButton.getStyleClass().add("searchbutton");
+        searchButton.getStyleClass().add("btn");
 
         searchButton.setOnAction(e -> {
             String query = searchField.getText().toLowerCase();
@@ -81,7 +86,7 @@ public class Movie {
         });
 
         HBox searchPanel = new HBox(10, searchField, searchButton);
-        searchPanel.getStyleClass().add("searchpanel");
+        searchPanel.getStyleClass().add("search-panel");
 
         return searchPanel;
     }
@@ -121,7 +126,6 @@ public class Movie {
                 });
     
                 content.getChildren().add(filmLabel);
-                content.getStyleClass().add("bartek");
                 setGraphic(content);
             }
         }

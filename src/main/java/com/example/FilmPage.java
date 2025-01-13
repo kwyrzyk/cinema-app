@@ -13,6 +13,8 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class FilmPage implements Page {
     private final VBox filmPage;
@@ -20,16 +22,18 @@ public class FilmPage implements Page {
 
     public FilmPage(Controller controller, Film filmInfo) {
         this.controller = controller;
+
+        Label pageTitle = new Label("Film info");
+        pageTitle.getStyleClass().add("page-title");
+
         List<Actor> actorsList = filmInfo.getActors();
         String actors = "";
         for (Actor actor : actorsList) {
             actors = actors.concat(actor.toString() + " ");
         }
-        System.out.println(actors);
-
 
         ListView<Showing> showingsListView = new ListView<>();
-        showingsListView.getStyleClass().add("lists");
+        showingsListView.getStyleClass().add("list");
         showingsListView.getItems().addAll(filmInfo.getShowings());
         showingsListView.setCellFactory(listView -> new ShowingListCell(controller, this, filmInfo));
 

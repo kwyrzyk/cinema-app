@@ -50,11 +50,11 @@ public class Controller {
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
     private AccountListing accountsListing = new AccountListing();
     
-    private LoginPage loginPage = new LoginPage( this, accountsListing);
-    private RegisterPage registerPage = new RegisterPage(accountsListing);
+    private LoginPage loginPage = new LoginPage(this, accountsListing);
+    private RegisterPage registerPage = new RegisterPage(this, accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
     private DiscountListing discountListing = new DiscountListing();
-    private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
+    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this, accountsListing);
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;
@@ -71,8 +71,6 @@ public class Controller {
     private VBox sideBar;
     @FXML
     public VBox optionsBar;
-    @FXML
-    private VBox newSidebar;
     @FXML
     public VBox container;
 
@@ -120,6 +118,7 @@ public class Controller {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
         optionButton.setOnAction(action);
+        optionButton.getStyleClass().add("options-bar-btn");
         optionsBar.getChildren().add(optionButton);
     }
 
@@ -152,7 +151,7 @@ public class Controller {
             case "pointsRewardsBtn" ->{
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
+                    container.getChildren().add(loginPage.getPage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("You are not loged in");
                     alert.setHeaderText(null);
@@ -166,17 +165,17 @@ public class Controller {
             }
             case "signBtn"-> {
                 container.getChildren().clear();
-                container.getChildren().add(loginPage.getLoginContainer());
+                container.getChildren().add(loginPage.getPage());
             }
             case "registerBtn" -> {
                 container.getChildren().clear();
-                container.getChildren().add(registerPage.getRegisterContainer());
+                container.getChildren().add(registerPage.getPage());
                 break;
             }
             case "optionsBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
+                    container.getChildren().add(loginPage.getPage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("You are not loged in");
                     alert.setHeaderText(null);
@@ -184,13 +183,13 @@ public class Controller {
                     alert.showAndWait();
                 } else {
                     container.getChildren().clear();
-                    container.getChildren().add(accountOptionsPage.getOptionContainer());
+                    container.getChildren().add(accountOptionsPage.getPage());
                 }
             }
             case "orderHistoryBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
+                    container.getChildren().add(loginPage.getPage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("You are not loged in");
                     alert.setHeaderText(null);
@@ -206,7 +205,7 @@ public class Controller {
             case "balanceBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
+                    container.getChildren().add(loginPage.getPage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("You are not loged in");
                     alert.setHeaderText(null);
@@ -222,7 +221,7 @@ public class Controller {
             case "reserveRoomBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
+                    container.getChildren().add(loginPage.getPage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("You are not loged in");
                     alert.setHeaderText(null);
@@ -238,7 +237,7 @@ public class Controller {
             case "reservationsBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
+                    container.getChildren().add(loginPage.getPage());
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("You are not loged in");
                     alert.setHeaderText(null);
@@ -435,6 +434,14 @@ public class Controller {
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
         }
+    }
+
+    public static void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
