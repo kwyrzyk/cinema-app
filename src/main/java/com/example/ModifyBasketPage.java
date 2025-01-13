@@ -60,7 +60,7 @@ public class ModifyBasketPage implements Page {
                     // addOption("Type", "typeBtn", this::handleOptionClick);
                     // addOption("Other", "otherBtn", this::handleOptionClick);
                     controller.container.getChildren().clear();
-                    controller.container.getChildren().add(controller.repertoirePage.getBackPage());
+                    // controller.container.getChildren().add(controller.repertoirePage.getBackPage());
                     controller.optionsBar.getChildren().clear();
                     controller.addOption("Cancel", "cancelBtn", controller::handleOptionClick);
                 });

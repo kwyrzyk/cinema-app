@@ -18,10 +18,10 @@ import javafx.scene.text.FontWeight;
 
 public class FilmPage implements Page {
     private final VBox filmPage;
-    private final Controller controller;
+    // private final Controller controller;
 
-    public FilmPage(Controller controller, Film filmInfo) {
-        this.controller = controller;
+    public FilmPage(RepertoirePage repertoirePage, Film filmInfo) {
+        // this.controller = controller;
 
         Label pageTitle = new Label("Film info");
         pageTitle.getStyleClass().add("page-title");
@@ -35,7 +35,7 @@ public class FilmPage implements Page {
         ListView<Showing> showingsListView = new ListView<>();
         showingsListView.getStyleClass().add("list");
         showingsListView.getItems().addAll(filmInfo.getShowings());
-        showingsListView.setCellFactory(listView -> new ShowingListCell(controller, this, filmInfo));
+        // showingsListView.setCellFactory(listView -> new ShowingListCell(repertoirePage, this, filmInfo));
 
         double rowHeight = 24;
         showingsListView.setPrefHeight(filmInfo.getShowings().size() * rowHeight);
@@ -52,7 +52,7 @@ public class FilmPage implements Page {
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("back-btn");
         backButton.setId("repertoireBackBtn");
-        backButton.setOnAction(this.controller::handleOptionClick);
+        // backButton.setOnAction(this.controller::handleOptionClick);
 
         filmPage = new VBox();
         filmPage.getStyleClass().add("film-page");

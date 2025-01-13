@@ -125,7 +125,7 @@ public class SeatsPage implements Page {
             Parent parent = backButton.getParent().getParent().getParent();
             VBox container = (VBox) parent;
             container.getChildren().clear();
-            container.getChildren().add(new FilmPage(controller, filmInfo).getPage());
+            // container.getChildren().add(new FilmPage(controller, filmInfo).getPage());
         });
 
         // Złożenie całej strony

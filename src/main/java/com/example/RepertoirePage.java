@@ -1,157 +1,105 @@
 package com.example;
 
-import java.util.List;
-
+import com.example.database.AccountRepository;
 import com.example.database.db_classes.Film;
-import com.example.database.db_classes.Tag;
-import com.example.listing.FilmListing;
 
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RepertoirePage implements Page {
-    private final ListView<Tag> categoryList = new ListView<>();
-    private boolean isCategoryListVisible = false;
-    private boolean isPegiListVisible = false;
-    private Movie sessionListGenerator;
-    private VBox sessionListVbox;
-    private List<Tag> listOfTags;
+
+    private final VBox pageContent = new VBox();
+    private final ScrollPane scrollPane = new ScrollPane(pageContent);
+    private final VBox repertoireBox = new VBox(scrollPane);
+    private final VBox filmItemsBox = new VBox();
     private final List<Film> allFilms;
-    private final ListView<Integer> listPegi = new ListView<>();
-    private final List<Integer> listOfPegi;
-    FilmListing filmListing;
-    
+    private List<Film> displayedFilms;
+    private final Controller controller;
 
-    private Controller controller;
-    
-    public RepertoirePage(Controller controller, FilmListing filmListing) {
+    public RepertoirePage(Controller controller) {
         this.controller = controller;
-        this.listOfTags = controller.getListOfTags();
-        this.filmListing = filmListing;
-        this.allFilms = filmListing.getFilms();
-        this.listOfPegi = this.controller.getListOfPegi();
-        categoryList.setVisible(false);
-        categoryList.setManaged(false);
-        categoryList.getStyleClass().add("lists");
-        categoryList.setOnMouseClicked(this::handleCategoryClick);
-        categoryList.setCellFactory(param -> new ListCell<Tag>() {
-            @Override
-            protected void updateItem(Tag item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getName());
-                }
-            }
-        });
+        this.allFilms = controller.getListOfFilms();
+        this.displayedFilms = new ArrayList<>(this.allFilms);
 
-        listPegi.setVisible(false);
-        listPegi.setManaged(false);
-        listPegi.getStyleClass().add("lists");
-        listPegi.setOnMouseClicked(this::handlePegiClick);
-        listPegi.setCellFactory(param -> new ListCell<Integer>() {
-            @Override
-            protected void updateItem(Integer pegi, boolean empty) {
-                super.updateItem(pegi, empty);
-                if (empty || pegi == null) {
-                    setText(null);
-                } else {
-                    setText(pegi.toString());
-                }
-            }
-        });
-
-        makeRepertoireContent(this.allFilms);
+        createContent();
     }
 
-    public void makeRepertoireContent(List<Film> Films){
-        this.sessionListGenerator = new Movie(this.controller, Films);
-        this.sessionListVbox = sessionListGenerator.getSessionListVBox();
-        this.sessionListVbox.getStyleClass().add("page");
+    private void createContent() {
+        repertoireBox.getStyleClass().add("page");
+        scrollPane.getStyleClass().add("scroll-pane");
+        scrollPane.setFitToWidth(true);
+        pageContent.getStyleClass().add("wide-box");
+        filmItemsBox.getStyleClass().add("products-items-box");
+
+        Label title = new Label("Repertorie");  
+        title.getStyleClass().add("page-title");
+
+        HBox searchBox = new HBox();
+        searchBox.getStyleClass().add("search-box");
+
+        TextField searchField = new TextField();
+        searchField.setPromptText("Search for films...");
+        searchField.getStyleClass().add("input-field");
+
+        Button searchButton = new Button("Search");
+        searchButton.getStyleClass().add("btn");
+
+        searchButton.setOnAction(event -> {
+            String query = searchField.getText().trim().toLowerCase();
+            filterFilms(query);
+        });
+
+        searchBox.getChildren().addAll(searchField, searchButton);
+
+        updateFilmsView(displayedFilms);
+
+        pageContent.getChildren().addAll(title, searchBox, filmItemsBox);
     }
-    @Override
+
+    private void updateFilmsView(List<Film> filmsToDisplay) {
+        filmItemsBox.getChildren().clear();
+
+        if (filmsToDisplay.isEmpty()) {
+            Label noFilmsLabel = new Label("No rewards available.");
+            noFilmsLabel.getStyleClass().add("no-items-label");
+            filmItemsBox.getChildren().add(noFilmsLabel);
+        } else {
+            for (Film film : filmsToDisplay) {
+                VBox filmBox = new VBox();
+                filmBox.getStyleClass().add("product-box");
+
+                Label filmLabel = new Label(film.getTitle());
+                filmLabel.getStyleClass().add("product-price");
+
+                filmLabel.setOnMouseClicked(event -> {
+                    FilmPage filmPage = new FilmPage(this, film);
+                    controller.container.getChildren().clear();
+                    controller.container.getChildren().add(filmPage.getPage());
+                });
+
+                filmBox.getChildren().add(filmLabel);
+                filmItemsBox.getChildren().add(filmBox);
+            }
+        }
+    }
+
+    private void filterFilms(String query) {
+        if (query.isEmpty()) {
+            displayedFilms = new ArrayList<>(allFilms);
+        } else {
+            displayedFilms = allFilms.stream()
+                .filter(film -> film.toString().toLowerCase().contains(query))
+                .collect(Collectors.toList());
+        }
+        updateFilmsView(displayedFilms);
+    }
+
     public VBox getPage() {
-        System.out.println("Repertoire page");
-        HBox main = new HBox(this.sessionListVbox);
-        main.getStyleClass().add("page");
-        VBox layout = new VBox(main);
-        layout.getStyleClass().add("page");
-        return layout;
-    }
-
-    public VBox getBackPage() {
-        System.out.println("Repertoire page");
-        makeRepertoireContent(this.filmListing.getFilms());
-        HBox main = new HBox(this.sessionListVbox);
-
-        VBox layout = new VBox(main);
-        layout.getStyleClass().add("page");
-        return layout;
-    }
-
-    public void togglePegiList() {
-        if (isPegiListVisible) {
-            listPegi.setVisible(false);
-            listPegi.setManaged(false);
-            listPegi.getItems().clear();
-        } else {
-            listPegi.getItems().clear();
-            listPegi.getItems().addAll(listOfPegi);
-            listPegi.setPrefHeight((listOfPegi.size()) * 24); // Dostosuj wysokość
-            listPegi.setVisible(true);
-            listPegi.setManaged(true);
-        }
-
-        isPegiListVisible = !isPegiListVisible;
-    }
-
-    public void toggleCategoryList() {
-        if (isCategoryListVisible) {
-            categoryList.setVisible(false);
-            categoryList.setManaged(false);
-            categoryList.getItems().clear();
-        } else {
-            categoryList.getItems().clear();
-            categoryList.getItems().addAll(listOfTags);
-            categoryList.setPrefHeight((listOfTags.size()) * 24); // Dostosuj wysokość
-            categoryList.setVisible(true);
-            categoryList.setManaged(true);
-        }
-
-        isCategoryListVisible = !isCategoryListVisible;
-    }
-
-    private void handleCategoryClick(MouseEvent event) {
-        Tag selectedTag = categoryList.getSelectionModel().getSelectedItem();
-        if (selectedTag != null) {
-            System.out.println("Selected tag: " + selectedTag.getName());
-            List<Film> filmsWithTags = this.filmListing.getFilmsByTag(selectedTag);
-            makeRepertoireContent(filmsWithTags);
-            this.controller.container.getChildren().clear();
-            this.controller.container.getChildren().add(this.getPage());
-        }
-    }
-
-    private void handlePegiClick(MouseEvent event) {
-        Integer selectedPegi = listPegi.getSelectionModel().getSelectedItem();
-        if (selectedPegi != null) {
-            System.out.println("Selected Pegi: " + selectedPegi);
-            List<Film> filmsWithPegi = this.filmListing.getFilmsByPegi(selectedPegi);
-            makeRepertoireContent(filmsWithPegi);
-            this.controller.container.getChildren().clear();
-            this.controller.container.getChildren().add(this.getPage());
-        }
-    }
-
-    public ListView<Tag> getCategoryList() {
-        return this.categoryList;
-    }
-
-    public ListView<Integer> getPegiList() {
-        return this.listPegi;
+        return repertoireBox;
     }
 }

@@ -12,6 +12,7 @@ import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
+import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.PointsReward;
 import com.example.database.db_classes.PricedItem;
@@ -38,18 +39,18 @@ import javafx.stage.Stage;
 public class Controller {
     private Stage stage;
     private Scene scene;
-    private FilmListing filmListing = new FilmListing();
     private int accountId = 0;
     public Boolean modifyTicketMode = false;
     public PricedItem modifyingTicket;
-
+    
     private final List<Tag> listOfTags = TagsRepository.getAllTags();
     private final List<Integer> listOfPegi = List.of(3, 7, 12, 16, 18);
-    public RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
-
+    
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
     private AccountListing accountsListing = new AccountListing();
     
+    private FilmListing filmListing = new FilmListing();
+    private FoodListing foodListing = new FoodListing();
     private LoginPage loginPage = new LoginPage(this, accountsListing);
     private RegisterPage registerPage = new RegisterPage(this, accountsListing);
     private DrinksListing drinksListing = new DrinksListing();
@@ -60,11 +61,13 @@ public class Controller {
     public SeatsPage seatsPage;
     
     public Basket basket = new Basket();
-    private FoodListing foodListing = new FoodListing();
+    private final List<Film> listOfFilms = filmListing.getFilms();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards();
+    
+    public RepertoirePage repertoirePage = new RepertoirePage(this);
    
     @FXML
     private Label label;
@@ -101,6 +104,10 @@ public class Controller {
 
     public int getAccountId(){
         return this.accountId;
+    }
+
+    public List<Film> getListOfFilms(){
+        return this.listOfFilms;
     }
 
     public List<Food> getListOfFoods(){
@@ -146,10 +153,11 @@ public class Controller {
         switch (buttonId){
             case "repertoireBackBtn" ->{    
                 this.container.getChildren().clear();
-                container.getChildren().add(this.repertoirePage.getBackPage());
+                // TODO - add back button to repertoirePage
+                // container.getChildren().add(this.repertoirePage.getBackPage());
             }
-            case "pegiBtn" -> repertoirePage.togglePegiList();
-            case "categoryBtn" -> repertoirePage.toggleCategoryList();
+            // case "pegiBtn" -> repertoirePage.togglePegiList();
+            // case "categoryBtn" -> repertoirePage.toggleCategoryList();
             case "snacksBtn" -> {
                 FoodsPage foodPage = new FoodsPage(this);
                 container.getChildren().clear();
@@ -416,16 +424,16 @@ public class Controller {
 
         if(buttonId.equals("repertoireBtn")) {
             addOption("Category", "categoryBtn", this::handleOptionClick);
-            ListView<Tag> categoryListView = repertoirePage.getCategoryList();
-            categoryListView.setId("categoryList");
-            optionsBar.getChildren().add(categoryListView);
+            // ListView<Tag> categoryListView = repertoirePage.getCategoryList();
+            // categoryListView.setId("categoryList");
+            // optionsBar.getChildren().add(categoryListView);
             addOption("Pegi", "pegiBtn", this::handleOptionClick);
-            ListView<Integer> listPegi = repertoirePage.getPegiList();
-            listPegi.setId("pegiList");
-            optionsBar.getChildren().add(listPegi);
+            // ListView<Integer> listPegi = repertoirePage.getPegiList();
+            // listPegi.setId("pegiList");
+            // optionsBar.getChildren().add(listPegi);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
-            container.getChildren().add(repertoirePage.getBackPage());
+            container.getChildren().add(repertoirePage.getPage());
         } else if (buttonId.equals("roomsBtn")) {
             RoomReservationPage reservationPage = new RoomReservationPage(this);
             container.getChildren().add(reservationPage.getPage());
