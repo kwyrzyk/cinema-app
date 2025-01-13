@@ -389,7 +389,7 @@ public class Controller {
             }
             case "modifyTicketBtn" ->{
                 if (basket.containsTickets()) {
-                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this, basket);
+                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this);
                     container.getChildren().clear();
                     container.getChildren().add(modifyBasketPage.getPage());
                 } else {

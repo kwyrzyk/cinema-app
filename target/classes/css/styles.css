@@ -132,8 +132,7 @@
 }
 
 .info-label {
-    -fx-font-size: 16px; 
-    -fx-text-fill: #ffffff;
+    -fx-font-size: 20; 
     -fx-alignment: center;
     -fx-max-width: infinity;
 }
