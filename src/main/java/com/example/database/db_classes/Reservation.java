@@ -21,6 +21,6 @@ public class Reservation {
     public String toString() {
         return "Room: " + room.getName() + 
                 "\nStart time: " + startTime +
-                "\nEnd time" + endTime;
+                "\nEnd time: " + endTime;
     }
 }

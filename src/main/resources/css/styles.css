@@ -131,6 +131,13 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
 }
 
+.info-label {
+    -fx-font-size: 16px; 
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+}
+
 .page {
     -fx-background-color: transparent;
     -fx-alignment: center;
@@ -167,6 +174,7 @@
 .wide-box {
     -fx-max-width: infinity;
     -fx-background-color: transparent;
+    -fx-alignment: center;
 }
 /* .search-button {
     -fx-font-size: 14px;
@@ -206,6 +214,12 @@
 .no-orders-label {
     -fx-font-size: 16; /* Rozmiar czcionki */
 }
+/* Balance Page */
+.top-up-btn-box {
+    -fx-max-width: infinity;
+    -fx-alignment: top-center;
+}
+
 /* ////////// */
 
 .vbox {
@@ -218,8 +232,6 @@
     -fx-background-color: #17028f;
     -fx-pref-width: 650;
 }
-
-
 
 .sidebar Button {
     -fx-background-color: linear-gradient(to bottom, #4cdee9, #3b4547);
@@ -408,14 +420,6 @@
     -fx-padding: 10px 0; /* Odstęp między tytułem a innymi elementami */
 }
 
-.current-balance-label {
-    -fx-font-size: 16px; /* Rozmiar czcionki */
-    -fx-text-fill: #ffffff; /* Kolor tekstu */
-}
-
-.top-up-btn-box {
-    -fx-alignment: top-center;
-}
 
 .reservation-box {
     -fx-padding: 20px 10px; /* Odstęp wewnętrzny */
@@ -426,12 +430,6 @@
 
 
 
-.info-label {
-    -fx-font-size: 16px; 
-    -fx-text-fill: #ffffff;
-    -fx-alignment: center;
-    -fx-max-width: infinity;
-}
 
 .reservation-btn-box {
     -fx-alignment: top-center;
