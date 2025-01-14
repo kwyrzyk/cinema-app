@@ -1,13 +1,15 @@
 package com.example;
 
-import com.example.database.db_classes.Basket;
-import com.example.database.db_classes.Discount;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.Discount;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 public class DiscountsPage {
     private final VBox pageContent = new VBox();
@@ -36,26 +38,11 @@ public class DiscountsPage {
         Label title = new Label("Discounts Menu");
         title.getStyleClass().add("page-title");
 
-        HBox searchBox = new HBox();
-        searchBox.getStyleClass().add("search-box");
-
-        TextField searchField = new TextField();
-        searchField.setPromptText("Search for discounts...");
-        searchField.getStyleClass().add("input-field");
-
-        Button searchButton = new Button("Search");
-        searchButton.getStyleClass().add("btn");
-
-        searchButton.setOnAction(event -> {
-            String query = searchField.getText().trim().toLowerCase();
-            filterDiscounts(query);
-        });
-
-        searchBox.getChildren().addAll(searchField, searchButton);
+        SearchPanel searchPanel = new SearchPanel("Search for discount...", this::filterDiscounts);
 
         updateDiscountsView(displayedDiscounts);
 
-        pageContent.getChildren().addAll(title, searchBox, discountItemsBox);
+        pageContent.getChildren().addAll(title, searchPanel, discountItemsBox);
     }
 
     private void updateDiscountsView(List<Discount> discountsToDisplay) {

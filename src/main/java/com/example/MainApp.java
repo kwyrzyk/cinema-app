@@ -25,6 +25,7 @@ public class MainApp extends Application {
         scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
         stage.setTitle("Cinema App");
         stage.show();
+
     }
 
     public static void main(String[] args) {

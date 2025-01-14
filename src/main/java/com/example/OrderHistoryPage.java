@@ -1,23 +1,20 @@
 package com.example;
 
-import com.example.database.AccountRepository;
-import com.example.database.db_classes.Account;
-import com.example.database.db_classes.OrderHistoryRecord;
-import com.example.database.db_classes.Price;
-import com.example.database.db_classes.PricedItem;
-import com.example.listing.AccountListing;
-
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.w3c.dom.Node;
+import com.example.database.AccountRepository;
+import com.example.database.db_classes.Account;
+import com.example.database.db_classes.OrderHistoryRecord;
+import com.example.database.db_classes.Price;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 public class OrderHistoryPage implements Page {
     private final VBox pageContent = new VBox();
@@ -47,25 +44,11 @@ public class OrderHistoryPage implements Page {
         Label title = new Label("Order History");
         title.getStyleClass().add("page-title");
 
-        HBox searchBox = new HBox();
-        searchBox.getStyleClass().add("search-box");
-
-        TextField searchField = new TextField();
-        searchField.setPromptText("Find in history...");
-        searchField.getStyleClass().add("input-field");
-
-        Button searchButton = new Button("Search");
-        searchButton.getStyleClass().add("btn");
-        searchButton.setOnAction(event -> {
-            String query = searchField.getText().trim().toLowerCase();
-            filterOrders(query);
-        });
-
-        searchBox.getChildren().addAll(searchField, searchButton);
+        SearchPanel searchPanel = new SearchPanel("Search for food...", this::filterOrders);
 
         updateOrdersView(displayedOrders);
 
-        pageContent.getChildren().addAll(title, searchBox, orderItemsBox);
+        pageContent.getChildren().addAll(title, searchPanel, orderItemsBox);
     }
 
     private void updateOrdersView(List<OrderHistoryRecord> ordersToDisplay) {

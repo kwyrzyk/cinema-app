@@ -3,9 +3,6 @@ package com.example;
 import java.util.List;
 
 import com.example.database.AccountRepository;
-import com.example.database.DatabaseManager;
-import com.example.database.DrinkRepository;
-import com.example.database.FoodRepository;
 import com.example.database.RewardsRepository;
 import com.example.database.ShowingRepository;
 import com.example.database.TagsRepository;
@@ -28,11 +25,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -177,11 +174,7 @@ public class Controller {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getPage());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     PointsRewardsPage pointsRewardsPage = new PointsRewardsPage(this);
                     container.getChildren().clear();
@@ -201,11 +194,7 @@ public class Controller {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getPage());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
+                    showAlert(Alert.AlertType.WARNING, "You are not loged in", "You need to log in first.");
                 } else {
                     container.getChildren().clear();
                     container.getChildren().add(accountOptionsPage.getPage());
@@ -215,12 +204,7 @@ public class Controller {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getPage());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
                     container.getChildren().clear();
@@ -231,12 +215,7 @@ public class Controller {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getPage());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Balance");
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.balancePage = new BalancePage(this);
                     container.getChildren().clear();
@@ -247,12 +226,7 @@ public class Controller {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getPage());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     RoomReservationPage reservationPage = new RoomReservationPage(this);
                     container.getChildren().clear();
@@ -263,12 +237,7 @@ public class Controller {
                 if (accountId == 0){
                     container.getChildren().clear();
                     container.getChildren().add(loginPage.getPage());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     ReservationsPage reservationsPage = new ReservationsPage(this);
                     container.getChildren().clear();
@@ -281,17 +250,12 @@ public class Controller {
 
                 switch (totalQuantity) {
                     case 0:
-                        Alert empty_alert = new Alert(Alert.AlertType.WARNING);
-                        empty_alert.setTitle("Payment Failed");
-                        empty_alert.setHeaderText(null);
-                        empty_alert.setContentText("Your basket is empty. Please add items before paying.");
-                        empty_alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Payment Failed","Your basket is empty. Please add items before paying.");
                         break;  
 
                     case 1:
                         PricedItem firstItem = basket.getItems().get(0);
             
-                        // Sprawdzenie, czy produkt znajduje się w zestawie
                         Discount matchingDiscount = discountListing.getActiveDiscounts().stream()
                                 .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getFoodId()))
                                                  || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getDrinkId())))
@@ -299,7 +263,6 @@ public class Controller {
                                 .orElse(null);
             
                         if (matchingDiscount != null) {
-                            // Wyświetlenie alertu z pytaniem
                             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                             confirmationAlert.setTitle("Suggested discount");
                             confirmationAlert.setHeaderText(null);
@@ -309,21 +272,14 @@ public class Controller {
                             ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
                             confirmationAlert.getButtonTypes().setAll(buttonYes, buttonNo);
             
-                            // Oczekiwanie na wybór użytkownika
                             confirmationAlert.showAndWait().ifPresent(response -> {
                                 if (response == buttonYes) {
-                                    goToPayment[0] = false; // Modyfikacja wartości w tablicy
+                                    goToPayment[0] = false;
             
-                                    // Zamiana produktu na zestaw w koszyku
-                                    basket.clear(); // Usunięcie obecnych produktów z koszyka
-                                    basket.addItem(new PricedItem(matchingDiscount)); // Dodanie zestawu do koszyka
+                                    basket.clear();
+                                    basket.addItem(new PricedItem(matchingDiscount));
                                     
-                                    // Wyświetlenie informacji o sukcesie
-                                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                                    successAlert.setTitle("Zamiana na zestaw");
-                                    successAlert.setHeaderText(null);
-                                    successAlert.setContentText("Produkt został zamieniony na zestaw!");
-                                    successAlert.showAndWait();
+                                    showAlert(AlertType.WARNING, "Zamiana na zestaw","Produkt został zamieniony na zestaw!");
             
                                     BasketPage backetPage = new BasketPage(basket);
                                     container.getChildren().clear();
@@ -339,12 +295,10 @@ public class Controller {
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Payment Successful");
-                        alert.setHeaderText(null);
                         if (accountId != 0) {
-                            alert.setContentText("Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
                         } else {
-                            alert.setContentText("Your payment was processed successfully!");
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
                         alert.showAndWait();
                         if(accountId != 0){
@@ -369,17 +323,9 @@ public class Controller {
             }
             case "removeAllBtn" ->{
                 if (basket.isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Remove Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your basket is empty. Please add items before removing.");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Remove Failed","Your basket is empty. Please add items before removing.");
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Remove Successful");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your basket is now empty!");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Remove Successful","Your basket is now empty!");
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
@@ -393,11 +339,7 @@ public class Controller {
                     container.getChildren().clear();
                     container.getChildren().add(modifyBasketPage.getPage());
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("There is no ticket in the basket");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You do not need to modify the ticket.");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "There is no ticket in the basket","You do not need to modify the ticket.");
                 }
             }
             case "cancelBtn" ->{
@@ -468,5 +410,4 @@ public class Controller {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }

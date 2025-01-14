@@ -1,18 +1,18 @@
 package com.example;
 
-import com.example.database.FoodRepository;
-import com.example.database.db_classes.Basket;
-import com.example.database.db_classes.Food;
-import com.example.database.db_classes.Price;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.util.Callback;
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.example.database.db_classes.Basket;
+import com.example.database.db_classes.Food;
+import com.example.database.db_classes.Price;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 public class FoodsPage implements Page {
     private final VBox pageContent = new VBox();
@@ -44,26 +44,11 @@ public class FoodsPage implements Page {
         Label title = new Label("Food Menu");
         title.getStyleClass().add("page-title");
 
-        HBox searchBox = new HBox();
-        searchBox.getStyleClass().add("search-box");
-
-        TextField searchField = new TextField();
-        searchField.setPromptText("Search for food...");
-        searchField.getStyleClass().add("input-field");
-
-        Button searchButton = new Button("Search");
-        searchButton.getStyleClass().add("btn");
-
-        searchButton.setOnAction(event -> {
-            String query = searchField.getText().trim().toLowerCase();
-            filterFoods(query);
-        });
-
-        searchBox.getChildren().addAll(searchField, searchButton);
+        SearchPanel searchPanel = new SearchPanel("Search for food...", this::filterFoods);
 
         updateFoodsView(displayedFoods);    
         
-        pageContent.getChildren().addAll(title, searchBox, foodItemsBox);
+        pageContent.getChildren().addAll(title, searchPanel, foodItemsBox);
     }
 
     private void updateFoodsView(List<Food> foodsToDisplay) {

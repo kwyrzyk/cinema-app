@@ -1,15 +1,14 @@
 package com.example;
 
-import com.example.database.AccountRepository;
-import com.example.database.db_classes.Film;
-
-import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.database.db_classes.Film;
+
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 public class RepertoirePage implements Page {
 
@@ -39,26 +38,11 @@ public class RepertoirePage implements Page {
         Label title = new Label("Repertorie");  
         title.getStyleClass().add("page-title");
 
-        HBox searchBox = new HBox();
-        searchBox.getStyleClass().add("search-box");
-
-        TextField searchField = new TextField();
-        searchField.setPromptText("Search for films...");
-        searchField.getStyleClass().add("input-field");
-
-        Button searchButton = new Button("Search");
-        searchButton.getStyleClass().add("btn");
-
-        searchButton.setOnAction(event -> {
-            String query = searchField.getText().trim().toLowerCase();
-            filterFilms(query);
-        });
-
-        searchBox.getChildren().addAll(searchField, searchButton);
+        SearchPanel searchPanel = new SearchPanel("Search for film...", this::filterFilms);
 
         updateFilmsView(displayedFilms);
 
-        pageContent.getChildren().addAll(title, searchBox, filmItemsBox);
+        pageContent.getChildren().addAll(title, searchPanel, filmItemsBox);
     }
 
     private void updateFilmsView(List<Film> filmsToDisplay) {

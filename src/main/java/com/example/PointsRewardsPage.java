@@ -1,13 +1,16 @@
 package com.example;
 
-import com.example.database.AccountRepository;
-import com.example.database.db_classes.PointsReward;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.example.database.AccountRepository;
+import com.example.database.db_classes.PointsReward;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 public class PointsRewardsPage implements Page {
 
@@ -37,26 +40,11 @@ public class PointsRewardsPage implements Page {
         Label title = new Label("Rewards Menu");
         title.getStyleClass().add("page-title");
 
-        HBox searchBox = new HBox();
-        searchBox.getStyleClass().add("search-box");
-
-        TextField searchField = new TextField();
-        searchField.setPromptText("Search for rewards...");
-        searchField.getStyleClass().add("input-field");
-
-        Button searchButton = new Button("Search");
-        searchButton.getStyleClass().add("btn");
-
-        searchButton.setOnAction(event -> {
-            String query = searchField.getText().trim().toLowerCase();
-            filterRewards(query);
-        });
-
-        searchBox.getChildren().addAll(searchField, searchButton);
+        SearchPanel searchPanel = new SearchPanel("Search for food...", this::filterRewards);
 
         updateRewardsView(displayedRewards);
 
-        pageContent.getChildren().addAll(title, searchBox, rewardsItemsBox);
+        pageContent.getChildren().addAll(title, searchPanel, rewardsItemsBox);
     }
 
     private void updateRewardsView(List<PointsReward> rewardsToDisplay) {
