@@ -102,6 +102,7 @@ public class SeatsPage implements Page {
                                 seat.setStatus("inBasket");
                                 Ticket ticket = new Ticket(film, showing, seat);
                                 controller.basket.addTicket(ticket);
+                                controller.getFilmListing().addModified(showing);
                             } else if (seat.getStatus().equals("inBasket")) {
                                 seat.setStatus("available");
                                 controller.basket.removeTicket(new Ticket(film, showing, seat));
