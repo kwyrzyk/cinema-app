@@ -1,27 +1,26 @@
 package com.example;
 
-import com.example.database.db_classes.OrderHistoryRecord;
-import com.example.database.db_classes.Price;
-import com.example.database.db_classes.Account;
-import com.example.database.db_classes.ScreeningRoom;
-import com.example.database.ReservationRepository;
-import com.example.database.ScreeningRoomRepository;
-
-import javafx.geometry.Pos;
-import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import java.time.LocalDate;
-
-import java.beans.VetoableChangeListener;
-import java.util.List;
-
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import com.example.database.ReservationRepository;
+import com.example.database.ScreeningRoomRepository;
+import com.example.database.db_classes.ScreeningRoom;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 
 public class RoomReservationPage implements Page {
@@ -145,6 +144,8 @@ public class RoomReservationPage implements Page {
                             );
                         } else {
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Room is already reserved for this time.");
+                            String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+                            errorAlert.getDialogPane().getStylesheets().add(cssfile);
                             errorAlert.showAndWait();
                         }
                     }

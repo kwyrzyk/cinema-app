@@ -269,6 +269,9 @@ public class Controller {
                             confirmationAlert.setTitle("Suggested discount");
                             confirmationAlert.setHeaderText(null);
                             confirmationAlert.setContentText("Do you want to change the product to a set:\n" + matchingDiscount.toString() + "?");
+                            String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+                            confirmationAlert.getDialogPane().getStylesheets().add(cssfile);
+
                             
                             ButtonType buttonYes = new ButtonType("Yes");
                             ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
