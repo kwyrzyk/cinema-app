@@ -18,10 +18,7 @@ public class FilmRepository {
     }
 
     static public Film getFilmById(int filmId, Connection connection) throws SQLException {
-        // Query to get the film's basic info
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating, pegi FROM films WHERE id_film = " + filmId;
-
-        // Query to get the film's actors
         String actorsQuery = "SELECT a.id_actor, a.name, a.surname, fa.role " +
                              "FROM actors a " +
                              "JOIN film_actors fa ON a.id_actor = fa.id_actor " +
@@ -32,20 +29,17 @@ public class FilmRepository {
                         "JOIN film_tags ft ON t.id_tag = ft.id_tag " +
                         "WHERE ft.id_film = " + filmId;
 
-        // Execute film query
         ResultSet filmResult = DatabaseManager.runSelectQuery(filmQuery, connection);
         if (!filmResult.next()) {
-            return null; // No film found with the given ID
+            return null; 
         }
 
-        // Extract film details
         int id = filmResult.getInt("id_film");
         String title = filmResult.getString("title");
         String shortDescription = filmResult.getString("short_description");
         String longDescription = filmResult.getString("long_description");
         double rating = filmResult.getDouble("rating");
         int pegi = filmResult.getInt("pegi");
-        // Execute actors query
         ResultSet actorsResult = DatabaseManager.runSelectQuery(actorsQuery, connection);
         List<Actor> actors = new ArrayList<>();
         while (actorsResult.next()) {
@@ -70,7 +64,6 @@ public class FilmRepository {
         return new Film(id, title, shortDescription, longDescription, rating, actors, showings, tags, pegi);
     }
 
-      // Method to get a list of all films
       public static List<Film> getAllFilms(Connection connection) {
         List<Film> films = new ArrayList<>();
         String filmQuery = "SELECT id_film, title, short_description, long_description, rating, pegi FROM films";
@@ -106,7 +99,7 @@ public class FilmRepository {
                 ResultSet actorsResult = DatabaseManager.runSelectQuery(fullActorsQuery, connection);
                 if (actorsResult == null) {
                     System.err.println("Error: actorsResult is null for filmId " + filmId);
-                    continue; // Przejdź do następnego filmu
+                    continue; 
                 }
     
                 List<Actor> actors = new ArrayList<>();

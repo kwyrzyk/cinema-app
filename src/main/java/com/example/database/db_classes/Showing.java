@@ -20,7 +20,6 @@ public class Showing {
         this.seats = seats;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getFilmId() { return filmId; }

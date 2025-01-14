@@ -19,7 +19,6 @@ public class DatabaseManager {
         return connection;
     }
 
-    // Get connection to Oracle Database
     public DatabaseManager(){
         Properties properties = new Properties();
         
@@ -28,10 +27,8 @@ public class DatabaseManager {
                 throw new IOException("No data in the database");
             }
 
-            // Load the properties file
             properties.load(input);
 
-            // Access properties
             String url = properties.getProperty("db.url");
             String username = properties.getProperty("db.username");
             String password = properties.getProperty("db.password");
@@ -50,19 +47,14 @@ public class DatabaseManager {
         
     }
 
-    // Run a SELECT query and return a result set
     public static ResultSet runSelectQuery(String sql, Connection conn) {
         Statement stmt = null;
         ResultSet rs = null;
         
         try {
-            // Get database connection
-            
-            // Create statement and execute query
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
             
-            // Return result set
             return rs;
         } catch (SQLException e) {
             System.err.println("Error executing SELECT query: " + e.getMessage());

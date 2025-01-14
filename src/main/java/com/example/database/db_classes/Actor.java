@@ -4,9 +4,8 @@ public class Actor {
     private int id;
     private String name;
     private String surname;
-    private String role; // Role in the film
+    private String role; 
 
-    // Constructor
     public Actor(int id, String name, String surname, String role) {
         this.id = id;
         this.name = name;
@@ -14,7 +13,6 @@ public class Actor {
         this.role = role;
     }
 
-    // Getters and toString method
     public int getId() { return id; }
     public String getName() { return name; }
     public String getSurname() { return surname; }

@@ -13,7 +13,6 @@ public class Film {
     private List<Tag> tags; 
     private int pegi;
 
-    // Constructor
     public Film(int id, String title, String shortDescription, String longDescription, double rating, List<Actor> actors, 
      List<Showing> showings, List<Tag> tags, int pegi) {
         this.id = id;
@@ -27,7 +26,6 @@ public class Film {
         this.tags = tags;
     }
 
-    // Getters and toString method
     public int getId() { return id; }
     public String getTitle() { return title; }
     public String getShortDescription() { return shortDescription; }

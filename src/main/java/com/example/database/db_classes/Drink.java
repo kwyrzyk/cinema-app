@@ -56,7 +56,6 @@ public class Drink {
     }
 
 
-    // To String method (for printing object details)
     @Override
     public String toString() {
         return "Drink{idDrink=" + idDrink + ", name='" + name + "', prices=" + prices + "}";
