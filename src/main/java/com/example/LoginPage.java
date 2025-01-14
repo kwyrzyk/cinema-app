@@ -23,7 +23,6 @@ public class LoginPage implements Page {
         this.controller = controller;
         this.accountListing = accountListing;
         this.accountListing.loadAllAccounts();
-        System.out.println("Loaded accounts: " + this.accountListing.getAllAccounts().size());
 
         createContent();
     }
