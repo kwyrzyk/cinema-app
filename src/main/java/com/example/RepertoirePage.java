@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.database.db_classes.Film;
+import com.example.database.db_classes.Tag;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -49,7 +50,7 @@ public class RepertoirePage implements Page {
         filmItemsBox.getChildren().clear();
 
         if (filmsToDisplay.isEmpty()) {
-            Label noFilmsLabel = new Label("No rewards available.");
+            Label noFilmsLabel = new Label("No films available.");
             noFilmsLabel.getStyleClass().add("no-items-label");
             filmItemsBox.getChildren().add(noFilmsLabel);
         } else {
@@ -61,7 +62,7 @@ public class RepertoirePage implements Page {
                 filmLabel.getStyleClass().add("product-price");
 
                 filmLabel.setOnMouseClicked(event -> {
-                    FilmPage filmPage = new FilmPage(this, film);
+                    FilmPage filmPage = new FilmPage(controller, film);
                     controller.container.getChildren().clear();
                     controller.container.getChildren().add(filmPage.getPage());
                 });
@@ -81,6 +82,53 @@ public class RepertoirePage implements Page {
                 .collect(Collectors.toList());
         }
         updateFilmsView(displayedFilms);
+    }
+
+    private void filterFilmsByCategory(Tag category) {
+        displayedFilms = controller.getFilmListing().getFilmsByTag(category);
+        updateFilmsView(displayedFilms);
+    }
+
+    private void filterFilmsByPegi(int pegi) {
+        displayedFilms = controller.getFilmListing().getFilmsByPegi(pegi);  
+        updateFilmsView(displayedFilms);
+    }
+
+    public VBox getCategories() {
+        VBox categoriesBox = new VBox();
+        categoriesBox.getStyleClass().add("films-filter-box");
+
+        List<Tag> categories = controller.getListOfTags();
+        for (Tag category : categories) {
+            Label categoryLabel = new Label(category.getName());
+            categoryLabel.getStyleClass().add("product-price");
+
+            categoryLabel.setOnMouseClicked(event -> {
+                filterFilmsByCategory(category);
+            });
+
+            categoriesBox.getChildren().add(categoryLabel);
+        }
+
+        return categoriesBox;
+    }
+    public VBox getPegis() {
+        VBox categoriesBox = new VBox();
+        categoriesBox.getStyleClass().add("films-filter-box");
+
+        List<Integer> pegiValues = controller.getListOfPegiValues();
+        for (int value : pegiValues) {
+            Label categoryLabel = new Label(String.valueOf(value));
+            categoryLabel.getStyleClass().add("product-price");
+
+            categoryLabel.setOnMouseClicked(event -> {
+                filterFilmsByPegi(value);
+            });
+
+            categoriesBox.getChildren().add(categoryLabel);
+        }
+
+        return categoriesBox;
     }
 
     public VBox getPage() {

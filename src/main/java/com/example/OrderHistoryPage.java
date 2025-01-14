@@ -39,6 +39,7 @@ public class OrderHistoryPage implements Page {
         historyBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
         scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
         pageContent.getStyleClass().add("wide-box");
         
         Label title = new Label("Order History");

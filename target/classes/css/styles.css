@@ -132,8 +132,7 @@
 }
 
 .info-label {
-    -fx-font-size: 16px; 
-    -fx-text-fill: #ffffff;
+    -fx-font-size: 20; 
     -fx-alignment: center;
     -fx-max-width: infinity;
 }
@@ -193,7 +192,43 @@
     -fx-max-width: infinity;
     -fx-spacing: 10;
 }
- /* Order history */
+/* Repertoire Page */
+/* .films-filter-box {
+    -fx-managed: false;
+    -fx-visible: false;
+} */
+/* Film Page */
+.last-info-row{
+    -fx-border-color: transparent;
+}
+.info-row {
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+    -fx-max-width: infinity;
+    -fx-border-color: -accent-color;
+    -fx-border-width: 0 0 1 0;
+    /* -fx-spacing: 10; */
+}
+.last-info-row{
+    -fx-border-color: transparent;
+}
+.info-key {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-min-width: 200;
+    -fx-padding: 10;
+}
+.info-value {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-padding: 10;
+    -fx-wrap-text: true;
+    -fx-border-color: -accent-color;
+    -fx-border-width: 0 0 0 1;
+}
+
+/* Order history */
 
 .scroll-pane {
     -fx-background-color: transparent;
@@ -256,6 +291,15 @@
     -fx-max-width: infinity;
     -fx-padding: 20;
     -fx-font-size: 20; /* Rozmiar czcionki */
+}
+/* Seats page */
+.seats-grid {
+    -fx-hgap: 10; /* Odstęp poziomy między kolumnami */
+    -fx-vgap: 10;
+    -fx-padding: 0 0 10 0;
+    -fx-alignment: center;
+    -fx-max-width: infinity;
+    -fx-position: center;
 }
 /* ////////// */
 
@@ -405,7 +449,7 @@
     -fx-pref-height: 40px;
 }
 
-.row-label {
+.seats-row-label {
     -fx-alignment: center; /* Wyśrodkowanie tekstu */
     -fx-font-size: 16px;  /* Rozmiar czcionki */
     -fx-text-fill: white; /* Kolor tekstu */
