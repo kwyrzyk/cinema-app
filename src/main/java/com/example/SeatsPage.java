@@ -7,15 +7,12 @@ import com.example.database.db_classes.Seat;
 import com.example.database.db_classes.Showing;
 import com.example.database.db_classes.Ticket;
 
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.Node;
 
 public class SeatsPage implements Page {
     private final VBox pageContent = new VBox();
@@ -93,8 +90,7 @@ public class SeatsPage implements Page {
                                 updateAllSeats();
                                 controller.modifyTicketMode = false;
                                 controller.basket.removeItem(controller.modifyingTicket);
-                                controller.container.getChildren().clear();
-                                controller.container.getChildren().add(new BasketPage(controller.basket).getPage());
+                                controller.modifyContainer(new BasketPage(controller.basket));
                                 controller.optionsBar.getChildren().clear();
                                 controller.addOption("Pay", "payBtn", controller::handleOptionClick);
                                 controller.addOption("Remove All", "removeAllBtn", controller::handleOptionClick);
@@ -127,8 +123,7 @@ public class SeatsPage implements Page {
         backButton.getStyleClass().add("btn");
         backButton.setId("repertoireBackBtn");
         backButton.setOnAction(e -> {
-            controller.container.getChildren().clear();
-            controller.container.getChildren().add(new FilmPage(controller, film).getPage());
+            controller.modifyContainer(new FilmPage(controller, film));
         });
         VBox backBtnBox = new VBox(backButton);
         backBtnBox.getStyleClass().add("wide-box");

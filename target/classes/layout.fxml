@@ -5,38 +5,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 
-<HBox styleClass="vbox" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
-    <VBox styleClass="sidebar" fx:id="sideBar">
-        <Button styleClass="side-bar-btn" fx:id="repertoireBtn" text="Repertoire" onAction="#handleSidebarClick" />
-        <Button styleClass="side-bar-btn" fx:id="foodBtn" text="Snacks" onAction="#handleSidebarClick" />
-        <Button styleClass="side-bar-btn" fx:id="accountsBtn" text="Accounts" onAction="#handleSidebarClick" />
-        <Button styleClass="side-bar-btn" fx:id="basketBtn" text="Basket" onAction="#handleSidebarClick" />
-    </VBox>
-    <VBox styleClass="optionsbar" fx:id="optionsBar">
-    </VBox>
-    <VBox styleClass="content" fx:id="container">
-    </VBox>
+<VBox styleClass="body" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
+    <HBox styleClass="top-bar" fx:id="topBar">
+        <Label styleClass="top-bar-title" text="Cinema App" />
+    </HBox>
+    <HBox styleClass="main-content" fx:id="mainContent" VBox.vgrow="ALWAYS">
+        <VBox styleClass="side-bar" fx:id="sideBar" HBox.hgrow="NEVER">
+            <Button styleClass="side-bar-btn" fx:id="repertoireBtn" text="Repertoire" onAction="#handleSidebarClick" />
+            <Button styleClass="side-bar-btn" fx:id="foodBtn" text="Snacks" onAction="#handleSidebarClick" />
+            <Button styleClass="side-bar-btn" fx:id="accountsBtn" text="Accounts" onAction="#handleSidebarClick" />
+            <Button styleClass="side-bar-btn" fx:id="basketBtn" text="Basket" onAction="#handleSidebarClick" />
+        </VBox>
+        <VBox styleClass="options-bar" fx:id="optionsBar" HBox.hgrow="NEVER" />
+        <VBox styleClass="container" fx:id="container" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" />
+    </HBox>
     
-</HBox>
-
-<!-- <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Button?>
-<HBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.Controller">
-    <Label fx:id="label" text="Hello, World!" />
-    <VBox fx:class="bar" fx:id="side-bar">
-        <Button fx:class="side-bar-btn" fx:id="repertoire-btn" text="Repertoire" onAction="#handleRefresh" />
-        <Button fx:class="side-bar-btn" fx:id="tickets-btn" text="Tickets" onAction="#handleRefresh" />
-        <Button fx:class="side-bar-btn" fx:id="snacks-btn" text="Snacks" onAction="#handleRefresh" />
-        <Button fx:class="side-bar-btn" fx:id="accounts-btn" text="Accounts" onAction="#handleRefresh" />
-    </VBox>
-    <VBox fx:class="bar" fx:id="options-bar">
-        
-    </VBox>
-    <VBox fx:id="container">
-        
-    </VBox>
-    <Button text="Refresh" onAction="#handleRefresh" />
-</HBox> -->
+</VBox>

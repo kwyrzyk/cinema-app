@@ -11,7 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class LoginPage {
+public class LoginPage implements Page {
     private final Controller controller;
     private AccountListing accountListing;
     private final VBox loginBox = new VBox();

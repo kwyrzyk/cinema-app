@@ -1,17 +1,18 @@
 package com.example;
 
-import com.example.database.AccountRepository;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Showing;
 
-import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 public class FilmPage implements Page {
 
@@ -63,8 +64,7 @@ public class FilmPage implements Page {
 
             showingItemLabel.setOnMouseClicked(event -> {
                 SeatsPage seatsPage = new SeatsPage(controller, showing, this, film);
-                controller.container.getChildren().clear();
-                controller.container.getChildren().add(seatsPage.getPage());
+                controller.modifyContainer(seatsPage);
             });
 
             showingsItemsBox.getChildren().add(showingItemLabel);
@@ -77,8 +77,7 @@ public class FilmPage implements Page {
         backButton.getStyleClass().add("btn");
         // backButton.setId("repertoireBackBtn");
         backButton.setOnAction(e -> {
-            controller.container.getChildren().clear();
-            controller.container.getChildren().add(new RepertoirePage(controller).getPage());
+            controller.modifyContainer(new RepertoirePage(controller));
         });
         VBox backBtnBox = new VBox(backButton);
         backBtnBox.getStyleClass().add("wide-box");

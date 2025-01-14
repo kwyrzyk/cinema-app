@@ -154,6 +154,11 @@ public class Controller {
         optionsBar.getChildren().add(optionButton);
     }
 
+    public void modifyContainer(Page newPage){
+        container.getChildren().clear();
+        container.getChildren().add(newPage.getPage());
+    }
+
     @FXML
     public void handleOptionClick(ActionEvent event) {
         Button clickedOption = (Button) event.getSource();
@@ -163,91 +168,74 @@ public class Controller {
             case "pegiBtn" -> togglePegisList();
             case "snacksBtn" -> {
                 FoodsPage foodPage = new FoodsPage(this);
-                container.getChildren().clear();
-                container.getChildren().add(foodPage.getPage());
+                modifyContainer(foodPage);
             }
             case "drinksBtn" -> {
                 DrinksPage drinksPage = new DrinksPage(this);
-                container.getChildren().clear();
-                container.getChildren().add(drinksPage.getPage());
+                modifyContainer(drinksPage);
             }
             case "discountsBtn" ->{
                 DiscountsPage discountsPage = new DiscountsPage(this);
-                container.getChildren().clear();
-                container.getChildren().add(discountsPage.getPage());
+                modifyContainer(discountsPage);
             }
             case "pointsRewardsBtn" ->{
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     PointsRewardsPage pointsRewardsPage = new PointsRewardsPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(pointsRewardsPage.getPage());
+                    modifyContainer(pointsRewardsPage);
                 }
             }
             case "signBtn"-> {
-                container.getChildren().clear();
-                container.getChildren().add(loginPage.getPage());
+                modifyContainer(loginPage);
             }
             case "registerBtn" -> {
-                container.getChildren().clear();
-                container.getChildren().add(registerPage.getPage());
+                modifyContainer(registerPage);
                 break;
             }
             case "optionsBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(Alert.AlertType.WARNING, "You are not loged in", "You need to log in first.");
                 } else {
-                    container.getChildren().clear();
-                    container.getChildren().add(accountOptionsPage.getPage());
+                    modifyContainer(accountOptionsPage);
                 }
             }
             case "orderHistoryBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
-                    container.getChildren().clear();
-                    container.getChildren().add(orderHistoryPage.getPage());
+                    modifyContainer(orderHistoryPage);
                 }
             }
             case "balanceBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.balancePage = new BalancePage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(balancePage.getPage());
+                    modifyContainer(balancePage);
                 }
             }
             case "reserveRoomBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     RoomReservationPage reservationPage = new RoomReservationPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(reservationPage.getPage());
+                    modifyContainer(reservationPage);
                 }
             }
             case "reservationsBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     ReservationsPage reservationsPage = new ReservationsPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(reservationsPage.getPage());
+                    modifyContainer(reservationsPage);
                 }
             }
             case "payBtn" -> {
@@ -291,8 +279,7 @@ public class Controller {
                                     showAlert(AlertType.WARNING, "Zamiana na zestaw","Produkt został zamieniony na zestaw!");
             
                                     BasketPage backetPage = new BasketPage(basket);
-                                    container.getChildren().clear();
-                                    container.getChildren().add(backetPage.getPage());
+                                    modifyContainer(backetPage);
                                 }
                             });
             
@@ -322,8 +309,7 @@ public class Controller {
                         filmListing.update();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
-                        container.getChildren().clear();
-                        container.getChildren().add(backetPage.getPage());
+                        modifyContainer(backetPage);
                         
                         break;  
                 }
@@ -335,16 +321,14 @@ public class Controller {
                     showAlert(AlertType.WARNING, "Remove Successful","Your basket is now empty!");
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
-                    container.getChildren().clear();
-                    container.getChildren().add(basketPage.getPage());
+                    modifyContainer(basketPage);
                     filmListing.update();    
                 }
             }
             case "modifyTicketBtn" ->{
                 if (basket.containsTickets()) {
                     ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(modifyBasketPage.getPage());
+                    modifyContainer(modifyBasketPage);
                 } else {
                     showAlert(AlertType.WARNING, "There is no ticket in the basket","You do not need to modify the ticket.");
                 }
@@ -352,8 +336,7 @@ public class Controller {
             case "cancelBtn" ->{
                 modifyTicketMode = false;
                 modifyingTicket = null;
-                container.getChildren().clear();
-                container.getChildren().add(new BasketPage(basket).getPage());
+                modifyContainer(new BasketPage(basket));
                 optionsBar.getChildren().clear();
                 addOption("Pay", "payBtn", this::handleOptionClick);
                 addOption("Remove All", "removeAllBtn", this::handleOptionClick);
