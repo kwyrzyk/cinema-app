@@ -323,7 +323,7 @@ public class Controller {
                                 ShowingRepository.reserveSeat(item.getId(), databaseManager.getConnection());
                             }
                         }
-                        filmListing.update();
+                        filmListing.updateModified();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
                         container.getChildren().clear();
@@ -341,7 +341,7 @@ public class Controller {
                     BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
                     container.getChildren().add(basketPage.getPage());
-                    filmListing.update();    
+                    filmListing.updateModified();    
                 }
             }
             case "modifyTicketBtn" ->{

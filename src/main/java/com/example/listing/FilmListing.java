@@ -2,6 +2,9 @@ package com.example.listing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+
+
 
 import com.example.database.DatabaseManager;
 import com.example.database.FilmRepository;
@@ -15,7 +18,7 @@ public class FilmListing {
     private List<Film> films;
     private DatabaseManager databaseManager;
 
-    private List<Showing> modified;
+    private HashSet<Showing> modified = new HashSet<>();
 
 
     // Constructor
