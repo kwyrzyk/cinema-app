@@ -352,7 +352,6 @@ public class AccountRepository {
                 connection.commit();
                 return true;
             }else{
-                System.out.println("No order found with the given ID.");
                 connection.rollback();
                 return false;
             }
