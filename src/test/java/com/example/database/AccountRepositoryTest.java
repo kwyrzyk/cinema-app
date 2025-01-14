@@ -71,7 +71,7 @@ public class AccountRepositoryTest {
     @Test
     public void testChangeAccountDetails() throws SQLException {
         // Test changing account details
-        int accountId = 1; // Example account ID
+        int accountId = 2; // Example account ID
         String newLogin = "updatedUser";
         String newEmail = "updated@example.com";
         String newPhone = "987654321";
