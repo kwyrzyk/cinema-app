@@ -63,8 +63,8 @@ public class RepertoirePage implements Page {
 
                 filmLabel.setOnMouseClicked(event -> {
                     FilmPage filmPage = new FilmPage(controller, film);
-                    controller.container.getChildren().clear();
-                    controller.container.getChildren().add(filmPage.getPage());
+                    controller.modifyContainer(filmPage);
+
                 });
 
                 filmBox.getChildren().add(filmLabel);

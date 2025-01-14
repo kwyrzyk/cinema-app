@@ -1,6 +1,5 @@
 package com.example;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.example.database.AccountRepository;
@@ -26,7 +25,6 @@ import com.example.listing.OrderHistoryListing;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -156,6 +154,11 @@ public class Controller {
         optionsBar.getChildren().add(optionButton);
     }
 
+    public void modifyContainer(Page newPage){
+        container.getChildren().clear();
+        container.getChildren().add(newPage.getPage());
+    }
+
     @FXML
     public void handleOptionClick(ActionEvent event) {
         Button clickedOption = (Button) event.getSource();
@@ -165,91 +168,74 @@ public class Controller {
             case "pegiBtn" -> togglePegisList();
             case "snacksBtn" -> {
                 FoodsPage foodPage = new FoodsPage(this);
-                container.getChildren().clear();
-                container.getChildren().add(foodPage.getPage());
+                modifyContainer(foodPage);
             }
             case "drinksBtn" -> {
                 DrinksPage drinksPage = new DrinksPage(this);
-                container.getChildren().clear();
-                container.getChildren().add(drinksPage.getPage());
+                modifyContainer(drinksPage);
             }
             case "discountsBtn" ->{
                 DiscountsPage discountsPage = new DiscountsPage(this);
-                container.getChildren().clear();
-                container.getChildren().add(discountsPage.getPage());
+                modifyContainer(discountsPage);
             }
             case "pointsRewardsBtn" ->{
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     PointsRewardsPage pointsRewardsPage = new PointsRewardsPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(pointsRewardsPage.getPage());
+                    modifyContainer(pointsRewardsPage);
                 }
             }
             case "signBtn"-> {
-                container.getChildren().clear();
-                container.getChildren().add(loginPage.getPage());
+                modifyContainer(loginPage);
             }
             case "registerBtn" -> {
-                container.getChildren().clear();
-                container.getChildren().add(registerPage.getPage());
+                modifyContainer(registerPage);
                 break;
             }
             case "optionsBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(Alert.AlertType.WARNING, "You are not loged in", "You need to log in first.");
                 } else {
-                    container.getChildren().clear();
-                    container.getChildren().add(accountOptionsPage.getPage());
+                    modifyContainer(accountOptionsPage);
                 }
             }
             case "orderHistoryBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
-                    container.getChildren().clear();
-                    container.getChildren().add(orderHistoryPage.getPage());
+                    modifyContainer(orderHistoryPage);
                 }
             }
             case "balanceBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.balancePage = new BalancePage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(balancePage.getPage());
+                    modifyContainer(balancePage);
                 }
             }
             case "reserveRoomBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     RoomReservationPage reservationPage = new RoomReservationPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(reservationPage.getPage());
+                    modifyContainer(reservationPage);
                 }
             }
             case "reservationsBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getPage());
+                    modifyContainer(loginPage);
                     showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     ReservationsPage reservationsPage = new ReservationsPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(reservationsPage.getPage());
+                    modifyContainer(reservationsPage);
                 }
             }
             case "payBtn" -> {
@@ -293,8 +279,7 @@ public class Controller {
                                     showAlert(AlertType.WARNING, "Zamiana na zestaw","Produkt został zamieniony na zestaw!");
             
                                     BasketPage backetPage = new BasketPage(basket);
-                                    container.getChildren().clear();
-                                    container.getChildren().add(backetPage.getPage());
+                                    modifyContainer(backetPage);
                                 }
                             });
             
@@ -305,13 +290,11 @@ public class Controller {
                         
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         if (accountId != 0) {
                             showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
                         } else {
                             showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
-                        alert.showAndWait();
                         if(accountId != 0){
                             AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
                             AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
@@ -326,8 +309,7 @@ public class Controller {
                         filmListing.update();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
-                        container.getChildren().clear();
-                        container.getChildren().add(backetPage.getPage());
+                        modifyContainer(backetPage);
                         
                         break;  
                 }
@@ -339,16 +321,14 @@ public class Controller {
                     showAlert(AlertType.WARNING, "Remove Successful","Your basket is now empty!");
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
-                    container.getChildren().clear();
-                    container.getChildren().add(basketPage.getPage());
+                    modifyContainer(basketPage);
                     filmListing.update();    
                 }
             }
             case "modifyTicketBtn" ->{
                 if (basket.containsTickets()) {
                     ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this);
-                    container.getChildren().clear();
-                    container.getChildren().add(modifyBasketPage.getPage());
+                    modifyContainer(modifyBasketPage);
                 } else {
                     showAlert(AlertType.WARNING, "There is no ticket in the basket","You do not need to modify the ticket.");
                 }
@@ -356,8 +336,7 @@ public class Controller {
             case "cancelBtn" ->{
                 modifyTicketMode = false;
                 modifyingTicket = null;
-                container.getChildren().clear();
-                container.getChildren().add(new BasketPage(basket).getPage());
+                modifyContainer(new BasketPage(basket));
                 optionsBar.getChildren().clear();
                 addOption("Pay", "payBtn", this::handleOptionClick);
                 addOption("Remove All", "removeAllBtn", this::handleOptionClick);
@@ -375,40 +354,45 @@ public class Controller {
         optionsBar.getChildren().clear();
         container.getChildren().clear();
 
-        if(buttonId.equals("repertoireBtn")) {
-            addOption("Category", "categoryBtn", this::handleOptionClick);
-            categoryList.setManaged(false);
-            categoryList.setVisible(false);
-            optionsBar.getChildren().add(categoryList);
-            addOption("Pegi", "pegiBtn", this::handleOptionClick);
-            pegisList.setManaged(false);
-            pegisList.setVisible(false);
-            optionsBar.getChildren().add(pegisList);
-            container.getChildren().add(repertoirePage.getPage());
-        } else if (buttonId.equals("roomsBtn")) {
-            RoomReservationPage reservationPage = new RoomReservationPage(this);
-            container.getChildren().add(reservationPage.getPage());
-        } else if (buttonId.equals("foodBtn")) {
-            addOption("Snacks", "snacksBtn", this::handleOptionClick);
-            addOption("Drinks", "drinksBtn", this::handleOptionClick);
-            addOption("Discounts", "discountsBtn", this::handleOptionClick);
-            addOption("Points rewards", "pointsRewardsBtn", this::handleOptionClick);
-        } else if (buttonId.equals("accountsBtn")) {
-            addOption("Sign", "signBtn", this::handleOptionClick);
-            addOption("Register", "registerBtn", this::handleOptionClick);
-            addOption("Options", "optionsBtn", this::handleOptionClick);
-            addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
-            addOption("Balance", "balanceBtn", this::handleOptionClick);
-            addOption("Reserve room", "reserveRoomBtn", this::handleOptionClick);
-            addOption("Reservations", "reservationsBtn", this::handleOptionClick);
-        } else if (buttonId.equals("basketBtn")) {
-            addOption("Pay", "payBtn", this::handleOptionClick);
-            addOption("Remove All", "removeAllBtn", this::handleOptionClick);
-            addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
-            BasketPage basketPage = new BasketPage(basket);
-            container.getChildren().add(basketPage.getPage());
-        } else {
-            System.err.println("Unknown button clicked: " + buttonId);
+        switch (buttonId) {
+            case "repertoireBtn" -> {
+                addOption("Category", "categoryBtn", this::handleOptionClick);
+                categoryList.setManaged(false);
+                categoryList.setVisible(false);
+                optionsBar.getChildren().add(categoryList);
+                addOption("Pegi", "pegiBtn", this::handleOptionClick);
+                pegisList.setManaged(false);
+                pegisList.setVisible(false);
+                optionsBar.getChildren().add(pegisList);
+                container.getChildren().add(repertoirePage.getPage());
+            }
+            case "roomsBtn" -> {
+                RoomReservationPage reservationPage = new RoomReservationPage(this);
+                container.getChildren().add(reservationPage.getPage());
+            }
+            case "foodBtn" -> {
+                addOption("Snacks", "snacksBtn", this::handleOptionClick);
+                addOption("Drinks", "drinksBtn", this::handleOptionClick);
+                addOption("Discounts", "discountsBtn", this::handleOptionClick);
+                addOption("Points rewards", "pointsRewardsBtn", this::handleOptionClick);
+            }
+            case "accountsBtn" -> {
+                addOption("Sign", "signBtn", this::handleOptionClick);
+                addOption("Register", "registerBtn", this::handleOptionClick);
+                addOption("Options", "optionsBtn", this::handleOptionClick);
+                addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
+                addOption("Balance", "balanceBtn", this::handleOptionClick);
+                addOption("Reserve room", "reserveRoomBtn", this::handleOptionClick);
+                addOption("Reservations", "reservationsBtn", this::handleOptionClick);
+            }
+            case "basketBtn" -> {
+                addOption("Pay", "payBtn", this::handleOptionClick);
+                addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+                addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
+                BasketPage basketPage = new BasketPage(basket);
+                container.getChildren().add(basketPage.getPage());
+            }
+            default -> System.err.println("Unknown button clicked: " + buttonId);
         }
     }
 

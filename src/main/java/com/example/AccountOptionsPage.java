@@ -1,17 +1,16 @@
 package com.example;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.layout.*;
-
 import com.example.database.db_classes.Account;
 import com.example.listing.AccountListing;
 
-public class AccountOptionsPage {
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+
+public class AccountOptionsPage implements Page{
     private final VBox optionsBox = new VBox();
     private final AccountListing accountListing;
     private final Controller controller;
