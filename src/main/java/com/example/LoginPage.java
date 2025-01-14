@@ -76,7 +76,7 @@ public class LoginPage implements Page {
             Controller.showAlert(
                 AlertType.INFORMATION,
                 "Login Successful", 
-                "Your registration for account - " + username + "was succesful.\n" +
+                "Your registration for account - " + username + " was succesful.\n" +
                 "your loyalty points are " + account.getLoyaltyPoints()
             );
             usernameField.clear();
