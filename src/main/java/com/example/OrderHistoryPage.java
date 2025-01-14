@@ -89,6 +89,8 @@ public class OrderHistoryPage implements Page {
                     confirmationAlert.setTitle("Order refund");
                     confirmationAlert.setHeaderText(null);
                     confirmationAlert.setContentText(message + "\n" + moneyRefundInfo + "\n"+ pointsLoseInfo  );
+                    String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+                    confirmationAlert.getDialogPane().getStylesheets().add(cssfile);
 
                     ButtonType buttonYes = new ButtonType("Yes");
                     ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);

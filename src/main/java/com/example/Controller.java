@@ -1,6 +1,5 @@
 package com.example;
 
-import java.sql.Connection;
 import java.util.List;
 
 import com.example.database.AccountRepository;
@@ -26,7 +25,6 @@ import com.example.listing.OrderHistoryListing;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -305,13 +303,11 @@ public class Controller {
                         
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         if (accountId != 0) {
                             showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
                         } else {
                             showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
-                        alert.showAndWait();
                         if(accountId != 0){
                             AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
                             AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
@@ -375,40 +371,45 @@ public class Controller {
         optionsBar.getChildren().clear();
         container.getChildren().clear();
 
-        if(buttonId.equals("repertoireBtn")) {
-            addOption("Category", "categoryBtn", this::handleOptionClick);
-            categoryList.setManaged(false);
-            categoryList.setVisible(false);
-            optionsBar.getChildren().add(categoryList);
-            addOption("Pegi", "pegiBtn", this::handleOptionClick);
-            pegisList.setManaged(false);
-            pegisList.setVisible(false);
-            optionsBar.getChildren().add(pegisList);
-            container.getChildren().add(repertoirePage.getPage());
-        } else if (buttonId.equals("roomsBtn")) {
-            RoomReservationPage reservationPage = new RoomReservationPage(this);
-            container.getChildren().add(reservationPage.getPage());
-        } else if (buttonId.equals("foodBtn")) {
-            addOption("Snacks", "snacksBtn", this::handleOptionClick);
-            addOption("Drinks", "drinksBtn", this::handleOptionClick);
-            addOption("Discounts", "discountsBtn", this::handleOptionClick);
-            addOption("Points rewards", "pointsRewardsBtn", this::handleOptionClick);
-        } else if (buttonId.equals("accountsBtn")) {
-            addOption("Sign", "signBtn", this::handleOptionClick);
-            addOption("Register", "registerBtn", this::handleOptionClick);
-            addOption("Options", "optionsBtn", this::handleOptionClick);
-            addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
-            addOption("Balance", "balanceBtn", this::handleOptionClick);
-            addOption("Reserve room", "reserveRoomBtn", this::handleOptionClick);
-            addOption("Reservations", "reservationsBtn", this::handleOptionClick);
-        } else if (buttonId.equals("basketBtn")) {
-            addOption("Pay", "payBtn", this::handleOptionClick);
-            addOption("Remove All", "removeAllBtn", this::handleOptionClick);
-            addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
-            BasketPage basketPage = new BasketPage(basket);
-            container.getChildren().add(basketPage.getPage());
-        } else {
-            System.err.println("Unknown button clicked: " + buttonId);
+        switch (buttonId) {
+            case "repertoireBtn" -> {
+                addOption("Category", "categoryBtn", this::handleOptionClick);
+                categoryList.setManaged(false);
+                categoryList.setVisible(false);
+                optionsBar.getChildren().add(categoryList);
+                addOption("Pegi", "pegiBtn", this::handleOptionClick);
+                pegisList.setManaged(false);
+                pegisList.setVisible(false);
+                optionsBar.getChildren().add(pegisList);
+                container.getChildren().add(repertoirePage.getPage());
+            }
+            case "roomsBtn" -> {
+                RoomReservationPage reservationPage = new RoomReservationPage(this);
+                container.getChildren().add(reservationPage.getPage());
+            }
+            case "foodBtn" -> {
+                addOption("Snacks", "snacksBtn", this::handleOptionClick);
+                addOption("Drinks", "drinksBtn", this::handleOptionClick);
+                addOption("Discounts", "discountsBtn", this::handleOptionClick);
+                addOption("Points rewards", "pointsRewardsBtn", this::handleOptionClick);
+            }
+            case "accountsBtn" -> {
+                addOption("Sign", "signBtn", this::handleOptionClick);
+                addOption("Register", "registerBtn", this::handleOptionClick);
+                addOption("Options", "optionsBtn", this::handleOptionClick);
+                addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
+                addOption("Balance", "balanceBtn", this::handleOptionClick);
+                addOption("Reserve room", "reserveRoomBtn", this::handleOptionClick);
+                addOption("Reservations", "reservationsBtn", this::handleOptionClick);
+            }
+            case "basketBtn" -> {
+                addOption("Pay", "payBtn", this::handleOptionClick);
+                addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+                addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
+                BasketPage basketPage = new BasketPage(basket);
+                container.getChildren().add(basketPage.getPage());
+            }
+            default -> System.err.println("Unknown button clicked: " + buttonId);
         }
     }
 
