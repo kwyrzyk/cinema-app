@@ -56,6 +56,8 @@ public class RoomReservationPage implements Page {
     private void showReservationDialog() {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("New Room Reservation");
+        String cssFile = getClass().getResource("/css/styles.css").toExternalForm();
+        dialog.getDialogPane().getStylesheets().add(cssFile);
     
         ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -113,6 +115,7 @@ public class RoomReservationPage implements Page {
             endTimeLabel, endTimeBox
         );
         dialog.getDialogPane().setContent(dialogContent);
+        
     
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == confirmButtonType) {
@@ -136,6 +139,8 @@ public class RoomReservationPage implements Page {
 
                     if (endDateTime.isBefore(startDateTime)) {
                         Controller.showAlert(Alert.AlertType.ERROR, "Reservation unsuccessful","End time cannot be before start time.");
+                    } else if (startDateTime.isBefore(LocalDateTime.now())) {
+                        Controller.showAlert(Alert.AlertType.ERROR, "Reservation unsuccessful", "Reservation cannot be in the past.");
                     } else {
                         // Tutaj dodaj logikę zapisu rezerwacji do bazy danych
                         boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime, controller.databaseManager.getConnection());
