@@ -84,13 +84,6 @@ public class RoomReservationPage implements Page {
             }
         });
     
-        // roomComboBox.setOnAction(event -> {
-        //     ScreeningRoom selectedRoom = roomComboBox.getValue();
-        //     if (selectedRoom != null) {
-        //         int roomId = selectedRoom.getId();
-        //     }
-        // });
-    
         roomComboBox.setPromptText("Choose a room");
     
         Label dateLabel = new Label("Select date:");
