@@ -20,7 +20,6 @@ public class Showing {
         this.seats = seats;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getFilmId() { return filmId; }
@@ -31,4 +30,6 @@ public class Showing {
     public LocalDateTime getEndTime() {return endTime;}
     public void setShowTime(LocalDateTime showTime) { this.showTime = showTime; }
     public List<Seat> getSeats(){ return this.seats; }
+    public void setSeats(List<Seat> seats){ this.seats = seats; }
+
 }

@@ -23,7 +23,6 @@ public class LoginPage implements Page {
         this.controller = controller;
         this.accountListing = accountListing;
         this.accountListing.loadAllAccounts();
-        System.out.println("Loaded accounts: " + this.accountListing.getAllAccounts().size());
 
         createContent();
     }
@@ -71,18 +70,16 @@ public class LoginPage implements Page {
             return;
         }
         if(account.getPassword().equals(password)){
+            controller.login(account.getIdAccount());
+            controller.orderHistoryListing.loadOrderHistory(account.getIdAccount());
             Controller.showAlert(
                 AlertType.INFORMATION,
                 "Login Successful", 
-                "Your registration for account - " + username + "was succesful.\nYour email: " + 
-                account.getEmail() + " your phone number is " + account.getPhoneNumber() + " your balance is " + account.getBalance() + 
+                "Your registration for account - " + username + " was succesful.\n" +
                 "your loyalty points are " + account.getLoyaltyPoints()
             );
             usernameField.clear();
             passwordField.clear();
-
-            controller.login(account.getIdAccount());
-            controller.orderHistoryListing.loadOrderHistory(account.getIdAccount());
         } else {
             Controller.showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with matching login and password");
         }

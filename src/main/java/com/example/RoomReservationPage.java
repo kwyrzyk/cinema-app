@@ -56,6 +56,8 @@ public class RoomReservationPage implements Page {
     private void showReservationDialog() {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("New Room Reservation");
+        String cssFile = getClass().getResource("/css/styles.css").toExternalForm();
+        dialog.getDialogPane().getStylesheets().add(cssFile);
     
         ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
         ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -73,14 +75,12 @@ public class RoomReservationPage implements Page {
             @Override
             protected void updateItem(ScreeningRoom item, boolean empty) {
                 super.updateItem(item, empty);
+                if (item != null) {
                     setText(item.getName()); // Wyświetl tylko nazwę pokoju
-            }
-        });
-    
-        roomComboBox.setOnAction(event -> {
-            ScreeningRoom selectedRoom = roomComboBox.getValue();
-            if (selectedRoom != null) {
-                int roomId = selectedRoom.getId();
+                } else {
+                    setText(null);
+                }
+
             }
         });
     
@@ -107,7 +107,9 @@ public class RoomReservationPage implements Page {
             startTimeLabel, startTimeBox,
             endTimeLabel, endTimeBox
         );
+        dialogContent.setStyle("-fx-text-fill: red");
         dialog.getDialogPane().setContent(dialogContent);
+        
     
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == confirmButtonType) {
@@ -131,23 +133,26 @@ public class RoomReservationPage implements Page {
 
                     if (endDateTime.isBefore(startDateTime)) {
                         Controller.showAlert(Alert.AlertType.ERROR, "Reservation unsuccessful","End time cannot be before start time.");
+                    } else if (startDateTime.isBefore(LocalDateTime.now())) {
+                        Controller.showAlert(Alert.AlertType.ERROR, "Reservation unsuccessful", "Reservation cannot be in the past.");
                     } else {
                         // Tutaj dodaj logikę zapisu rezerwacji do bazy danych
                         boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime, controller.databaseManager.getConnection());
                         if (reservationSuccesful) {
                             Controller.showAlert(
-                            Alert.AlertType.INFORMATION, 
-                            "Reservation successful",
-                            "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 
-                            "\nDate: " + selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + 
-                            "\nFrom: " + startDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + 
-                            "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                            );
+                                Alert.AlertType.INFORMATION, 
+                                "Reservation successful",
+                                "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 
+                                "\nDate: " + selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + 
+                                "\nFrom: " + startDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + 
+                                "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+                                );
                         } else {
-                            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Room is already reserved for this time.");
-                            String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
-                            errorAlert.getDialogPane().getStylesheets().add(cssfile);
-                            errorAlert.showAndWait();
+                            Controller.showAlert(
+                                Alert.AlertType.ERROR,
+                                "Reservation unsuccessful", 
+                                "Room is already reserved for this time."
+                                );
                         }
                     }
                 }

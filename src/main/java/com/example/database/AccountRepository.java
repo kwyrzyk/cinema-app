@@ -19,21 +19,15 @@ import java.util.Date;
 public class AccountRepository {
 
 
-    // Constructor
-    public AccountRepository(DatabaseManager dbManager) {
-    }
-
-    // Method to get an account by its ID
     static public Account getAccountById(int accountId, Connection connection){
         String accountQuery = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance  FROM accounts WHERE id_account = " + accountId;
 
         try(ResultSet accountResult = DatabaseManager.runSelectQuery(accountQuery, connection)){
 
         if (!accountResult.next()) {
-            return null; // No account found with the given ID
+            return null;
         }
 
-            // Extract account details
             int idAccount = accountResult.getInt("id_account");
             String login = accountResult.getString("login");
             String password = accountResult.getString("password");
@@ -50,7 +44,6 @@ public class AccountRepository {
 
     }
 
-    // Method to get all accounts
     static public List<Account> getAllAccounts(Connection connection) {
         List<Account> accounts = new ArrayList<>();
         String query = "SELECT id_account, login, password, email, phone_number, loyalty_points, balance FROM accounts";
@@ -72,7 +65,6 @@ public class AccountRepository {
                 int loyalty_points = result.getInt("loyalty_points");
                 Price balance = new Price(result.getDouble("balance"));
 
-                // Add account to the list
                 accounts.add(new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance));
             }
         } catch (SQLException e) {
@@ -83,7 +75,6 @@ public class AccountRepository {
         return accounts;
     }
 
-    // Method to add a new account
     static public boolean addAccount(String login, String password, String email, String phoneNumber, Connection connection) {
         String insertQuery = "INSERT INTO accounts (login, password, email, phone_number) VALUES (?, ?, ?, ?)";
 
@@ -94,7 +85,7 @@ public class AccountRepository {
             preparedStatement.setString(4, phoneNumber);
 
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Returns true if insertion was successful
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             System.err.println("Failed to insert account: " + e.getMessage());
@@ -105,25 +96,20 @@ public class AccountRepository {
     static private boolean changeColumn(String columnName, int accountId, String newData, Connection connection){
         String updateQuery = "UPDATE accounts SET " + columnName + " = ? WHERE id_account = ?";
 
-        // Use try-with-resources to manage resources
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-            // Set the parameters for the query
-            preparedStatement.setString(1, newData); // Set the new login
-            preparedStatement.setInt(2, accountId);  // Set the account ID
+            preparedStatement.setString(1, newData);
+            preparedStatement.setInt(2, accountId);
 
-            // Execute the update and check rows affected
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Return true if the update was successful
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            // Log and handle SQL exceptions
             e.printStackTrace();
             System.err.println("Failed to update login for account ID " + accountId + ": " + e.getMessage());
             return false;
         }
     }
 
-    // Method to change the login for a given account ID
     static public boolean changeLogin(int accountId, String newLogin, Connection connection) {
     return changeColumn(new String("login"), accountId, newLogin, connection);
     }
@@ -140,23 +126,18 @@ public class AccountRepository {
         return changeColumn(new String("phone_number"), accountId, newLogin, connection);
     }
 
-    // Method to add loyalty points to a given account ID
     static public boolean addLoyaltyPoints(int accountId, int pointsToAdd, Connection connection) {
-        // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET loyalty_points = loyalty_points + ? WHERE id_account = ?";
 
-        // Use try-with-resources to manage resources
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-            // Set the parameters for the query
-            preparedStatement.setInt(1, pointsToAdd); // Set the amount of points to add
-            preparedStatement.setInt(2, accountId);      // Set the account ID
+            preparedStatement.setInt(1, pointsToAdd);
+            preparedStatement.setInt(2, accountId);
 
-            // Execute the update and check rows affected
+            
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Return true if the update was successful
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            // Log and handle SQL exceptions
             e.printStackTrace();
             System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
             return false;
@@ -164,21 +145,17 @@ public class AccountRepository {
     }
 
     static public boolean takeLoyaltyPoints(int accountId, int pointsToTake, Connection connection) {
-        // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET loyalty_points = loyalty_points - ? WHERE id_account = ?";
 
-        // Use try-with-resources to manage resources
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-            // Set the parameters for the query
-            preparedStatement.setInt(1, pointsToTake); // Set the amount of points to add
-            preparedStatement.setInt(2, accountId);      // Set the account ID
+            preparedStatement.setInt(1, pointsToTake);
+            preparedStatement.setInt(2, accountId);
 
-            // Execute the update and check rows affected
+
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Return true if the update was successful
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            // Log and handle SQL exceptions
             e.printStackTrace();
             System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
             return false;
@@ -186,21 +163,16 @@ public class AccountRepository {
     }
 
     static public boolean addBalance(int accountId, double balanceToAdd, Connection connection) {
-        // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE id_account = ?";
 
-        // Use try-with-resources to manage resources
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-            // Set the parameters for the query
-            preparedStatement.setDouble(1, balanceToAdd); // Set the amount of points to add
-            preparedStatement.setInt(2, accountId);      // Set the account ID
+            preparedStatement.setDouble(1, balanceToAdd);
+            preparedStatement.setInt(2, accountId);
 
-            // Execute the update and check rows affected
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Return true if the update was successful
+            return rowsAffected > 0;
         } catch (SQLException e) {
-            // Log and handle SQL exceptions
             e.printStackTrace();
             System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
             return false;
@@ -209,21 +181,16 @@ public class AccountRepository {
 
 
     static public boolean takeBalance(int accountId, double balanceToAdd, Connection connection) {
-        // SQL query to update the loyalty_points column in the accounts table
         String updateQuery = "UPDATE accounts SET balance = balance + ? WHERE id_account = ?";
 
-        // Use try-with-resources to manage resources
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
 
-            // Set the parameters for the query
-            preparedStatement.setDouble(1, balanceToAdd); // Set the amount of points to add
-            preparedStatement.setInt(2, accountId);      // Set the account ID
+            preparedStatement.setDouble(1, balanceToAdd); 
+            preparedStatement.setInt(2, accountId);      
 
-            // Execute the update and check rows affected
             int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0; // Return true if the update was successful
+            return rowsAffected > 0; 
         } catch (SQLException e) {
-            // Log and handle SQL exceptions
             e.printStackTrace();
             System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
             return false;
@@ -243,7 +210,6 @@ public class AccountRepository {
         
         int orderId = -1;
         try{
-            // Disable auto-commit for transaction
             connection.setAutoCommit(false);
 
         
@@ -259,8 +225,7 @@ public class AccountRepository {
                     try (Statement statement = connection.createStatement()) {
                         ResultSet resultSet = statement.executeQuery("SELECT orders_seq.CURRVAL FROM dual");
                         if (resultSet.next()) {
-                            orderId = resultSet.getInt(1); // Get the last generated sequence value
-                        }
+                            orderId = resultSet.getInt(1);                        }
                     }
                 }
 
@@ -292,7 +257,7 @@ public class AccountRepository {
                     itemStatement.setInt(4, quantity);
                     itemStatement.setString(5, name);
                     itemStatement.setDouble(6, item_price.toDouble());
-                    itemStatement.addBatch(); // Add to batch for efficient execution
+                    itemStatement.addBatch();
                 }
                 int[] itemRowsAffected = itemStatement.executeBatch();
                 if (itemRowsAffected.length != items.size()) {
@@ -338,7 +303,7 @@ public class AccountRepository {
         return orders;
     }
     
-        // Query to get all items for a given order ID
+
     public static Basket getOrderItemsByOrderId(int orderId, Connection connection) {
         String query = """
             SELECT item_name, item_type, item_reference_id, price, quantity
@@ -387,8 +352,7 @@ public class AccountRepository {
                 connection.commit();
                 return true;
             }else{
-                System.out.println("No order found with the given ID.");
-                connection.rollback(); // Rollback if the order does not exist
+                connection.rollback();
                 return false;
             }
         } catch (SQLException e) {

@@ -18,7 +18,6 @@ public class SeatsPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
     private final VBox historyBox = new VBox(scrollPane);
-    private final VBox orderItemsBox = new VBox();
     private final Controller controller;
 
     private GridPane seatsGrid; // Siatka miejsc
@@ -102,6 +101,7 @@ public class SeatsPage implements Page {
                                 seat.setStatus("inBasket");
                                 Ticket ticket = new Ticket(film, showing, seat);
                                 controller.basket.addTicket(ticket);
+                                controller.getFilmListing().addModified(showing);
                             } else if (seat.getStatus().equals("inBasket")) {
                                 seat.setStatus("available");
                                 controller.basket.removeTicket(new Ticket(film, showing, seat));

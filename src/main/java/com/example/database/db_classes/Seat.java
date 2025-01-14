@@ -6,9 +6,8 @@ public class Seat {
     private int showingId;
     private int rowNumber;
     private int seatNumber;
-    private String status; // "available", "reserved", "booked"
+    private String status; 
 
-    // Parameterized constructor
     public Seat(int id, int showingId, int rowNumber, int seatNumber, String status) {
         this.id = id;
         this.showingId = showingId;
@@ -17,7 +16,6 @@ public class Seat {
         this.status = status;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
     public int getShowingId() { return showingId; }

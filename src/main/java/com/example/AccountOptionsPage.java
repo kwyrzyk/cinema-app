@@ -1,7 +1,6 @@
 package com.example;
 
 import com.example.database.db_classes.Account;
-import com.example.listing.AccountListing;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,14 +11,12 @@ import javafx.scene.layout.VBox;
 
 public class AccountOptionsPage implements Page{
     private final VBox optionsBox = new VBox();
-    private final AccountListing accountListing;
     private final Controller controller;
     private Account userAccount;
 
-    public AccountOptionsPage(Controller controller, AccountListing accountListing){
+    public AccountOptionsPage(Controller controller){
         this.controller = controller;
-        this.accountListing = accountListing;
-        this.userAccount = accountListing.getAccountById(this.controller.getAccountId());
+        this.userAccount = controller.getAccountListing().getAccountById(this.controller.getAccountId());
         createContent();
     }
 

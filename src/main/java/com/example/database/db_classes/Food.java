@@ -7,16 +7,15 @@ import javafx.util.Pair;
 public class Food {
     private int idFood;
     private String name;
-    private Map<String, Pair<Integer, Price>> prices;  // A map to hold size and price
+    private Map<String, Pair<Integer, Price>> prices;
 
-    // Constructor
+
     public Food(int idFood, String name) {
         this.idFood = idFood;
         this.name = name;
         this.prices = new HashMap<>();
     }
 
-    // Getters and Setters
     public int getIdFood() {
         return idFood;
     }
@@ -57,7 +56,6 @@ public class Food {
     }
 
 
-    // To String method (for printing object details)
     @Override
     public String toString() {
         return "Food{idFood=" + idFood + ", name='" + name + "', prices=" + prices + "}";

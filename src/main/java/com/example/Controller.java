@@ -54,7 +54,7 @@ public class Controller {
     private FoodListing foodListing = new FoodListing(databaseManager);
     private DrinksListing drinksListing = new DrinksListing(databaseManager);
     private DiscountListing discountListing = new DiscountListing(databaseManager);
-    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this, accountsListing);
+    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this);
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;
@@ -291,22 +291,20 @@ public class Controller {
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         if (accountId != 0) {
-                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
-                        } else {
-                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
-                        }
-                        if(accountId != 0){
                             AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
                             AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
                             accountsListing.updateAccount(accountId);
                             orderHistoryListing.loadOrderHistory(accountId);
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                        } else {
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
                                 ShowingRepository.reserveSeat(item.getId(), databaseManager.getConnection());
                             }
                         }
-                        filmListing.update();
+                        filmListing.updateModified();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
                         modifyContainer(backetPage);
@@ -322,7 +320,7 @@ public class Controller {
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
                     modifyContainer(basketPage);
-                    filmListing.update();    
+                    filmListing.updateModified();    
                 }
             }
             case "modifyTicketBtn" ->{

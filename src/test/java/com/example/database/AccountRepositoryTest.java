@@ -19,7 +19,7 @@ public class AccountRepositoryTest {
     @Test
     public void testGetAccountById() throws SQLException {
         // Test retrieving an account by ID
-        int accountId = 1; // Example account ID
+        int accountId = 2; // Example account ID
 
         Account account = AccountRepository.getAccountById(accountId, databaseManager.getConnection());
 
@@ -71,7 +71,7 @@ public class AccountRepositoryTest {
     @Test
     public void testChangeAccountDetails() throws SQLException {
         // Test changing account details
-        int accountId = 1; // Example account ID
+        int accountId = 2; // Example account ID
         String newLogin = "updatedUser";
         String newEmail = "updated@example.com";
         String newPhone = "987654321";

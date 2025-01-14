@@ -11,18 +11,14 @@ import java.util.List;
 
 public class DiscountRepository {
 
-    // Method to get a discount by its ID
     static public Discount getDiscountById(int discountId, Connection connection) throws SQLException {
-        // Query to get the discount's basic info
         String discountQuery = "SELECT id_discount, price, start_time, end_time FROM discounts WHERE id_discount = " + discountId;
     
-        // Execute discount query
         ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery, connection);
         if (!discountResult.next()) {
-            return null; // No discount found with the given ID
+            return null;
         }
     
-        // Extract discount details
         int idDiscount = discountResult.getInt("id_discount");
         double price = discountResult.getDouble("price");
         LocalTime startTime = discountResult.getObject("start_time", LocalTime.class);
@@ -30,13 +26,11 @@ public class DiscountRepository {
         
         Discount discount;
         if(startTime == null || endTime == null){
-        // Create a Discount object
             discount = new Discount(idDiscount, price);
         }else{
             discount = new Discount(idDiscount, price, startTime, endTime);
         }
 
-        // Query to get the associated food items for this discount
         String foodQuery = """
             SELECT dp.id_food_price, dp.food_count, fp.size, f.name
             FROM discounts_positions dp
@@ -54,7 +48,6 @@ public class DiscountRepository {
                 discount.addFoodItem(foodPriceId, (foodName + foodSize), foodCount);
             }
         }
-        // Query to get the associated drink items for this discount
         String drinkQuery = """
             SELECT dp.id_drink_price, dp.drinks_count, dp.size, d.name
             FROM discounts_positions dp
@@ -77,7 +70,6 @@ public class DiscountRepository {
     
 
 
-    // Method to get a list of all discounts
     static public List<Discount> getAllDiscounts(Connection connection) {
         List<Discount> discounts = new ArrayList<>();
         String discountQuery = "SELECT id_discount, price, start_time, end_time FROM discounts";
@@ -97,12 +89,10 @@ public class DiscountRepository {
                 
                 Discount discount;
                 if(startTime == null || endTime == null){
-                // Create a Discount object
                     discount = new Discount(discountId, price);
                 }else{
                     discount = new Discount(discountId, price, startTime, endTime);
                 }
-                // Query to get the associated food items for this discount
                 String foodQuery = """
                     SELECT dp.id_food_price, dp.food_count, fp.portion_size, f.name
                     FROM discounts_positions dp
@@ -123,7 +113,6 @@ public class DiscountRepository {
                 }
 
 
-                // Query to get the associated drink items for this discount
                 String drinkQuery = """
                     SELECT dp.id_drink_price, dp.drinks_count, drp.portion_size, d.name
                     FROM discounts_positions dp
@@ -143,7 +132,7 @@ public class DiscountRepository {
                     }
                 }
 
-                discounts.add(discount);  // Add the discount object to the list
+                discounts.add(discount);
             }
         } catch (SQLException e) {
             e.printStackTrace();

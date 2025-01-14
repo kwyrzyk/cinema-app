@@ -5,14 +5,14 @@ public class DiscountItem {
     private int count;
     private String name;
 
-    // Constructor
+
     public DiscountItem(int idItem, String name, int count) {
         this.name = name;
         this.idItem = idItem;
         this.count = count;
     }
 
-    // Getters and Setters
+    
     public int getIdItem() {
         return idItem;
     }
@@ -33,7 +33,7 @@ public class DiscountItem {
         return this.name;
     }
 
-    // To String method (for printing object details)
+    
     @Override
     public String toString() {
         return  name + " x" + count + " ";

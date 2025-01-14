@@ -1,13 +1,13 @@
 package com.example;
 
-import java.util.List;
-
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.PricedItem;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+
+import java.util.List;
 
 public class ModifyBasketPage implements Page {
     private final VBox pageContent = new VBox();
@@ -37,7 +37,7 @@ public class ModifyBasketPage implements Page {
         infoLabel.getStyleClass().add("info-label");
 
         List<PricedItem> tickets = basket.getItems().stream()
-                .filter(item -> item.getId() != -1)
+                .filter(item -> item.isTicket())
                 .map(item -> (PricedItem) item)
                 .toList();
 
@@ -56,7 +56,7 @@ public class ModifyBasketPage implements Page {
                 // optionsBar.getChildren().add(categoryListView);
                 // addOption("Type", "typeBtn", this::handleOptionClick);
                 // addOption("Other", "otherBtn", this::handleOptionClick);
-                controller.modifyContainer(controller.repertoirePage);
+                controller.container.getChildren().clear();
                 controller.container.getChildren().add(controller.repertoirePage.getPage());
                 controller.optionsBar.getChildren().clear();
                 controller.addOption("Cancel", "cancelBtn", controller::handleOptionClick);

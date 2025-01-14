@@ -5,15 +5,13 @@ public class Account {
     private String login;
     private String password;
     private String email;
-    private String phoneNumber; // Added phoneNumber field
+    private String phoneNumber; 
 
     private Price balance;
     private int loyalty_points;
 
-    // Default constructor
     public Account() {}
 
-    // Parameterized constructor
     public Account(int idAccount, String login, String password, String email, String phoneNumber, int loyalty_points, Price balance) {
         this.idAccount = idAccount;
         this.login = login;
@@ -25,7 +23,6 @@ public class Account {
         this.loyalty_points = loyalty_points;
     }
 
-    // Getters and setters
     public int getIdAccount() {
         return idAccount;
     }

@@ -8,7 +8,6 @@ public class Basket {
     private List<PricedItem> items;
     private List<Integer> quantities;
 
-    // Constructor to initialize the basket
     public Basket() {
         this.items = new ArrayList<>();
         this.quantities = new ArrayList<>();
@@ -81,13 +80,12 @@ public class Basket {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
             if (item.getId() == drinkId && item.getName().equals(name)) {
-                return i; // Return the index if a match is found
+                return i; 
             }
         }
         return -1; // Return -1 if no match is found
     }
 
-    // Method to add a Drink item to the basket
     public void addDrink(Drink drinkItem, String size) {
         PricedItem pricedItem = new PricedItem(drinkItem, size);
         int index = findIndexByDrinkId(drinkItem.getIdDrink(), pricedItem.getName());
@@ -103,13 +101,12 @@ public class Basket {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
             if (item.getId() == ticketId && item.getName().equals(name)) {
-                return i; // Return the index if a match is found
+                return i; 
             }
         }
         return -1; // Return -1 if no match is found
     }
     
-    // Method to add a Ticket item to the basket
     public void addTicket(Ticket ticketItem) {
         PricedItem pricedItem = new PricedItem(ticketItem);
         int index = findIndexByTicketId(ticketItem.getId(), pricedItem.getName());
@@ -120,26 +117,22 @@ public class Basket {
         }
     }
 
-    // Metoda do usuwania biletów z koszyka
-public boolean removeTicket(Ticket ticket) {
+    public boolean removeTicket(Ticket ticket) {
 
-    // Szukamy indeksu w koszyku odpowiadającego temu PricedItem
     int index = findIndexByTicketId(ticket.getId(), ticket.getName());
     if (index == -1) {
-        return false; // Jeśli biletu nie ma w koszyku, zwracamy false
+        return false;
     }
 
     int currentQuantity = quantities.get(index);
     if (currentQuantity > 1) {
-        // Zmniejszamy ilość biletu, jeśli jest większa od 1
         quantities.set(index, currentQuantity - 1);
     } else {
-        // Jeśli ilość wynosi 1, całkowicie usuwamy bilet z koszyka
         items.remove(index);
         quantities.remove(index);
     }
 
-    return true; // Sukces
+    return true; 
 }
 
 
@@ -147,7 +140,7 @@ public boolean removeTicket(Ticket ticket) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
             if (item.getId() == discountId && item.getName().equals(name)) {
-                return i; // Return the index if a match is found
+                return i; 
             }
         }
         return -1; // Return -1 if no match is found
@@ -165,22 +158,19 @@ public boolean removeTicket(Ticket ticket) {
     }
 
 
-    // Method to get the list of items
     public List<PricedItem> getItems() {
         return items;
     }
 
-    // Method to get the list of quantities
     public List<Integer> getQuantities() {
         return quantities;
     }
 
-    // Method to get the total price of all items in the basket
     public double getTotalPrice() {
         double total = 0;
         for (int i = 0; i < items.size(); i++) {
             double price = items.get(i).getPrice().getDollars() + items.get(i).getPrice().getCents() / 100.0;
-            price *= quantities.get(i); // Multiply by quantity of this item
+            price *= quantities.get(i); 
             total += price;
         }
         return total;
@@ -193,10 +183,10 @@ public boolean removeTicket(Ticket ticket) {
     public boolean containsTickets() {
         for (PricedItem item : items) {
             if (item.getId() != -1) {
-                return true; // If a ticket is found, return true
+                return true; 
             }
         }
-        return false; // No tickets found, return false
+        return false; 
     }
 
 
@@ -215,7 +205,6 @@ public boolean removeTicket(Ticket ticket) {
         quantities.clear();
     }
 
-    // Method to display the basket content
     public void displayBasket() {
         for (int i = 0; i < items.size(); i++) {
             System.out.println("Item: " + items.get(i).getName() + ", Quantity: " + quantities.get(i) + ", Price: " + items.get(i).getPrice() + ", Total: " + (items.get(i).getPrice().getDollars() + items.get(i).getPrice().getCents() / 100.0) * quantities.get(i));
@@ -228,7 +217,6 @@ public boolean removeTicket(Ticket ticket) {
         StringBuilder sb = new StringBuilder();
         sb.append("Basket Contents:\n");
 
-        // Loop through all items in the basket and add their details
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
             int quantity = quantities.get(i);
@@ -246,7 +234,6 @@ public boolean removeTicket(Ticket ticket) {
             .append("\n");
         }
 
-        // Display the total price of all items in the basket
         sb.append("Total Price: $")
         .append(String.format("%.2f", getTotalPrice()))
         .append("\n");
@@ -254,24 +241,3 @@ public boolean removeTicket(Ticket ticket) {
         return sb.toString();
     }
 }
-
-// public void finalizeReservation() {
-//     for (PricedItem item : items) {
-//         if (item.getTicketId() != -1) {
-//             Ticket ticket = (Ticket) item;
-//             Showing showing = ticket.getShowing(); // Pobieramy pokaz z biletu
-//             Seat seat = ticket.getSeat(); // Pobieramy miejsce z biletu
-            
-//             // Rezerwacja miejsca w bazie danych
-//             boolean success = ShowingRepository.reserveSeat(
-//                 showing.getShowingId(),
-//                 seat.getRowNumber(),
-//                 seat.getSeatNumber()
-//             );
-            
-//             if (!success) {
-//                 System.err.println("Failed to reserve seat: Row " + seat.getRowNumber() + ", Seat " + seat.getSeatNumber());
-//             }
-//         }
-//     }
-// }

@@ -2,16 +2,24 @@ package com.example.listing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+
+
 
 import com.example.database.DatabaseManager;
 import com.example.database.FilmRepository;
+import com.example.database.ShowingRepository;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Tag;
+import com.example.database.db_classes.Showing;
 
 public class FilmListing {
 
     private List<Film> films;
     private DatabaseManager databaseManager;
+
+    private HashSet<Showing> modified = new HashSet<>();
+
 
     // Constructor
     public FilmListing(DatabaseManager databaseManager) {
@@ -58,4 +66,16 @@ public class FilmListing {
             System.out.println(film);
         }
     }
+
+    public void addModified(Showing showing){
+        modified.add(showing);
+    }
+
+
+    public void updateModified(){
+        for(Showing sh : modified){
+            sh.setSeats(ShowingRepository.getSeatsByShowingId(sh.getId(), databaseManager.getConnection()));
+        }
+    }
+
 }

@@ -4,7 +4,6 @@
     -tertiary-color: #302C28;
     -accent-color: #FBEA97;
     -text-color: #F6F1EE;
-    /* -fx-background-color: -primary-color; */
     -fx-text-fill: -text-color;
     -fx-font-family: "Tahoma", sans-serif;
 }
@@ -20,9 +19,6 @@
     -fx-padding: 20;
     -fx-spacing: 10;
     -fx-alignment: center;
-    /* -fx-border-radius: 20;
-    -fx-border-width: 1;
-    -fx-border-color: -accent-color; */
 }
 
 .top-bar-title {
@@ -38,7 +34,6 @@
     -fx-margin: 20;
     -fx-alignment: center-left;
     -fx-background-radius: 40;
-    /* -fx-background-color: red; */
     
 }
 
@@ -47,7 +42,6 @@
     -fx-spacing: 15;
     -fx-marging: 20;
     -fx-pref-width: 250;
-    /* -fx-width: 400; */
     -fx-height: infinity;
     -fx-aligment: center;
     -fx-background-radius: 20;
@@ -83,8 +77,8 @@
     -fx-background-radius: 25;
     -fx-pref-width: 200;
     -fx-height: 50;
-    -fx-effect: none; /* Domyślny brak cienia */
-    -fx-transition: all 0.3s ease; /* Płynne przejścia */
+    -fx-effect: none;
+    -fx-transition: all 0.3s ease;
 }
 
 .side-bar-btn:hover {
@@ -152,9 +146,7 @@
     -fx-text-fill: #ffffff;
     -fx-padding: 10px 0;
 }
-.basket-page {
-    -fx-alignment: center-left;
-}
+
 .search-panel {
     -fx-padding: 10;
     -fx-background-color: transparent;
@@ -175,16 +167,6 @@
     -fx-background-color: transparent;
     -fx-alignment: center;
 }
-/* .search-button {
-    -fx-font-size: 14px;
-    -fx-background-color: #4e5a73;
-    -fx-text-fill: white;
-    -fx-border-color: #394455;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-padding: 8 20;
-    -fx-cursor: hand;
-} */
 
 .search-box {
     -fx-background-color: transparent;
@@ -192,11 +174,34 @@
     -fx-max-width: infinity;
     -fx-spacing: 10;
 }
-/* Repertoire Page */
-/* .films-filter-box {
-    -fx-managed: false;
-    -fx-visible: false;
-} */
+
+.item {
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-wrap-text: true;
+    -fx-font-size: 16px;
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent; 
+    -fx-border-width: 0;
+    -fx-padding: 0;
+    -fx-max-width: infinity;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 5px;
+}
+/* Basket */
+.basket-page {
+    -fx-alignment: center-left;
+}
 /* Film Page */
 .last-info-row{
     -fx-border-color: transparent;
@@ -207,7 +212,6 @@
     -fx-max-width: infinity;
     -fx-border-color: -accent-color;
     -fx-border-width: 0 0 1 0;
-    /* -fx-spacing: 10; */
 }
 .last-info-row{
     -fx-border-color: transparent;
@@ -229,25 +233,8 @@
 }
 
 /* Order history */
-
-.scroll-pane {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent; 
-    -fx-border-width: 0;
-    -fx-padding: 0;
-    -fx-max-width: infinity;
-}
-
-.scroll-pane .viewport {
-    -fx-background-color: transparent; /* Tło wewnętrzne */
-}
-
-.scroll-pane .scroll-bar {
-    -fx-background-color: transparent;
-    -fx-padding: 5px;
-}
 .no-orders-label {
-    -fx-font-size: 16; /* Rozmiar czcionki */
+    -fx-font-size: 16;
 }
 /* Balance Page */
 .top-up-btn-box {
@@ -290,235 +277,21 @@
     -fx-alignment: center;
     -fx-max-width: infinity;
     -fx-padding: 20;
-    -fx-font-size: 20; /* Rozmiar czcionki */
+    -fx-font-size: 20;
 }
 /* Seats page */
 .seats-grid {
-    -fx-hgap: 10; /* Odstęp poziomy między kolumnami */
+    -fx-hgap: 10;
     -fx-vgap: 10;
     -fx-padding: 0 0 10 0;
     -fx-alignment: center;
     -fx-max-width: infinity;
     -fx-position: center;
 }
-/* ////////// */
 
-.vbox {
-    -fx-background-color: -secondary-color;
-    -fx-backgorund-radius: 20;
+.dialog-pane * {
+    -fx-text-fill: -text-color;
 }
-
-.newpage {
-    -fx-background-color: #17028f;
-    -fx-background-color: #17028f;
-    -fx-pref-width: 650;
-}
-
-.sidebar Button {
-    -fx-background-color: linear-gradient(to bottom, #4cdee9, #3b4547);
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-padding: 10 20;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-}
-
-
-.optionsbar Button {
-    -fx-background-color: linear-gradient(to bottom, #4cdee9, #3b4547);
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
-    -fx-padding: 10 20;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-}
-
-
-
-.krzychucontent {
-    -fx-padding: 20 10;
-    -fx-background-color: #17028f;
-    -fx-alignment: top-center;
-}
-
-.krzychucontent Button {
-    -fx-background-color: linear-gradient(to bottom, #f50ee2, #190233);
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-padding: 10 20;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-}
-
-
-
-.list{
-    -fx-spacing: 10;
-    -fx-background-color: #17028f;
-    -fx-alignment: top-center;
-}
-
-.list .list-cell {
-    -fx-background-color: #17028f;
-    -fx-alignment: center;
-    -fx-cursor: hand;
-}
-
-.list .list-cell .text {
-    -fx-fill: white;
-}
-
-.list .list-cell:hover {
-    -fx-background-color: #0f026e;
-    -fx-cursor: hand;
-}
-
-.bartek{
-    -fx-alignment: center;
-    -fx-cursor: hand;
-}
-
-.film-page {
-    
-}
-
-.film-attr {
-    -fx-text-fill: white;
-    -fx-pref-width: 170; 
-    -fx-padding: 5px;
-
-}
-
-.film-attr-value {
-    -fx-text-fill: white;
-    -fx-pref-width: 480px; 
-    -fx-padding: 5px;
-}
-
-.item {
-    -fx-cursor: hand;
-    -fx-background-color: transparent;
-    -fx-padding: 10px;
-    -fx-wrap-text: true;
-    -fx-font-size: 16px;
-}
-
-.option_page {
-    -fx-background-color: #17028f;  /* Ciemne tło */
-    -fx-padding: 20;
-}
-
-.option_page Label {
-    -fx-text-fill: white;  /* Biały tekst */
-    -fx-font-size: 14px;
-    -fx-font-family: "Arial";
-}
-
-.option_page TextField {
-    -fx-background-color: white;
-    -fx-text-fill: black;
-    -fx-prompt-text-fill: #aaaaaa;
-    -fx-border-color: black;
-    -fx-padding: 5;
-}
-
-
-
-
-.order-label {
-    -fx-font-size: 10px; /* Rozmiar czcionki */
-    -fx-text-fill: #ffffff; /* Kolor tekstu */
-    -fx-padding: 5px; /* Odstęp między zamówieniami */
-}
-
-.order-label:hover {
-    -fx-background-color: #0f026e;
-    -fx-cursor: hand;
-}
-
-
-
-
-.seat-btn {
-    -fx-cursor: hand;
-    -fx-padding: 5px;
-    -fx-pref-width: 40px;
-    -fx-pref-height: 40px;
-}
-
-.seats-row-label {
-    -fx-alignment: center; /* Wyśrodkowanie tekstu */
-    -fx-font-size: 16px;  /* Rozmiar czcionki */
-    -fx-text-fill: white; /* Kolor tekstu */
-    -fx-pref-width: 50px; /* Szerokość etykiety */
-    -fx-pref-height: 50px; /* Wysokość etykiety */
-}
-
-.modify-basket-box {
-    -fx-padding: 20px 10px; /* Odstęp wewnętrzny */
-    -fx-background-color: #17028f;
-}
-
-.modify-basket-title {
-    -fx-alignment: center;
-    -fx-max-width: infinity;
-    -fx-font-size: 24px; /* Rozmiar czcionki */
-    -fx-font-weight: bold; /* Pogrubienie tekstu */
-    -fx-text-fill: #ffffff; /* Kolor tekstu */
-    -fx-padding: 10px 0; /* Odstęp między tytułem a innymi elementami */
-}
-
-.basket-empty-message {
-    -fx-font-size: 16px; /* Rozmiar czcionki */
-    -fx-text-fill: #ffffff; /* Kolor tekstu */
-}
-
-.modify-ticket-label {
-    -fx-font-size: 12px; /* Rozmiar czcionki */
-    -fx-text-fill: #ffffff; /* Kolor tekstu */
-    -fx-padding: 5px; /* Odstęp między zamówieniami */
-}
-
-.modify-ticket-label:hover {
-    -fx-background-color: #0f026e;
-    -fx-cursor: hand;
-}
-
-.balance-box {
-    -fx-padding: 20px 10px; /* Odstęp wewnętrzny */
-    -fx-background-color: #17028f;
-    -fx-padding: 20px;
-}
-
-.balance-title {
-    -fx-alignment: center;
-    -fx-max-width: infinity;
-    -fx-font-size: 24px; /* Rozmiar czcionki */
-    -fx-font-weight: bold; /* Pogrubienie tekstu */
-    -fx-text-fill: #ffffff; /* Kolor tekstu */
-    -fx-padding: 10px 0; /* Odstęp między tytułem a innymi elementami */
-}
-
-
-.reservation-box {
-    -fx-padding: 20px 10px; /* Odstęp wewnętrzny */
-    -fx-background-color: #17028f;
-    -fx-padding: 20px;
-    -fx-aligment: center;
-}
-
-
-
-
-.reservation-btn-box {
-    -fx-alignment: top-center;
-}
-
-
-
 
 .dialog-pane {
     -fx-background-color: -secondary-color; 
@@ -552,3 +325,10 @@
     -fx-scale-y: 1.05;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
 }
+.combo-box * {
+    -fx-text-fill: -secondary-color;
+}
+.date-picker * {
+    -fx-text-fill: -secondary-color;
+}
+

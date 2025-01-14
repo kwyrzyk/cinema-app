@@ -16,23 +16,18 @@ import java.util.List;
 public class DrinkRepository {
 
 
-    // Method to get a drink item by its ID
     static public Drink getDrinkById(int drinkId, Connection connection) throws SQLException {
-        // Query to get the drink's basic info
         String drinkQuery = "SELECT id_drink, name FROM drinks WHERE id_drink = " + drinkId;
 
-        // Execute drink query
         ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery, connection);
         
         if (!drinkResult.next()) {
-            return null; // No drink found with the given ID
+            return null; 
         }
 
-        // Extract drink details
         int idDrink = drinkResult.getInt("id_drink");
         String name = drinkResult.getString("name");
 
-        // Query to get the prices for the drink item
         String pricesQuery = "SELECT id_drink_price, portion_size, price FROM drinks_prices WHERE id_drink = " + drinkId;
         ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery, connection);
 
@@ -51,7 +46,6 @@ public class DrinkRepository {
         return drink;
     }
 
-    // Method to get a list of all drinks
     static public List<Drink> getAllDrinks(Connection connection) {
         List<Drink> drinks = new ArrayList<>();
         String drinkQuery = "SELECT id_drink, name FROM drinks";
@@ -68,7 +62,7 @@ public class DrinkRepository {
                 int drinkId = drinkResult.getInt("id_drink");
                 String name = drinkResult.getString("name");
 
-                // Query to get the prices for this drink item
+               
                 String fullPricesQuery = pricesQuery + drinkId;
                 ResultSet pricesResult = DatabaseManager.runSelectQuery(fullPricesQuery, connection);
 
@@ -89,7 +83,7 @@ public class DrinkRepository {
             
                 drink.setPrices(prices);
         
-                drinks.add(drink);  // Add the drink object to the list
+                drinks.add(drink);
             }
         } catch (SQLException e) {
             e.printStackTrace();

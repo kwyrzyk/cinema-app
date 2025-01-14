@@ -3,7 +3,6 @@ package com.example;
 import com.example.database.db_classes.Basket;
 
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class BasketPage implements Page {

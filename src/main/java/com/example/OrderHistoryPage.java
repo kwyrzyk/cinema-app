@@ -39,13 +39,12 @@ public class OrderHistoryPage implements Page {
         historyBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
         scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
         pageContent.getStyleClass().add("wide-box");
         
         Label title = new Label("Order History");
         title.getStyleClass().add("page-title");
 
-        SearchPanel searchPanel = new SearchPanel("Search for food...", this::filterOrders);
+        SearchPanel searchPanel = new SearchPanel("Search for films...", this::filterOrders);
 
         updateOrdersView(displayedOrders);
 
@@ -62,8 +61,7 @@ public class OrderHistoryPage implements Page {
         } else {
             for (OrderHistoryRecord order : ordersToDisplay.reversed()) {
                 Label orderLabel = new Label(
-                        "Date: " + order.getDate() + "\n" +
-                        order.getBasket().toString()
+                        "Date: " + order.getDate() + "\n" + order.getBasket().toString()
                 );
                 orderLabel.getStyleClass().add("item");
                 
@@ -108,7 +106,6 @@ public class OrderHistoryPage implements Page {
                         }
                     });
                 });
-
                 orderItemsBox.getChildren().add(orderLabel);
             }
         }
