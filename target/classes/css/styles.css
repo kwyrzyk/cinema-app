@@ -289,6 +289,10 @@
     -fx-position: center;
 }
 
+.dialog-pane * {
+    -fx-text-fill: -text-color;
+}
+
 .dialog-pane {
     -fx-background-color: -secondary-color; 
     -fx-font-family: -fx-font-family;
@@ -321,3 +325,10 @@
     -fx-scale-y: 1.05;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
 }
+.combo-box * {
+    -fx-text-fill: -secondary-color;
+}
+.date-picker * {
+    -fx-text-fill: -secondary-color;
+}
+

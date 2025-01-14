@@ -140,18 +140,19 @@ public class RoomReservationPage implements Page {
                         boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime, controller.databaseManager.getConnection());
                         if (reservationSuccesful) {
                             Controller.showAlert(
-                            Alert.AlertType.INFORMATION, 
-                            "Reservation successful",
-                            "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 
-                            "\nDate: " + selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + 
-                            "\nFrom: " + startDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + 
-                            "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
-                            );
+                                Alert.AlertType.INFORMATION, 
+                                "Reservation successful",
+                                "Reservation confirmed:\nRoom: " + selectedRoom.getName() + 
+                                "\nDate: " + selectedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + 
+                                "\nFrom: " + startDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm")) + 
+                                "\nTo: " + endDateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"))
+                                );
                         } else {
-                            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "Room is already reserved for this time.");
-                            String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
-                            errorAlert.getDialogPane().getStylesheets().add(cssfile);
-                            errorAlert.showAndWait();
+                            Controller.showAlert(
+                                Alert.AlertType.ERROR,
+                                "Reservation unsuccessful", 
+                                "Room is already reserved for this time."
+                                );
                         }
                     }
                 }
