@@ -73,7 +73,12 @@ public class RoomReservationPage implements Page {
             @Override
             protected void updateItem(ScreeningRoom item, boolean empty) {
                 super.updateItem(item, empty);
+                if (item != null) {
                     setText(item.getName()); // Wyświetl tylko nazwę pokoju
+                } else {
+                    setText(null);
+                }
+
             }
         });
     
