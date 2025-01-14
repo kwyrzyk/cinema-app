@@ -8,34 +8,26 @@ import javafx.scene.layout.VBox;
 
 public class BasketPage implements Page {
     private Basket basket;
-    private final VBox content = new VBox();
+    private final VBox basketBox = new VBox();
 
     public BasketPage(Basket basket){
         this.basket = basket;
     }
     @Override
     public VBox getPage() {
-        VBox contentContainer = createContent();
-
-        HBox mainLayout = new HBox(0, contentContainer);
-        mainLayout.getStyleClass().add("content");
-
-        VBox finalLayout = new VBox(0, mainLayout);
-        finalLayout.getStyleClass().add("newpage");
-
-        return finalLayout;
+        createContent();
+        return basketBox;
     }
 
-    private VBox createContent() {
-        content.setSpacing(10);
-        content.getStyleClass().add("content");
-        content.getChildren().clear();
-        Label itemLabel = new Label(basket.toString());
-        itemLabel.getStyleClass().add("item");
-        content.getChildren().add(itemLabel);
-        VBox contentContainer = new VBox(10, content);
-        contentContainer.getStyleClass().add("content");
+    private void createContent() {
+        basketBox.getChildren().clear();
+        
+        Label pageTitle = new Label("Basket");
+        pageTitle.getStyleClass().add("page-title");
 
-        return contentContainer;
+        Label basketLabel = new Label(basket.toString());
+        basketLabel.getStyleClass().add("item");
+        basketBox.getChildren().addAll(pageTitle, basketLabel);
+        basketBox.getStyleClass().addAll("page", "basket-page");
     }
 }

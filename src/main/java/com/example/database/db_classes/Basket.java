@@ -2,8 +2,6 @@ package com.example.database.db_classes;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.example.database.db_classes.PricedItem;
-import com.example.database.db_classes.Ticket;
 
 public class Basket {
 
@@ -60,7 +58,7 @@ public class Basket {
     public int findIndexByFoodId(int foodId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getFoodId() == foodId && item.getName().equals(name)) {
+            if (item.getId() == foodId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -82,7 +80,7 @@ public class Basket {
     public int findIndexByDrinkId(int drinkId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getDrinkId() == drinkId && item.getName().equals(name)) {
+            if (item.getId() == drinkId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -104,7 +102,7 @@ public class Basket {
     public int findIndexByTicketId(int ticketId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getTicketId() == ticketId && item.getName().equals(name)) {
+            if (item.getId() == ticketId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -148,7 +146,7 @@ public boolean removeTicket(Ticket ticket) {
     public int findIndexByDiscountId(int discountId, String name) {
         for (int i = 0; i < items.size(); i++) {
             PricedItem item = items.get(i);
-            if (item.getDrinkId() == discountId && item.getName().equals(name)) {
+            if (item.getId() == discountId && item.getName().equals(name)) {
                 return i; // Return the index if a match is found
             }
         }
@@ -191,6 +189,16 @@ public boolean removeTicket(Ticket ticket) {
     public boolean isEmpty() {
         return items.isEmpty();
     }
+
+    public boolean containsTickets() {
+        for (PricedItem item : items) {
+            if (item.getId() != -1) {
+                return true; // If a ticket is found, return true
+            }
+        }
+        return false; // No tickets found, return false
+    }
+
 
     public int getTotalQuantity() {
         int totalQuantity = 0;

@@ -4,14 +4,15 @@ import java.util.List;
 
 import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
-import com.example.database.DrinkRepository;
-import com.example.database.FoodRepository;
+import com.example.database.RewardsRepository;
 import com.example.database.ShowingRepository;
 import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
+import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Food;
+import com.example.database.db_classes.PointsReward;
 import com.example.database.db_classes.PricedItem;
 import com.example.database.db_classes.Tag;
 import com.example.listing.AccountListing;
@@ -25,48 +26,59 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Controller {
+    public DatabaseManager databaseManager = new DatabaseManager();
     private Stage stage;
     private Scene scene;
-    private FilmListing filmListing = new FilmListing();
+    private FilmListing filmListing = new FilmListing(databaseManager);
     private int accountId = 0;
+    public Boolean modifyTicketMode = false;
+    public PricedItem modifyingTicket;
 
-    private final List<Tag> listOfTags = TagsRepository.getAllTags();
-    private RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
 
-    public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
-    private AccountListing accountsListing = new AccountListing();
+    private final List<Integer> listOfPegiValues = List.of(3, 7, 12, 16, 18);
+
+    public OrderHistoryListing orderHistoryListing = new OrderHistoryListing(databaseManager);
+    private AccountListing accountsListing = new AccountListing(databaseManager);
     
     private LoginPage loginPage = new LoginPage( this, accountsListing);
-    private RegisterPage registerPage = new RegisterPage(accountsListing);
-    private DrinksListing drinksListing = new DrinksListing();
-    private DiscountListing discountListing = new DiscountListing();
-    private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
+    private RegisterPage registerPage = new RegisterPage(this, accountsListing);
+    private FoodListing foodListing = new FoodListing(databaseManager);
+    private DrinksListing drinksListing = new DrinksListing(databaseManager);
+    private DiscountListing discountListing = new DiscountListing(databaseManager);
+    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this, accountsListing);
     private OrderHistoryPage orderHistoryPage;
+    private BalancePage balancePage;
     public SeatsPage seatsPage;
-
+    
     public Basket basket = new Basket();
-    private FoodListing foodListing = new FoodListing();
+    private final List<Film> listOfFilms = filmListing.getFilms();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
+    private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards(databaseManager.getConnection());
+    private final List<Tag> listOfTags = TagsRepository.getAllTags(databaseManager.getConnection());
+    
+
+    public RepertoirePage repertoirePage = new RepertoirePage(this);
+    private VBox categoryList = repertoirePage.getCategories();
+    private VBox pegisList = repertoirePage.getPegis();
+   
     
     @FXML
     private Label label;
     @FXML
     private VBox sideBar;
     @FXML
-    private VBox optionsBar;
-    @FXML
-    private VBox newSidebar;
+    public VBox optionsBar;
     @FXML
     public VBox container;
 
@@ -86,6 +98,10 @@ public class Controller {
         return this.scene;
     }
 
+    public VBox getOptionsBar(){
+        return this.optionsBar;
+    }
+
     public void login(int Id){
         this.accountId = Id;
     }
@@ -94,15 +110,53 @@ public class Controller {
         return this.accountId;
     }
 
+    public List<Film> getListOfFilms(){
+        return this.listOfFilms;
+    }
+
+    public List<Food> getListOfFoods(){
+        return this.listOfFoods;
+    }
+
+    public List<Drink> getListOfDrinks(){
+        return this.listOfDrinks;
+    }
+
+    public List<Discount> getListOfDiscounts(){
+        return this.listOfDiscounts;
+    }
+
+    public List<PointsReward> getListOfRewards(){
+        return this.listOfRewards;
+    }
+
     public List<Tag> getListOfTags(){
         return this.listOfTags;
     }
 
-    private void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
+    public List<Integer> getListOfPegiValues(){
+        return this.listOfPegiValues;
+    }
+
+    public AccountListing getAccountListing(){
+        return this.accountsListing;
+    }
+
+    public FilmListing getFilmListing(){
+        return this.filmListing;
+    }
+
+    public void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
         optionButton.setOnAction(action);
+        optionButton.getStyleClass().add("options-bar-btn");
         optionsBar.getChildren().add(optionButton);
+    }
+
+    public void modifyContainer(Page newPage){
+        container.getChildren().clear();
+        container.getChildren().add(newPage.getPage());
     }
 
     @FXML
@@ -110,63 +164,78 @@ public class Controller {
         Button clickedOption = (Button) event.getSource();
         String buttonId = clickedOption.getId();
         switch (buttonId){
-            case "repertoireBackBtn" ->{    
-                this.container.getChildren().clear();
-                container.getChildren().add(this.repertoirePage.getBackPage());
-            }
-            case "categoryBtn" -> repertoirePage.toggleCategoryList();
+            case "categoryBtn" -> toggleCategoryList();
+            case "pegiBtn" -> togglePegisList();
             case "snacksBtn" -> {
-                FoodMenu foodMenu = new FoodMenu(new FoodRepository(new DatabaseManager()), basket, listOfFoods);
-                container.getChildren().clear();
-                container.getChildren().add(foodMenu.getFoodListVBox());
+                FoodsPage foodPage = new FoodsPage(this);
+                modifyContainer(foodPage);
             }
             case "drinksBtn" -> {
-                DrinksMenu drinkMenu = new DrinksMenu(new DrinkRepository(new DatabaseManager()), basket, listOfDrinks);
-                container.getChildren().clear();
-                container.getChildren().add(drinkMenu.getDrinkListVBox());
+                DrinksPage drinksPage = new DrinksPage(this);
+                modifyContainer(drinksPage);
             }
             case "discountsBtn" ->{
-                DiscountsMenu discountsMenu = new DiscountsMenu(basket, listOfDiscounts);
-                container.getChildren().clear();
-                container.getChildren().add(discountsMenu.getDiscountListVBox());
+                DiscountsPage discountsPage = new DiscountsPage(this);
+                modifyContainer(discountsPage);
+            }
+            case "pointsRewardsBtn" ->{
+                if (accountId == 0){
+                    modifyContainer(loginPage);
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
+                } else {
+                    PointsRewardsPage pointsRewardsPage = new PointsRewardsPage(this);
+                    modifyContainer(pointsRewardsPage);
+                }
             }
             case "signBtn"-> {
-                container.getChildren().clear();
-                container.getChildren().add(loginPage.getLoginContainer());
+                modifyContainer(loginPage);
             }
             case "registerBtn" -> {
-                container.getChildren().clear();
-                container.getChildren().add(registerPage.getRegisterContainer());
+                modifyContainer(registerPage);
                 break;
             }
             case "optionsBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
+                    modifyContainer(loginPage);
+                    showAlert(Alert.AlertType.WARNING, "You are not loged in", "You need to log in first.");
                 } else {
-                    container.getChildren().clear();
-                    container.getChildren().add(accountOptionsPage.getOptionContainer());
+                    modifyContainer(accountOptionsPage);
                 }
             }
             case "orderHistoryBtn" -> {
                 if (accountId == 0){
-                    container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    modifyContainer(loginPage);
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
-                    container.getChildren().clear();
-                    container.getChildren().add(orderHistoryPage.getPage());
+                    modifyContainer(orderHistoryPage);
+                }
+            }
+            case "balanceBtn" -> {
+                if (accountId == 0){
+                    modifyContainer(loginPage);
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
+                } else {
+                    this.balancePage = new BalancePage(this);
+                    modifyContainer(balancePage);
+                }
+            }
+            case "reserveRoomBtn" -> {
+                if (accountId == 0){
+                    modifyContainer(loginPage);
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
+                } else {
+                    RoomReservationPage reservationPage = new RoomReservationPage(this);
+                    modifyContainer(reservationPage);
+                }
+            }
+            case "reservationsBtn" -> {
+                if (accountId == 0){
+                    modifyContainer(loginPage);
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
+                } else {
+                    ReservationsPage reservationsPage = new ReservationsPage(this);
+                    modifyContainer(reservationsPage);
                 }
             }
             case "payBtn" -> {
@@ -175,53 +244,42 @@ public class Controller {
 
                 switch (totalQuantity) {
                     case 0:
-                        Alert empty_alert = new Alert(Alert.AlertType.WARNING);
-                        empty_alert.setTitle("Payment Failed");
-                        empty_alert.setHeaderText(null);
-                        empty_alert.setContentText("Your basket is empty. Please add items before paying.");
-                        empty_alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Payment Failed","Your basket is empty. Please add items before paying.");
                         break;  
 
                     case 1:
                         PricedItem firstItem = basket.getItems().get(0);
             
-                        // Sprawdzenie, czy produkt znajduje się w zestawie
-                        Discount matchingDiscount = listOfDiscounts.stream()
-                                .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getFoodId()))
-                                                 || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getDrinkId())))
+                        Discount matchingDiscount = discountListing.getActiveDiscounts().stream()
+                                .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getId()))
+                                                 || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getId())))
                                 .findFirst()
                                 .orElse(null);
             
                         if (matchingDiscount != null) {
-                            // Wyświetlenie alertu z pytaniem
                             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                             confirmationAlert.setTitle("Suggested discount");
                             confirmationAlert.setHeaderText(null);
                             confirmationAlert.setContentText("Do you want to change the product to a set:\n" + matchingDiscount.toString() + "?");
+                            String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+                            confirmationAlert.getDialogPane().getStylesheets().add(cssfile);
+
                             
                             ButtonType buttonYes = new ButtonType("Yes");
                             ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
                             confirmationAlert.getButtonTypes().setAll(buttonYes, buttonNo);
             
-                            // Oczekiwanie na wybór użytkownika
                             confirmationAlert.showAndWait().ifPresent(response -> {
                                 if (response == buttonYes) {
-                                    goToPayment[0] = false; // Modyfikacja wartości w tablicy
+                                    goToPayment[0] = false;
             
-                                    // Zamiana produktu na zestaw w koszyku
-                                    basket.clear(); // Usunięcie obecnych produktów z koszyka
-                                    basket.addItem(new PricedItem(matchingDiscount)); // Dodanie zestawu do koszyka
+                                    basket.clear();
+                                    basket.addItem(new PricedItem(matchingDiscount));
                                     
-                                    // Wyświetlenie informacji o sukcesie
-                                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                                    successAlert.setTitle("Zamiana na zestaw");
-                                    successAlert.setHeaderText(null);
-                                    successAlert.setContentText("Produkt został zamieniony na zestaw!");
-                                    successAlert.showAndWait();
+                                    showAlert(AlertType.WARNING, "Zamiana na zestaw","Produkt został zamieniony na zestaw!");
             
                                     BasketPage backetPage = new BasketPage(basket);
-                                    container.getChildren().clear();
-                                    container.getChildren().add(backetPage.getPage());
+                                    modifyContainer(backetPage);
                                 }
                             });
             
@@ -231,84 +289,140 @@ public class Controller {
                         }
                         
                     default:
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Payment Successful");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Your payment was processed successfully!");
-                        alert.showAndWait();
-                        if(accountId != 0){AccountRepository.addOrder(accountId, basket);}
+                        int newLoyaltyPoints = (int) (basket.getTotalPrice());
+                        if (accountId != 0) {
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                        } else {
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
+                        }
+                        if(accountId != 0){
+                            AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
+                            AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
+                            accountsListing.updateAccount(accountId);
+                            orderHistoryListing.loadOrderHistory(accountId);
+                        }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
-                                ShowingRepository.reserveSeat(item.getTicketId());
+                                ShowingRepository.reserveSeat(item.getId(), databaseManager.getConnection());
                             }
                         }
                         filmListing.update();
                         basket.clear(); // Opróżnij koszyk po udanej płatności
                         BasketPage backetPage = new BasketPage(basket);
-                        container.getChildren().clear();
-                        container.getChildren().add(backetPage.getPage());
-                        this.orderHistoryListing.loadOrderHistory(accountId);
+                        modifyContainer(backetPage);
+                        
                         break;  
                 }
             }
             case "removeAllBtn" ->{
                 if (basket.isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Remove Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your basket is empty. Please add items before removing.");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Remove Failed","Your basket is empty. Please add items before removing.");
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Remove Successful");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your busket is now empty!");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Remove Successful","Your basket is now empty!");
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
-                    container.getChildren().clear();
-                    container.getChildren().add(basketPage.getPage());
-                    filmListing.update();
-                    
+                    modifyContainer(basketPage);
+                    filmListing.update();    
                 }
+            }
+            case "modifyTicketBtn" ->{
+                if (basket.containsTickets()) {
+                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this);
+                    modifyContainer(modifyBasketPage);
+                } else {
+                    showAlert(AlertType.WARNING, "There is no ticket in the basket","You do not need to modify the ticket.");
+                }
+            }
+            case "cancelBtn" ->{
+                modifyTicketMode = false;
+                modifyingTicket = null;
+                modifyContainer(new BasketPage(basket));
+                optionsBar.getChildren().clear();
+                addOption("Pay", "payBtn", this::handleOptionClick);
+                addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+                addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
             }
         }
     }
     @FXML
     public void handleSidebarClick(ActionEvent event) {
+        if (modifyTicketMode) { return;}
+
         Button clickedButton = (Button) event.getSource();
         String buttonId = clickedButton.getId();
 
         optionsBar.getChildren().clear();
         container.getChildren().clear();
 
-        if(buttonId.equals("repertoireBtn")) {
-            addOption("Category", "categoryBtn", this::handleOptionClick);
-            ListView<Tag> categoryListView = repertoirePage.getCategoryList();
-            categoryListView.setId("categoryList");
-            optionsBar.getChildren().add(categoryListView);
-            addOption("Type", "typeBtn", this::handleOptionClick);
-            addOption("Other", "otherBtn", this::handleOptionClick);
-            container.getChildren().add(repertoirePage.getBackPage());
-        } else if (buttonId.equals("ticketsBtn")) {
-            addOption("Buy", "buyBtn", this::handleOptionClick);
-            addOption("Change", "changeBtn", this::handleOptionClick);
-        } else if (buttonId.equals("foodBtn")) {
-            addOption("Snacks", "snacksBtn", this::handleOptionClick);
-            addOption("Drinks", "drinksBtn", this::handleOptionClick);
-            addOption("Discounts", "discountsBtn", this::handleOptionClick);
-        } else if (buttonId.equals("accountsBtn")) {
-            addOption("Sign", "signBtn", this::handleOptionClick);
-            addOption("Register", "registerBtn", this::handleOptionClick);
-            addOption("Options", "optionsBtn", this::handleOptionClick);
-            addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
-        } else if (buttonId.equals("basketBtn")) {
-            addOption("Pay", "payBtn", this::handleOptionClick);
-            addOption("Remove All", "removeAllBtn", this::handleOptionClick);
-            BasketPage backetPage = new BasketPage(basket);
-            container.getChildren().add(backetPage.getPage());
+        switch (buttonId) {
+            case "repertoireBtn" -> {
+                addOption("Category", "categoryBtn", this::handleOptionClick);
+                categoryList.setManaged(false);
+                categoryList.setVisible(false);
+                optionsBar.getChildren().add(categoryList);
+                addOption("Pegi", "pegiBtn", this::handleOptionClick);
+                pegisList.setManaged(false);
+                pegisList.setVisible(false);
+                optionsBar.getChildren().add(pegisList);
+                container.getChildren().add(repertoirePage.getPage());
+            }
+            case "roomsBtn" -> {
+                RoomReservationPage reservationPage = new RoomReservationPage(this);
+                container.getChildren().add(reservationPage.getPage());
+            }
+            case "foodBtn" -> {
+                addOption("Snacks", "snacksBtn", this::handleOptionClick);
+                addOption("Drinks", "drinksBtn", this::handleOptionClick);
+                addOption("Discounts", "discountsBtn", this::handleOptionClick);
+                addOption("Points rewards", "pointsRewardsBtn", this::handleOptionClick);
+            }
+            case "accountsBtn" -> {
+                addOption("Sign", "signBtn", this::handleOptionClick);
+                addOption("Register", "registerBtn", this::handleOptionClick);
+                addOption("Options", "optionsBtn", this::handleOptionClick);
+                addOption("Order history", "orderHistoryBtn", this::handleOptionClick);
+                addOption("Balance", "balanceBtn", this::handleOptionClick);
+                addOption("Reserve room", "reserveRoomBtn", this::handleOptionClick);
+                addOption("Reservations", "reservationsBtn", this::handleOptionClick);
+            }
+            case "basketBtn" -> {
+                addOption("Pay", "payBtn", this::handleOptionClick);
+                addOption("Remove All", "removeAllBtn", this::handleOptionClick);
+                addOption("Modify ticket", "modifyTicketBtn", this::handleOptionClick);
+                BasketPage basketPage = new BasketPage(basket);
+                container.getChildren().add(basketPage.getPage());
+            }
+            default -> System.err.println("Unknown button clicked: " + buttonId);
+        }
+    }
+
+    public static void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(cssfile);
+        alert.showAndWait();
+    }
+
+    private void toggleCategoryList() {
+        if (categoryList.isVisible()) {
+            categoryList.setVisible(false);
+            categoryList.setManaged(false);
         } else {
-            System.err.println("Unknown button clicked: " + buttonId);
+            categoryList.setVisible(true);
+            categoryList.setManaged(true);
+        }
+    }
+
+    private void togglePegisList() {
+        if (pegisList.isVisible()) {
+            pegisList.setVisible(false);
+            pegisList.setManaged(false);
+        } else {
+            pegisList.setVisible(true);
+            pegisList.setManaged(true);
         }
     }
 

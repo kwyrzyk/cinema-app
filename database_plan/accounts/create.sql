@@ -13,6 +13,16 @@ CREATE SEQUENCE seq_order_item_id
     START WITH 1
     INCREMENT BY 1;
 
+CREATE SEQUENCE seq_reservations_id
+    START WITH 1
+    INCREMENT BY 1;
+
+
+CREATE SEQUENCE seq_rewards_id
+    START WITH 1
+    INCREMENT BY 1;
+
+
 
 -- Create the accounts table
 CREATE TABLE accounts (
@@ -68,19 +78,68 @@ CREATE TABLE order_item (
     id_order INT NOT NULL, -- Foreign key referencing the orders table
     price DECIMAL(10, 2) NOT NULL
     quantity INT DEFAULT 1 NOT NULL, -- Quantity with a default value of 1
-    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) -- Foreign key constraint
+    CONSTRAINT fk_id_order FOREIGN KEY (id_order) REFERENCES orders(id_order) ON DELETE CASCADE
 );
 
-
--- Create a trigger to auto-populate id_order_item from the sequence
+-- Create a trigger to auto-populate reservations from the sequence
 CREATE OR REPLACE TRIGGER order_item_trigger
     BEFORE INSERT ON order_item
     FOR EACH ROW
 BEGIN
     -- Automatically set id_order_item using the seq_order_item_id sequence
     IF :NEW.id_order_item IS NULL THEN
+        SELECT seq_reservation_id.NEXTVAL INTO :NEW.id_reservation FROM dual;
+    END IF;
+END;
+/
+
+
+
+
+CREATE TABLE reservations (
+    reservation_id INT DEFAULT seq_reservations_id.NEXTVAL PRIMARY KEY, -- Unique identifier for each reservations
+    id_room INT NOT NULL,                -- Foreign key to screening room table
+    id_account INT NOT NULL,
+    start_time TIMESTAMP NOT NULL,                  -- Start time of the reservations
+    end_time TIMESTAMP NOT NULL,                    -- End time of the reservations
+    CONSTRAINT fk_screening_room
+        FOREIGN KEY (id_room)
+        REFERENCES screening_room(id_room)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_account
+        FOREIGN KEY (id_account)
+        REFERENCES accounts(id_account)
+        ON DELETE CASCADE
+);
+
+
+
+-- Create a trigger to auto-populate id_order_item from the sequence
+CREATE OR REPLACE TRIGGER reservations_seq_trigger
+    BEFORE INSERT ON reservations
+    FOR EACH ROW
+BEGIN
+    -- Automatically set id_order_item using the seq_order_item_id sequence
+    IF :NEW.id_reservation IS NULL THEN
         SELECT seq_order_item_id.NEXTVAL INTO :NEW.id_order_item FROM dual;
     END IF;
 END;
 /
 
+
+CREATE TABLE point_rewards (
+    id_reward INT DEFAULT seq_rewards_id.NEXTVAL PRIMARY KEY,
+    name VARCHAR2(255) NOT NULL,
+    points_price INT NOT NULL
+);
+
+
+CREATE OR REPLACE TRIGGER rewards_trigger
+    BEFORE INSERT ON point_rewards
+    FOR EACH ROW
+BEGIN
+    IF :NEW.id_reward IS NULL THEN
+        SELECT seq_rewards_id.NEXTVAL INTO :NEW.id_reward FROM dual;
+    END IF;
+END;
+/

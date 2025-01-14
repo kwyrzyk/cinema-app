@@ -7,108 +7,132 @@ import com.example.database.db_classes.Seat;
 import com.example.database.db_classes.Showing;
 import com.example.database.db_classes.Ticket;
 
-import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.Node;
 
 public class SeatsPage implements Page {
-    private final VBox seatsPage;
+    private final VBox pageContent = new VBox();
+    private final ScrollPane scrollPane = new ScrollPane(pageContent);
+    private final VBox historyBox = new VBox(scrollPane);
+    private final VBox orderItemsBox = new VBox();
     private final Controller controller;
-    private final GridPane seatsGrid; // Siatka miejsc
+
+    private GridPane seatsGrid; // Siatka miejsc
     private final List<Seat> seats; // Lista miejsc (aktualizowana przy każdej zmianie)
     private final Showing showing; // Seans, dla którego wyświetlamy miejsca
+    private final Film film;
 
-    public SeatsPage(Controller controller, Showing showing, Page filmPage, Film filmInfo) {
+    public SeatsPage(Controller controller, Showing showing, Page filmPage, Film film) {
         this.controller = controller;
         this.seats = showing.getSeats();
         this.showing = showing;
+        this.film = film;
 
-        // Tworzenie siatki miejsc
+        createContent();
+    }
+
+    private void createContent() {
+        historyBox.getStyleClass().add("page");
+        scrollPane.getStyleClass().add("scroll-pane");
+        scrollPane.setFitToWidth(true);
+        pageContent.getStyleClass().add("wide-box"); 
+
+        Label title = new Label("Choose seats");
+        title.getStyleClass().add("page-title");
+
         seatsGrid = new GridPane();
-        seatsGrid.setHgap(10); // Odstęp poziomy między siedzeniami
-        seatsGrid.setVgap(10); // Odstęp pionowy między rzędami
-        seatsGrid.setAlignment(Pos.CENTER); // Wyrównanie siatki na środku
+        seatsGrid.getStyleClass().add("seats-grid");
 
-        // Grupa miejsc po rzędach
         int maxRowNumber = seats.stream().mapToInt(Seat::getRowNumber).max().orElse(0);
         int maxSeatNumber = seats.stream().mapToInt(Seat::getSeatNumber).max().orElse(0);
 
-        // Wypełnianie siatki siedzeniami
         for (int i = 1; i <= maxRowNumber; i++) {
-            // Dodanie numeru rzędu (liczba rzymska)
             Label rowLabel = new Label(toRoman(i));
-            rowLabel.getStyleClass().add("row-label"); // Dodanie klasy CSS
-            seatsGrid.add(rowLabel, 0, i - 1); // Umieszczenie w pierwszej kolumnie (0)
+            rowLabel.getStyleClass().add("seats-row-label");
+            seatsGrid.add(rowLabel, 0, i - 1);
 
             for (int j = 1; j <= maxSeatNumber; j++) {
                 final int rowNumber = i;
                 final int seatNumber = j;
 
-                // Szukamy miejsca o danym numerze rzędu i miejsca w rzędzie
                 Seat seat = seats.stream()
                         .filter(s -> s.getRowNumber() == rowNumber && s.getSeatNumber() == seatNumber)
                         .findFirst()
                         .orElse(null);
 
+                if (controller.modifyTicketMode && seat.getId() == controller.modifyingTicket.getId()){
+                    seat.setStatus("modifying");
+                }
+
                 Button seatButton = new Button();
                 seatButton.setText(String.valueOf(seatNumber)); // Wyświetla numer miejsca
 
                 if (seat != null) {
-                    // Ustawiamy kolor w zależności od statusu miejsca
                     updateSeatStyle(seatButton, seat);
 
-                    // Dodanie akcji kliknięcia
                     seatButton.setOnAction(e -> {
-                        if (seat.getStatus().equals("available")) {
-                            seat.setStatus("inBasket");
-                            Ticket ticket = new Ticket(filmInfo, showing, seat);
-                            controller.basket.addTicket(ticket);
-                        } else if (seat.getStatus().equals("inBasket")) {
-                            seat.setStatus("available");
-                            controller.basket.removeTicket(new Ticket(filmInfo, showing, seat));
+                        if (controller.modifyTicketMode) {
+                            if (seat.getStatus().equals("available")) {
+                                seat.setStatus("inBasket");
+                                Ticket ticket = new Ticket(film, showing, seat);
+                                controller.basket.addTicket(ticket);
+                                Seat modifyingSeat = seats.stream()
+                                    .filter(s -> s.getId() == controller.modifyingTicket.getId())
+                                    .findFirst()
+                                    .orElse(null);
+                                if (modifyingSeat != null) {
+                                    modifyingSeat.setStatus("available");
+                                }
+                                updateAllSeats();
+                                controller.modifyTicketMode = false;
+                                controller.basket.removeItem(controller.modifyingTicket);
+                                controller.modifyContainer(new BasketPage(controller.basket));
+                                controller.optionsBar.getChildren().clear();
+                                controller.addOption("Pay", "payBtn", controller::handleOptionClick);
+                                controller.addOption("Remove All", "removeAllBtn", controller::handleOptionClick);
+                                controller.addOption("Modify ticket", "modifyTicketBtn", controller::handleOptionClick);
+                                return;
+                            }
+                        } else {
+                            if (seat.getStatus().equals("available")) {
+                                seat.setStatus("inBasket");
+                                Ticket ticket = new Ticket(film, showing, seat);
+                                controller.basket.addTicket(ticket);
+                            } else if (seat.getStatus().equals("inBasket")) {
+                                seat.setStatus("available");
+                                controller.basket.removeTicket(new Ticket(film, showing, seat));
+                            }
+                            updateAllSeats(); // Uaktualniamy wszystkie miejsca
                         }
-                        updateAllSeats(); // Uaktualniamy wszystkie miejsca
                     });
                 } else {
-                    // Miejsce nie istnieje (puste pole w siatce)
                     seatButton.setDisable(true);
                 }
 
                 // Dodanie przycisku do siatki
                 seatButton.getStyleClass().add("seat-btn");
-                seatsGrid.add(seatButton, j, i - 1); // Indeksy w GridPane zaczynają się od 0
+                seatsGrid.add(seatButton, j, i - 1);
             }
         }
-
-        // Przycisk "Powrót"
+        
         Button backButton = new Button("Back");
-        backButton.getStyleClass().add("back-btn");
+        backButton.getStyleClass().add("btn");
         backButton.setId("repertoireBackBtn");
         backButton.setOnAction(e -> {
-            Parent parent = backButton.getParent().getParent().getParent();
-            VBox container = (VBox) parent;
-            container.getChildren().clear();
-            container.getChildren().add(new FilmPage(controller, filmInfo).getPage());
+            controller.modifyContainer(new FilmPage(controller, film));
         });
+        VBox backBtnBox = new VBox(backButton);
+        backBtnBox.getStyleClass().add("wide-box");
 
-        // Złożenie całej strony
-        HBox titleRow = new HBox();
-        titleRow.getChildren().add(backButton);
-        titleRow.setAlignment(Pos.CENTER);
-
-        seatsPage = new VBox(20); // Odstęp między elementami
-        seatsPage.getStyleClass().add("seats-page");
-        seatsPage.getChildren().addAll(seatsGrid, titleRow);
-        seatsPage.setAlignment(Pos.CENTER);
+        pageContent.getChildren().addAll(title, seatsGrid, backBtnBox);
     }
 
     public VBox getPage() {
-        return seatsPage;
+        return pageContent;
     }
 
     public Showing getShowing() {
@@ -134,7 +158,6 @@ public class SeatsPage implements Page {
         return result.toString();
     }
 
-    // Metoda aktualizująca styl przycisku w zależności od statusu siedzenia
     public void updateSeatStyle(Button seatButton, Seat seat) {
         switch (seat.getStatus()) {
             case "available":
@@ -146,12 +169,14 @@ public class SeatsPage implements Page {
             case "inBasket":
                 seatButton.setStyle("-fx-background-color: yellow; -fx-text-fill: black;");
                 break;
+            case "modifying":
+                seatButton.setStyle("-fx-background-color: orange; -fx-text-fill: black;");
+                break;
             default:
                 seatButton.setStyle("-fx-background-color: gray; -fx-text-fill: white;");
         }
     }
 
-    // Metoda aktualizująca wszystkie miejsca w siatce
     public void updateAllSeats() {
         for (Node node : seatsGrid.getChildren()) {
             if (node instanceof Button) {

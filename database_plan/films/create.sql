@@ -56,7 +56,8 @@ CREATE TABLE showing (
     id_showing INT PRIMARY KEY,
     id_film INT NOT NULL,              -- Foreign key to the films table
     id_room INT NOT NULL,              -- Foreign key to the screening_room table
-    show_time DATE NOT NULL,           -- Time of the showing
+    show_time DATETIME NOT NULL,           -- Time of the showing
+    end_time DATETIME
     FOREIGN KEY (id_room) REFERENCES screening_room(id_room) ON DELETE CASCADE,
     FOREIGN KEY (id_film) REFERENCES films(id_film) ON DELETE CASCADE
 );

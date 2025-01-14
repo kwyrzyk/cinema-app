@@ -1,105 +1,138 @@
 package com.example;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Tag;
-import com.example.listing.FilmListing;
 
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 public class RepertoirePage implements Page {
-    private final ListView<Tag> categoryList = new ListView<>();
-    private boolean isCategoryListVisible = false;
-    private Movie sessionListGenerator;
-    private VBox sessionListVbox;
-    private List<Tag> listOfTags;
-    FilmListing filmListing;
-    List<Film> allFilms;
 
-    private Controller controller;
-    
-    public RepertoirePage(Controller controller, FilmListing filmListing) {
+    private final VBox pageContent = new VBox();
+    private final ScrollPane scrollPane = new ScrollPane(pageContent);
+    private final VBox repertoireBox = new VBox(scrollPane);
+    private final VBox filmItemsBox = new VBox();
+    private final List<Film> allFilms;
+    private List<Film> displayedFilms;
+    private final Controller controller;
+
+    public RepertoirePage(Controller controller) {
         this.controller = controller;
-        this.listOfTags = controller.getListOfTags();
-        this.filmListing = filmListing;
-        this.allFilms = filmListing.getFilms();
-        categoryList.setVisible(false);
-        categoryList.setManaged(false);
-        categoryList.getStyleClass().add("lists");
-        categoryList.setOnMouseClicked(this::handleCategoryClick);
-        categoryList.setCellFactory(param -> new ListCell<Tag>() {
-            @Override
-            protected void updateItem(Tag item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item.getName());
-                }
-            }
-        });
+        this.allFilms = controller.getListOfFilms();
+        this.displayedFilms = new ArrayList<>(this.allFilms);
 
-        makeRepertoireContent(this.allFilms);
+        createContent();
     }
 
-    public void makeRepertoireContent(List<Film> Films){
-        this.sessionListGenerator = new Movie(this.controller, Films);
-        this.sessionListVbox = sessionListGenerator.getSessionListVBox();
-        this.sessionListVbox.getStyleClass().add("content");
-    }
-    @Override
-    public VBox getPage() {
-        HBox main = new HBox(this.sessionListVbox);
+    private void createContent() {
+        repertoireBox.getStyleClass().add("page");
+        scrollPane.getStyleClass().add("scroll-pane");
+        scrollPane.setFitToWidth(true);
+        pageContent.getStyleClass().add("wide-box");
+        filmItemsBox.getStyleClass().add("products-items-box");
 
-        VBox layout = new VBox(main);
-        layout.getStyleClass().add("newpage");
-        return layout;
-    }
+        Label title = new Label("Repertorie");  
+        title.getStyleClass().add("page-title");
 
-    public VBox getBackPage() {
-        makeRepertoireContent(this.allFilms);
-        HBox main = new HBox(this.sessionListVbox);
+        SearchPanel searchPanel = new SearchPanel("Search for film...", this::filterFilms);
 
-        VBox layout = new VBox(main);
-        layout.getStyleClass().add("newpage");
-        return layout;
+        updateFilmsView(displayedFilms);
+
+        pageContent.getChildren().addAll(title, searchPanel, filmItemsBox);
     }
 
+    private void updateFilmsView(List<Film> filmsToDisplay) {
+        filmItemsBox.getChildren().clear();
 
-
-    public void toggleCategoryList() {
-        if (isCategoryListVisible) {
-            categoryList.setVisible(false);
-            categoryList.setManaged(false);
-            categoryList.getItems().clear();
+        if (filmsToDisplay.isEmpty()) {
+            Label noFilmsLabel = new Label("No films available.");
+            noFilmsLabel.getStyleClass().add("no-items-label");
+            filmItemsBox.getChildren().add(noFilmsLabel);
         } else {
-            categoryList.getItems().clear();
-            categoryList.getItems().addAll(listOfTags);
-            categoryList.setPrefHeight((listOfTags.size() + 1) * 24); // Dostosuj wysokość
-            categoryList.setVisible(true);
-            categoryList.setManaged(true);
-        }
+            for (Film film : filmsToDisplay) {
+                VBox filmBox = new VBox();
+                filmBox.getStyleClass().add("product-box");
 
-        isCategoryListVisible = !isCategoryListVisible;
-    }
+                Label filmLabel = new Label(film.getTitle());
+                filmLabel.getStyleClass().add("product-price");
 
-    private void handleCategoryClick(MouseEvent event) {
-        Tag selectedTag = categoryList.getSelectionModel().getSelectedItem();
-        if (selectedTag != null) {
-            System.out.println("Selected tag: " + selectedTag.getName());
-            List<Film> filmsWithTags = this.filmListing.getFilmsByTag(selectedTag);
-            makeRepertoireContent(filmsWithTags);
-            this.controller.container.getChildren().clear();
-            this.controller.container.getChildren().add(this.getPage());
+                filmLabel.setOnMouseClicked(event -> {
+                    FilmPage filmPage = new FilmPage(controller, film);
+                    controller.modifyContainer(filmPage);
+
+                });
+
+                filmBox.getChildren().add(filmLabel);
+                filmItemsBox.getChildren().add(filmBox);
+            }
         }
     }
 
-    public ListView<Tag> getCategoryList() {
-        return categoryList;
+    private void filterFilms(String query) {
+        if (query.isEmpty()) {
+            displayedFilms = new ArrayList<>(allFilms);
+        } else {
+            displayedFilms = allFilms.stream()
+                .filter(film -> film.toString().toLowerCase().contains(query))
+                .collect(Collectors.toList());
+        }
+        updateFilmsView(displayedFilms);
+    }
+
+    private void filterFilmsByCategory(Tag category) {
+        displayedFilms = controller.getFilmListing().getFilmsByTag(category);
+        updateFilmsView(displayedFilms);
+    }
+
+    private void filterFilmsByPegi(int pegi) {
+        displayedFilms = controller.getFilmListing().getFilmsByPegi(pegi);  
+        updateFilmsView(displayedFilms);
+    }
+
+    public VBox getCategories() {
+        VBox categoriesBox = new VBox();
+        categoriesBox.getStyleClass().add("films-filter-box");
+
+        List<Tag> categories = controller.getListOfTags();
+        for (Tag category : categories) {
+            Label categoryLabel = new Label(category.getName());
+            categoryLabel.getStyleClass().add("product-price");
+
+            categoryLabel.setOnMouseClicked(event -> {
+                filterFilmsByCategory(category);
+            });
+
+            categoriesBox.getChildren().add(categoryLabel);
+        }
+
+        return categoriesBox;
+    }
+    public VBox getPegis() {
+        VBox categoriesBox = new VBox();
+        categoriesBox.getStyleClass().add("films-filter-box");
+
+        List<Integer> pegiValues = controller.getListOfPegiValues();
+        for (int value : pegiValues) {
+            Label categoryLabel = new Label(String.valueOf(value));
+            categoryLabel.getStyleClass().add("product-price");
+
+            categoryLabel.setOnMouseClicked(event -> {
+                filterFilmsByPegi(value);
+            });
+
+            categoriesBox.getChildren().add(categoryLabel);
+        }
+
+        return categoriesBox;
+    }
+
+    public VBox getPage() {
+        updateFilmsView(allFilms);
+        return repertoireBox;
     }
 }

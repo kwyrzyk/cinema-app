@@ -2,6 +2,7 @@ package com.example.database;
 
 import com.example.database.db_classes.Discount;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalTime;
@@ -10,18 +11,13 @@ import java.util.List;
 
 public class DiscountRepository {
 
-    // Constructor
-    public DiscountRepository(DatabaseManager dbManager) {
-        // Initialize with the database manager, if needed.
-    }
-
     // Method to get a discount by its ID
-    static public Discount getDiscountById(int discountId) throws SQLException {
+    static public Discount getDiscountById(int discountId, Connection connection) throws SQLException {
         // Query to get the discount's basic info
         String discountQuery = "SELECT id_discount, price, start_time, end_time FROM discounts WHERE id_discount = " + discountId;
     
         // Execute discount query
-        ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery);
+        ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery, connection);
         if (!discountResult.next()) {
             return null; // No discount found with the given ID
         }
@@ -48,7 +44,7 @@ public class DiscountRepository {
             JOIN foods f ON fp.id_food = f.id_food
             WHERE dp.id_discount = """ + discountId;
     
-        ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
+        ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery, connection);
         if(foodResult != null){
             while (foodResult.next()) {
                 int foodPriceId = foodResult.getInt("id_food_price");
@@ -66,7 +62,7 @@ public class DiscountRepository {
             JOIN drinks d ON dp.id_drink = d.id_drink
             WHERE dp.id_discount = """ + discountId;
     
-        ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
+        ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery, connection);
         if(drinkResult != null){
             while (drinkResult.next()) {
                 int drinkPriceId = drinkResult.getInt("id_drink_price");
@@ -82,12 +78,12 @@ public class DiscountRepository {
 
 
     // Method to get a list of all discounts
-    static public List<Discount> getAllDiscounts() {
+    static public List<Discount> getAllDiscounts(Connection connection) {
         List<Discount> discounts = new ArrayList<>();
         String discountQuery = "SELECT id_discount, price, start_time, end_time FROM discounts";
 
         try {
-            ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery);
+            ResultSet discountResult = DatabaseManager.runSelectQuery(discountQuery, connection);
             if (discountResult == null) {
                 System.err.println("Error: discountResult is null.");
                 return discounts;
@@ -114,7 +110,7 @@ public class DiscountRepository {
                     JOIN foods f ON fp.id_food = f.id_food
                     WHERE dp.id_discount = """ + discountId;
 
-                ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery);
+                ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery, connection);
                 if(foodResult != null){
                     while (foodResult.next()) {
                         int foodPriceId = foodResult.getInt("id_food_price");
@@ -135,7 +131,7 @@ public class DiscountRepository {
                     JOIN drinks d ON drp.id_drink = d.id_drink
                     WHERE dp.id_discount = """ + discountId;
 
-                ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery);
+                ResultSet drinkResult = DatabaseManager.runSelectQuery(drinkQuery, connection);
                 if(drinkResult != null){
                     while (drinkResult.next()) {
                         int drinkPriceId = drinkResult.getInt("id_drink_price");

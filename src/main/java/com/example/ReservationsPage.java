@@ -1,0 +1,47 @@
+package com.example;
+
+import com.example.database.db_classes.OrderHistoryRecord;
+import com.example.database.db_classes.Price;
+import com.example.database.db_classes.Reservation;
+import com.example.database.ReservationRepository;
+import com.example.database.db_classes.Account;
+
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.layout.VBox;
+
+import java.beans.VetoableChangeListener;
+import java.util.List;
+
+public class ReservationsPage implements Page {
+    private final VBox reservationsBox = new VBox();
+    private final Controller controller;
+
+    public ReservationsPage(Controller controller) {
+        this.controller = controller;
+        
+        createContent();
+    }
+
+    private void createContent() {
+        Label title = new Label("Reservations");
+        title.getStyleClass().add("page-title");
+        reservationsBox.getChildren().addAll(title);
+        
+        int userId = controller.getAccountId();
+        List<Reservation> reservations = ReservationRepository.getAllReservationsByAccountId(userId, controller.databaseManager.getConnection());
+        for (Reservation reservation : reservations) {
+            Label reservationLabel = new Label(reservation.toString()); // Wyświetl tekstową reprezentację rezerwacji
+            reservationLabel.getStyleClass().add("item");
+            reservationsBox.getChildren().add(reservationLabel);
+        }
+    }
+
+    public VBox getPage() {
+        return reservationsBox;
+    }
+}

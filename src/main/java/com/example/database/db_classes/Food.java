@@ -2,11 +2,12 @@ package com.example.database.db_classes;
 
 import java.util.HashMap;
 import java.util.Map;
+import javafx.util.Pair;
 
 public class Food {
     private int idFood;
     private String name;
-    private Map<String, Price> prices;  // A map to hold size and price
+    private Map<String, Pair<Integer, Price>> prices;  // A map to hold size and price
 
     // Constructor
     public Food(int idFood, String name) {
@@ -33,18 +34,28 @@ public class Food {
     }
 
     // Method to add price for a given portion size
-    public void addPrice(String portionSize, Price price) {
-        this.prices.put(portionSize, price);
+    public void addPrice(String portionSize, Price price, int id) {
+        this.prices.put(portionSize, new Pair< Integer, Price>(id, price));
     }
 
-    public Map<String, Price> getPrices(){
+    public void setPrices(HashMap<String, Pair<Integer, Price>> prices){
+        this.prices = prices;
+    }
+
+    public Map<String, Pair<Integer, Price>> getPrices(){
         return this.prices;
     }
 
     // Method to get the price for a specific portion size
     public Price getPriceForSize(String portionSize) {
-        return this.prices.get(portionSize);
+        return this.prices.get(portionSize).getValue();
     }
+
+
+    public Integer getIdForSize(String portionSize) {
+        return this.prices.get(portionSize).getKey();
+    }
+
 
     // To String method (for printing object details)
     @Override

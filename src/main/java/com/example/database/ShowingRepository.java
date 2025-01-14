@@ -10,21 +10,14 @@ import java.util.List;
 
 public class ShowingRepository {
 
-    /**
-     * Retrieves all showings for a given film ID, including their associated seats.
-     *
-     * @param filmId The ID of the film.
-     * @return A list of Showing objects with their associated seats.
-     * @throws SQLException if a database access error occurs.
-     */
-    static public List<Showing> getShowingsByFilmIdWithSeats(int filmId) throws SQLException {
+    
+    static public List<Showing> getShowingsByFilmIdWithSeats(int filmId, Connection connection) throws SQLException {
         List<Showing> showings = new ArrayList<>();
-        String showingQuery = "SELECT id_showing, id_room, show_time FROM showing WHERE id_film = ?";
+        String showingQuery = "SELECT id_showing, id_room, show_time, end_time FROM showing WHERE id_film = ?";
         String seatQuery = "SELECT id_seat, id_showing, row_number, seat_number, status " +
                            "FROM seats WHERE id_showing = ?";
 
-        try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement showingStmt = connection.prepareStatement(showingQuery)) {
+        try (PreparedStatement showingStmt = connection.prepareStatement(showingQuery)) {
 
             showingStmt.setInt(1, filmId);
 
@@ -34,6 +27,9 @@ public class ShowingRepository {
                     int roomId = showingRs.getInt("id_room");
                     Timestamp showTimeStamp = showingRs.getTimestamp("show_time");
                     LocalDateTime showTime = showTimeStamp.toLocalDateTime();
+                    Timestamp endTimeStamp = showingRs.getTimestamp("end_time");
+                    LocalDateTime endTime = endTimeStamp.toLocalDateTime();
+
 
                     // Fetch seats for the showing
                     List<Seat> seats = new ArrayList<>();
@@ -53,7 +49,7 @@ public class ShowingRepository {
                     }
 
                     // Create Showing object and add to the list
-                    Showing showing = new Showing(showingId, filmId, roomId, showTime, seats);
+                    Showing showing = new Showing(showingId, filmId, roomId, showTime, endTime, seats);
                     showings.add(showing);
                 }
             }
@@ -62,13 +58,12 @@ public class ShowingRepository {
         return showings;
     }
 
-    public static boolean reserveSeat(int seatId) {
+    public static boolean reserveSeat(int seatId, Connection connection) {
         String updateQuery = "UPDATE seats " +
                              "SET status = 'reserved' " +
                              "WHERE id_seat = ? AND status = 'available'";
     
-        try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
     
             // Set the parameters for the query
             preparedStatement.setInt(1, seatId);
@@ -86,13 +81,12 @@ public class ShowingRepository {
     }
     
 
-    public static boolean freeSeat(int showingId, int rowNumber, int seatNumber) {
+    public static boolean freeSeat(int showingId, int rowNumber, int seatNumber, Connection connection) {
         String updateQuery = "UPDATE seats " +
                              "SET status = 'available' " +
                              "WHERE showing_id = ? AND row_number = ? AND seat_number = ? AND status = 'available'";
     
-        try (Connection connection = DatabaseManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
     
             // Set the parameters for the query
             preparedStatement.setInt(1, showingId);
