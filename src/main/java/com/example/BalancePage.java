@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 
-import java.util.List;
 
 public class BalancePage implements Page {
     private final VBox balanceBox = new VBox();

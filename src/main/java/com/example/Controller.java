@@ -54,7 +54,7 @@ public class Controller {
     private FoodListing foodListing = new FoodListing(databaseManager);
     private DrinksListing drinksListing = new DrinksListing(databaseManager);
     private DiscountListing discountListing = new DiscountListing(databaseManager);
-    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this, accountsListing);
+    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this);
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;

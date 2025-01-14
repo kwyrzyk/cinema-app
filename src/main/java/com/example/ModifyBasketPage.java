@@ -3,7 +3,6 @@ package com.example;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.PricedItem;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;

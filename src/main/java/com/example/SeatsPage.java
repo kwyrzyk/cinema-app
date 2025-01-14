@@ -18,7 +18,6 @@ public class SeatsPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
     private final VBox historyBox = new VBox(scrollPane);
-    private final VBox orderItemsBox = new VBox();
     private final Controller controller;
 
     private GridPane seatsGrid; // Siatka miejsc

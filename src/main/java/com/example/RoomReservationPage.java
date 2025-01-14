@@ -84,12 +84,12 @@ public class RoomReservationPage implements Page {
             }
         });
     
-        roomComboBox.setOnAction(event -> {
-            ScreeningRoom selectedRoom = roomComboBox.getValue();
-            if (selectedRoom != null) {
-                int roomId = selectedRoom.getId();
-            }
-        });
+        // roomComboBox.setOnAction(event -> {
+        //     ScreeningRoom selectedRoom = roomComboBox.getValue();
+        //     if (selectedRoom != null) {
+        //         int roomId = selectedRoom.getId();
+        //     }
+        // });
     
         roomComboBox.setPromptText("Choose a room");
     
@@ -114,6 +114,7 @@ public class RoomReservationPage implements Page {
             startTimeLabel, startTimeBox,
             endTimeLabel, endTimeBox
         );
+        dialogContent.setStyle("-fx-text-fill: red");
         dialog.getDialogPane().setContent(dialogContent);
         
     
