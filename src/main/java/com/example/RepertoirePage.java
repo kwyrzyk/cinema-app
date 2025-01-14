@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.database.AccountRepository;
 import com.example.database.db_classes.Film;
+import com.example.database.db_classes.Tag;
 
 import javafx.scene.Parent;
 import javafx.scene.control.*;
@@ -97,6 +98,53 @@ public class RepertoirePage implements Page {
                 .collect(Collectors.toList());
         }
         updateFilmsView(displayedFilms);
+    }
+
+    private void filterFilmsByCategory(Tag category) {
+        displayedFilms = controller.getFilmListing().getFilmsByTag(category);
+        updateFilmsView(displayedFilms);
+    }
+
+    private void filterFilmsByPegi(int pegi) {
+        displayedFilms = controller.getFilmListing().getFilmsByPegi(pegi);  
+        updateFilmsView(displayedFilms);
+    }
+
+    public VBox getCategories() {
+        VBox categoriesBox = new VBox();
+        categoriesBox.getStyleClass().add("films-filter-box");
+
+        List<Tag> categories = controller.getListOfTags();
+        for (Tag category : categories) {
+            Label categoryLabel = new Label(category.getName());
+            categoryLabel.getStyleClass().add("product-price");
+
+            categoryLabel.setOnMouseClicked(event -> {
+                filterFilmsByCategory(category);
+            });
+
+            categoriesBox.getChildren().add(categoryLabel);
+        }
+
+        return categoriesBox;
+    }
+    public VBox getPegis() {
+        VBox categoriesBox = new VBox();
+        categoriesBox.getStyleClass().add("films-filter-box");
+
+        List<Integer> pegiValues = controller.getListOfPegiValues();
+        for (int value : pegiValues) {
+            Label categoryLabel = new Label(String.valueOf(value));
+            categoryLabel.getStyleClass().add("product-price");
+
+            categoryLabel.setOnMouseClicked(event -> {
+                filterFilmsByPegi(value);
+            });
+
+            categoriesBox.getChildren().add(categoryLabel);
+        }
+
+        return categoriesBox;
     }
 
     public VBox getPage() {

@@ -43,8 +43,8 @@ public class Controller {
     public Boolean modifyTicketMode = false;
     public PricedItem modifyingTicket;
     
-    private final List<Tag> listOfTags = TagsRepository.getAllTags();
-    private final List<Integer> listOfPegi = List.of(3, 7, 12, 16, 18);
+    
+    private final List<Integer> listOfPegiValues = List.of(3, 7, 12, 16, 18);
     
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing();
     private AccountListing accountsListing = new AccountListing();
@@ -66,8 +66,11 @@ public class Controller {
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards();
+    private final List<Tag> listOfTags = TagsRepository.getAllTags();
     
     public RepertoirePage repertoirePage = new RepertoirePage(this);
+    private VBox categoryList = repertoirePage.getCategories();
+    private VBox pegisList = repertoirePage.getPegis();
    
     @FXML
     private Label label;
@@ -130,12 +133,16 @@ public class Controller {
         return this.listOfTags;
     }
 
-    public List<Integer> getListOfPegi(){
-        return this.listOfPegi;
+    public List<Integer> getListOfPegiValues(){
+        return this.listOfPegiValues;
     }
 
     public AccountListing getAccountListing(){
         return this.accountsListing;
+    }
+
+    public FilmListing getFilmListing(){
+        return this.filmListing;
     }
 
     public void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
@@ -151,13 +158,8 @@ public class Controller {
         Button clickedOption = (Button) event.getSource();
         String buttonId = clickedOption.getId();
         switch (buttonId){
-            case "repertoireBackBtn" ->{    
-                this.container.getChildren().clear();
-                // TODO - add back button to repertoirePage
-                // container.getChildren().add(this.repertoirePage.getBackPage());
-            }
-            // case "pegiBtn" -> repertoirePage.togglePegiList();
-            // case "categoryBtn" -> repertoirePage.toggleCategoryList();
+            case "categoryBtn" -> toggleCategoryList();
+            case "pegiBtn" -> togglePegisList();
             case "snacksBtn" -> {
                 FoodsPage foodPage = new FoodsPage(this);
                 container.getChildren().clear();
@@ -252,7 +254,6 @@ public class Controller {
                     alert.setHeaderText(null);
                     alert.setContentText("You need to log in first.");
                     alert.showAndWait();
-                    System.out.println("Order history");
                 } else {
                     RoomReservationPage reservationPage = new RoomReservationPage(this);
                     container.getChildren().clear();
@@ -268,7 +269,6 @@ public class Controller {
                     alert.setHeaderText(null);
                     alert.setContentText("You need to log in first.");
                     alert.showAndWait();
-                    System.out.println("Order history");
                 } else {
                     ReservationsPage reservationsPage = new ReservationsPage(this);
                     container.getChildren().clear();
@@ -424,13 +424,13 @@ public class Controller {
 
         if(buttonId.equals("repertoireBtn")) {
             addOption("Category", "categoryBtn", this::handleOptionClick);
-            // ListView<Tag> categoryListView = repertoirePage.getCategoryList();
-            // categoryListView.setId("categoryList");
-            // optionsBar.getChildren().add(categoryListView);
+            categoryList.setManaged(false);
+            categoryList.setVisible(false);
+            optionsBar.getChildren().add(categoryList);
             addOption("Pegi", "pegiBtn", this::handleOptionClick);
-            // ListView<Integer> listPegi = repertoirePage.getPegiList();
-            // listPegi.setId("pegiList");
-            // optionsBar.getChildren().add(listPegi);
+            pegisList.setManaged(false);
+            pegisList.setVisible(false);
+            optionsBar.getChildren().add(pegisList);
             addOption("Type", "typeBtn", this::handleOptionClick);
             addOption("Other", "otherBtn", this::handleOptionClick);
             container.getChildren().add(repertoirePage.getPage());
@@ -467,6 +467,26 @@ public class Controller {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void toggleCategoryList() {
+        if (categoryList.isVisible()) {
+            categoryList.setVisible(false);
+            categoryList.setManaged(false);
+        } else {
+            categoryList.setVisible(true);
+            categoryList.setManaged(true);
+        }
+    }
+
+    private void togglePegisList() {
+        if (pegisList.isVisible()) {
+            pegisList.setVisible(false);
+            pegisList.setManaged(false);
+        } else {
+            pegisList.setVisible(true);
+            pegisList.setManaged(true);
+        }
     }
 
 }

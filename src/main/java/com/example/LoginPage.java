@@ -23,6 +23,7 @@ public class LoginPage {
         this.controller = controller;
         this.accountListing = accountListing;
         this.accountListing.loadAllAccounts();
+        System.out.println("Loaded accounts: " + this.accountListing.getAllAccounts().size());
 
         createContent();
     }
@@ -67,6 +68,7 @@ public class LoginPage {
         Account account = this.accountListing.getAccountByLogin(username);
         if(account == null) {
             Controller.showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with this login");
+            return;
         }
         if(account.getPassword().equals(password)){
             Controller.showAlert(

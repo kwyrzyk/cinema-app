@@ -192,6 +192,11 @@
     -fx-max-width: infinity;
     -fx-spacing: 10;
 }
+/* Repertoire Page */
+/* .films-filter-box {
+    -fx-managed: false;
+    -fx-visible: false;
+} */
 /* Film Page */
 .last-info-row{
     -fx-border-color: transparent;
