@@ -6,7 +6,7 @@ public class Seat {
     private int showingId;
     private int rowNumber;
     private int seatNumber;
-    private String status; // "available", "reserved", "booked"
+    private String status; 
 
     // Parameterized constructor
     public Seat(int id, int showingId, int rowNumber, int seatNumber, String status) {
