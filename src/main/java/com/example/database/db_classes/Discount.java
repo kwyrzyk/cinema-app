@@ -11,7 +11,7 @@ public class Discount {
     private List<DiscountItem> drinkItems;
     private LocalTime startTime;
     private LocalTime endTime;
-    private boolean is_time_limited = false;
+    private boolean isTimeLimited = false;
 
 
     // Constructor
@@ -34,7 +34,7 @@ public class Discount {
     public Discount(int idDiscount, double price, LocalTime startTime, LocalTime endTime) {
         this.idDiscount = idDiscount;
         this.price = new Price(price);
-        this.is_time_limited = true;
+        this.isTimeLimited = true;
         this.startTime = startTime;
         this.endTime = endTime;
         this.foodItems = new ArrayList<>();
@@ -45,7 +45,7 @@ public class Discount {
     public Discount(int idDiscount, Price price, LocalTime startTime, LocalTime endTime) {
         this.idDiscount = idDiscount;
         this.price = price;
-        this.is_time_limited = true;
+        this.isTimeLimited = true;
         this.startTime = startTime;
         this.endTime = endTime;
         this.foodItems = new ArrayList<>();
@@ -54,8 +54,8 @@ public class Discount {
 
 
     // time setters and getters
-    public boolean is_time_limited(){
-        return is_time_limited;
+    public boolean isTimeLimited(){
+        return isTimeLimited;
     }
     
     public LocalTime getStartTime() {
@@ -67,13 +67,13 @@ public class Discount {
     }
 
     public void setStartTime(LocalTime startTime) {
-        if(this.is_time_limited == true){
+        if(this.isTimeLimited == true){
             this.startTime = startTime;
         }
     }
 
     public void setEndTime(LocalTime endTime) {
-        if(this.is_time_limited == true){
+        if(this.isTimeLimited == true){
             this.endTime = endTime;
         }
     }
@@ -122,16 +122,26 @@ public class Discount {
     }
 
     public boolean isDiscountActive(LocalTime currentTime) {
-        if (is_time_limited) {
+        if (isTimeLimited) {
             return (currentTime.isAfter(startTime) && currentTime.isBefore(endTime));
         }
         return true; // Always active if not time-limited
     }
 
-    // To String method (for printing object details)
-    @Override
     public String toString() {
-        return "Set of " + foodItems +" "+drinkItems+ " price: " + price;
+        StringBuilder sb = new StringBuilder();
+    
+        if (!foodItems.isEmpty()) {
+            foodItems.forEach(item -> sb.append(item.toString()));
+        }
+    
+        if (!drinkItems.isEmpty()) {
+            drinkItems.forEach(item -> sb.append(item.toString()));
+        }
+    
+        sb.append("Price: ").append(price).append("$");
+    
+        return sb.toString().trim();
     }
 }
 

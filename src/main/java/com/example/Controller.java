@@ -5,14 +5,13 @@ import java.util.List;
 
 import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
-import com.example.database.DrinkRepository;
-import com.example.database.FoodRepository;
 import com.example.database.RewardsRepository;
 import com.example.database.ShowingRepository;
 import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
+import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.PointsReward;
 import com.example.database.db_classes.PricedItem;
@@ -29,11 +28,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -47,27 +46,33 @@ public class Controller {
     public PricedItem modifyingTicket;
 
 
-    private final List<Tag> listOfTags = TagsRepository.getAllTags(databaseManager.getConnection());
-    private final List<Integer> listOfPegi = List.of(3, 7, 12, 16, 18);
-    public RepertoirePage repertoirePage = new RepertoirePage(this, filmListing);
+    private final List<Integer> listOfPegiValues = List.of(3, 7, 12, 16, 18);
 
     public OrderHistoryListing orderHistoryListing = new OrderHistoryListing(databaseManager);
     private AccountListing accountsListing = new AccountListing(databaseManager);
     
     private LoginPage loginPage = new LoginPage( this, accountsListing);
-    private RegisterPage registerPage = new RegisterPage(accountsListing);
+    private RegisterPage registerPage = new RegisterPage(this, accountsListing);
+    private FoodListing foodListing = new FoodListing(databaseManager);
     private DrinksListing drinksListing = new DrinksListing(databaseManager);
     private DiscountListing discountListing = new DiscountListing(databaseManager);
-    private AccoutOptionsPage accountOptionsPage = new AccoutOptionsPage(this, accountsListing);
+    private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this, accountsListing);
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;
     
     public Basket basket = new Basket();
-    private FoodListing foodListing = new FoodListing(databaseManager);
+    private final List<Film> listOfFilms = filmListing.getFilms();
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
+    private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
     private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards(databaseManager.getConnection());
+    private final List<Tag> listOfTags = TagsRepository.getAllTags(databaseManager.getConnection());
+    
+
+    public RepertoirePage repertoirePage = new RepertoirePage(this);
+    private VBox categoryList = repertoirePage.getCategories();
+    private VBox pegisList = repertoirePage.getPegis();
    
     
     @FXML
@@ -76,8 +81,6 @@ public class Controller {
     private VBox sideBar;
     @FXML
     public VBox optionsBar;
-    @FXML
-    private VBox newSidebar;
     @FXML
     public VBox container;
 
@@ -109,22 +112,47 @@ public class Controller {
         return this.accountId;
     }
 
+    public List<Film> getListOfFilms(){
+        return this.listOfFilms;
+    }
+
+    public List<Food> getListOfFoods(){
+        return this.listOfFoods;
+    }
+
+    public List<Drink> getListOfDrinks(){
+        return this.listOfDrinks;
+    }
+
+    public List<Discount> getListOfDiscounts(){
+        return this.listOfDiscounts;
+    }
+
+    public List<PointsReward> getListOfRewards(){
+        return this.listOfRewards;
+    }
+
     public List<Tag> getListOfTags(){
         return this.listOfTags;
     }
 
-    public List<Integer> getListOfPegi(){
-        return this.listOfPegi;
+    public List<Integer> getListOfPegiValues(){
+        return this.listOfPegiValues;
     }
 
     public AccountListing getAccountListing(){
         return this.accountsListing;
     }
 
+    public FilmListing getFilmListing(){
+        return this.filmListing;
+    }
+
     public void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
         optionButton.setOnAction(action);
+        optionButton.getStyleClass().add("options-bar-btn");
         optionsBar.getChildren().add(optionButton);
     }
 
@@ -133,75 +161,58 @@ public class Controller {
         Button clickedOption = (Button) event.getSource();
         String buttonId = clickedOption.getId();
         switch (buttonId){
-            case "repertoireBackBtn" ->{    
-                this.container.getChildren().clear();
-                container.getChildren().add(this.repertoirePage.getBackPage());
-            }
-            case "pegiBtn" -> repertoirePage.togglePegiList();
-            case "categoryBtn" -> repertoirePage.toggleCategoryList();
+            case "categoryBtn" -> toggleCategoryList();
+            case "pegiBtn" -> togglePegisList();
             case "snacksBtn" -> {
-                FoodMenu foodMenu = new FoodMenu(this, basket, listOfFoods);
+                FoodsPage foodPage = new FoodsPage(this);
                 container.getChildren().clear();
-                container.getChildren().add(foodMenu.getFoodListVBox());
+                container.getChildren().add(foodPage.getPage());
             }
             case "drinksBtn" -> {
-                DrinksMenu drinkMenu = new DrinksMenu(this, basket, listOfDrinks);
+                DrinksPage drinksPage = new DrinksPage(this);
                 container.getChildren().clear();
-                container.getChildren().add(drinkMenu.getDrinkListVBox());
+                container.getChildren().add(drinksPage.getPage());
             }
             case "discountsBtn" ->{
-                DiscountsMenu discountsMenu = new DiscountsMenu(basket, discountListing.getActiveDiscounts());
+                DiscountsPage discountsPage = new DiscountsPage(this);
                 container.getChildren().clear();
-                container.getChildren().add(discountsMenu.getDiscountListVBox());
+                container.getChildren().add(discountsPage.getPage());
             }
             case "pointsRewardsBtn" ->{
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
+                    container.getChildren().add(loginPage.getPage());
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
-                    PointsRewardsMenu pointsRewardsMenu = new PointsRewardsMenu(this, listOfRewards);
+                    PointsRewardsPage pointsRewardsPage = new PointsRewardsPage(this);
                     container.getChildren().clear();
-                    container.getChildren().add(pointsRewardsMenu.getRewardListVBox());
+                    container.getChildren().add(pointsRewardsPage.getPage());
                 }
             }
             case "signBtn"-> {
                 container.getChildren().clear();
-                container.getChildren().add(loginPage.getLoginContainer());
+                container.getChildren().add(loginPage.getPage());
             }
             case "registerBtn" -> {
                 container.getChildren().clear();
-                container.getChildren().add(registerPage.getRegisterContainer());
+                container.getChildren().add(registerPage.getPage());
                 break;
             }
             case "optionsBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
+                    container.getChildren().add(loginPage.getPage());
+                    showAlert(Alert.AlertType.WARNING, "You are not loged in", "You need to log in first.");
                 } else {
                     container.getChildren().clear();
-                    container.getChildren().add(accountOptionsPage.getOptionContainer());
+                    container.getChildren().add(accountOptionsPage.getPage());
                 }
             }
             case "orderHistoryBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    container.getChildren().add(loginPage.getPage());
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.orderHistoryPage = new OrderHistoryPage(this, orderHistoryListing.getOrders());
                     container.getChildren().clear();
@@ -211,13 +222,8 @@ public class Controller {
             case "balanceBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Balance");
+                    container.getChildren().add(loginPage.getPage());
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     this.balancePage = new BalancePage(this);
                     container.getChildren().clear();
@@ -227,13 +233,8 @@ public class Controller {
             case "reserveRoomBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    container.getChildren().add(loginPage.getPage());
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     RoomReservationPage reservationPage = new RoomReservationPage(this);
                     container.getChildren().clear();
@@ -243,13 +244,8 @@ public class Controller {
             case "reservationsBtn" -> {
                 if (accountId == 0){
                     container.getChildren().clear();
-                    container.getChildren().add(loginPage.getLoginContainer());
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("You are not loged in");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You need to log in first.");
-                    alert.showAndWait();
-                    System.out.println("Order history");
+                    container.getChildren().add(loginPage.getPage());
+                    showAlert(AlertType.WARNING, "You are not loged in","You need to log in first.");
                 } else {
                     ReservationsPage reservationsPage = new ReservationsPage(this);
                     container.getChildren().clear();
@@ -262,17 +258,12 @@ public class Controller {
 
                 switch (totalQuantity) {
                     case 0:
-                        Alert empty_alert = new Alert(Alert.AlertType.WARNING);
-                        empty_alert.setTitle("Payment Failed");
-                        empty_alert.setHeaderText(null);
-                        empty_alert.setContentText("Your basket is empty. Please add items before paying.");
-                        empty_alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Payment Failed","Your basket is empty. Please add items before paying.");
                         break;  
 
                     case 1:
                         PricedItem firstItem = basket.getItems().get(0);
             
-                        // Sprawdzenie, czy produkt znajduje się w zestawie
                         Discount matchingDiscount = discountListing.getActiveDiscounts().stream()
                                 .filter(discount -> (firstItem.isFood() && discount.containsFoodItemById(firstItem.getId()))
                                                  || (firstItem.isDrink() && discount.containsDrinkItemById(firstItem.getId())))
@@ -280,31 +271,26 @@ public class Controller {
                                 .orElse(null);
             
                         if (matchingDiscount != null) {
-                            // Wyświetlenie alertu z pytaniem
                             Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                             confirmationAlert.setTitle("Suggested discount");
                             confirmationAlert.setHeaderText(null);
                             confirmationAlert.setContentText("Do you want to change the product to a set:\n" + matchingDiscount.toString() + "?");
+                            String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+                            confirmationAlert.getDialogPane().getStylesheets().add(cssfile);
+
                             
                             ButtonType buttonYes = new ButtonType("Yes");
                             ButtonType buttonNo = new ButtonType("No", ButtonBar.ButtonData.CANCEL_CLOSE);
                             confirmationAlert.getButtonTypes().setAll(buttonYes, buttonNo);
             
-                            // Oczekiwanie na wybór użytkownika
                             confirmationAlert.showAndWait().ifPresent(response -> {
                                 if (response == buttonYes) {
-                                    goToPayment[0] = false; // Modyfikacja wartości w tablicy
+                                    goToPayment[0] = false;
             
-                                    // Zamiana produktu na zestaw w koszyku
-                                    basket.clear(); // Usunięcie obecnych produktów z koszyka
-                                    basket.addItem(new PricedItem(matchingDiscount)); // Dodanie zestawu do koszyka
+                                    basket.clear();
+                                    basket.addItem(new PricedItem(matchingDiscount));
                                     
-                                    // Wyświetlenie informacji o sukcesie
-                                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                                    successAlert.setTitle("Zamiana na zestaw");
-                                    successAlert.setHeaderText(null);
-                                    successAlert.setContentText("Produkt został zamieniony na zestaw!");
-                                    successAlert.showAndWait();
+                                    showAlert(AlertType.WARNING, "Zamiana na zestaw","Produkt został zamieniony na zestaw!");
             
                                     BasketPage backetPage = new BasketPage(basket);
                                     container.getChildren().clear();
@@ -320,12 +306,10 @@ public class Controller {
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Payment Successful");
-                        alert.setHeaderText(null);
                         if (accountId != 0) {
-                            alert.setContentText("Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
                         } else {
-                            alert.setContentText("Your payment was processed successfully!");
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
                         alert.showAndWait();
                         if(accountId != 0){
@@ -350,17 +334,9 @@ public class Controller {
             }
             case "removeAllBtn" ->{
                 if (basket.isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Remove Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your basket is empty. Please add items before removing.");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Remove Failed","Your basket is empty. Please add items before removing.");
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Remove Successful");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Your basket is now empty!");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "Remove Successful","Your basket is now empty!");
                     basket.clear();
                     BasketPage basketPage = new BasketPage(basket);
                     container.getChildren().clear();
@@ -370,15 +346,11 @@ public class Controller {
             }
             case "modifyTicketBtn" ->{
                 if (basket.containsTickets()) {
-                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this, basket);
+                    ModifyBasketPage modifyBasketPage = new ModifyBasketPage(this);
                     container.getChildren().clear();
                     container.getChildren().add(modifyBasketPage.getPage());
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("There is no ticket in the basket");
-                    alert.setHeaderText(null);
-                    alert.setContentText("You do not need to modify the ticket.");
-                    alert.showAndWait();
+                    showAlert(AlertType.WARNING, "There is no ticket in the basket","You do not need to modify the ticket.");
                 }
             }
             case "cancelBtn" ->{
@@ -405,16 +377,14 @@ public class Controller {
 
         if(buttonId.equals("repertoireBtn")) {
             addOption("Category", "categoryBtn", this::handleOptionClick);
-            ListView<Tag> categoryListView = repertoirePage.getCategoryList();
-            categoryListView.setId("categoryList");
-            optionsBar.getChildren().add(categoryListView);
+            categoryList.setManaged(false);
+            categoryList.setVisible(false);
+            optionsBar.getChildren().add(categoryList);
             addOption("Pegi", "pegiBtn", this::handleOptionClick);
-            ListView<Integer> listPegi = repertoirePage.getPegiList();
-            listPegi.setId("pegiList");
-            optionsBar.getChildren().add(listPegi);
-            addOption("Type", "typeBtn", this::handleOptionClick);
-            addOption("Other", "otherBtn", this::handleOptionClick);
-            container.getChildren().add(repertoirePage.getBackPage());
+            pegisList.setManaged(false);
+            pegisList.setVisible(false);
+            optionsBar.getChildren().add(pegisList);
+            container.getChildren().add(repertoirePage.getPage());
         } else if (buttonId.equals("roomsBtn")) {
             RoomReservationPage reservationPage = new RoomReservationPage(this);
             container.getChildren().add(reservationPage.getPage());
@@ -439,6 +409,36 @@ public class Controller {
             container.getChildren().add(basketPage.getPage());
         } else {
             System.err.println("Unknown button clicked: " + buttonId);
+        }
+    }
+
+    public static void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(cssfile);
+        alert.showAndWait();
+    }
+
+    private void toggleCategoryList() {
+        if (categoryList.isVisible()) {
+            categoryList.setVisible(false);
+            categoryList.setManaged(false);
+        } else {
+            categoryList.setVisible(true);
+            categoryList.setManaged(true);
+        }
+    }
+
+    private void togglePegisList() {
+        if (pegisList.isVisible()) {
+            pegisList.setVisible(false);
+            pegisList.setManaged(false);
+        } else {
+            pegisList.setVisible(true);
+            pegisList.setManaged(true);
         }
     }
 
