@@ -19,7 +19,7 @@ public class AccountRepositoryTest {
     @Test
     public void testGetAccountById() throws SQLException {
         // Test retrieving an account by ID
-        int accountId = 1; // Example account ID
+        int accountId = 2; // Example account ID
 
         Account account = AccountRepository.getAccountById(accountId, databaseManager.getConnection());
 
