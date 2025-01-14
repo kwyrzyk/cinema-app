@@ -291,15 +291,13 @@ public class Controller {
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         if (accountId != 0) {
-                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
-                        } else {
-                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
-                        }
-                        if(accountId != 0){
                             AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
                             AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
                             accountsListing.updateAccount(accountId);
                             orderHistoryListing.loadOrderHistory(accountId);
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                        } else {
+                            showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
@@ -307,7 +305,7 @@ public class Controller {
                             }
                         }
                         filmListing.update();
-                        basket.clear(); // Opróżnij koszyk po udanej płatności
+                        basket.clear();
                         BasketPage backetPage = new BasketPage(basket);
                         modifyContainer(backetPage);
                         

@@ -71,6 +71,8 @@ public class LoginPage implements Page {
             return;
         }
         if(account.getPassword().equals(password)){
+            controller.login(account.getIdAccount());
+            controller.orderHistoryListing.loadOrderHistory(account.getIdAccount());
             Controller.showAlert(
                 AlertType.INFORMATION,
                 "Login Successful", 
@@ -80,9 +82,6 @@ public class LoginPage implements Page {
             );
             usernameField.clear();
             passwordField.clear();
-
-            controller.login(account.getIdAccount());
-            controller.orderHistoryListing.loadOrderHistory(account.getIdAccount());
         } else {
             Controller.showAlert(AlertType.ERROR, "Unsuccessful login","There is no account with matching login and password");
         }
