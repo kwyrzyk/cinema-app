@@ -477,9 +477,14 @@
 
 
 .dialog-pane {
-    -fx-background-color: red; 
-    -fx-font-family: "Tahoma", sans-serif;
-    -fx-text-fill: blue;
+    -fx-background-color: -secondary-color; 
+    -fx-font-family: -fx-font-family;
+    -fx-text-fill: -text-color;
+    -fx-font-size: 16;
+    -fx-pref-width: 350px;
+    -fx-min-width: 350px;
+    -fx-max-width: 350px;
+
 }
 
 .dialog-pane .button-bar {

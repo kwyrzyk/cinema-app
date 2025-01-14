@@ -408,6 +408,8 @@ public class Controller {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        String cssfile = Controller.class.getResource("/css/styles.css").toExternalForm();
+        alert.getDialogPane().getStylesheets().add(cssfile);
         alert.showAndWait();
     }
 }

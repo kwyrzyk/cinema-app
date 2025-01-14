@@ -1,0 +1,27 @@
+.dialog-pane {
+    -fx-background-color: red; 
+    -fx-font-family: "Tahoma", sans-serif;
+    -fx-text-fill: blue;
+}
+
+.dialog-pane .button-bar {
+    -fx-background-color: -secondary-color;
+    -fx-padding: 10;
+}
+
+.dialog-pane .button-bar .button {
+    -fx-background-color: -accent-color;
+    -fx-text-fill: -secondary-color;
+    -fx-font-size: 14;
+    -fx-padding: 8 20;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-effect: none;
+    -fx-transition: all 0.3s ease;
+}
+
+.dialog-pane .button-bar .button:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
+}
