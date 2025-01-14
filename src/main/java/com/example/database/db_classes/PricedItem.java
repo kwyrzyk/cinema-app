@@ -12,13 +12,11 @@ public class PricedItem {
 
     public static final Price ticketPrice = new Price(20.0);
 
-    // Constructor to initialize name and price
     public PricedItem(String name, Price price) {
         this.name = name;
         this.price = price;
     }
 
-    // Constructor for food item
     public PricedItem(Food foodItem, String size) {
         
         this.name = foodItem.getName() + ": " + size;
@@ -28,7 +26,6 @@ public class PricedItem {
         this.id = foodItem.getIdForSize(size);
     }
 
-    // Constructor for drink item
     public PricedItem(Drink drinkItem, String size) {
         this.name = drinkItem.getName() + ": " + size;
         this.price = drinkItem.getPriceForSize(size);
@@ -58,7 +55,6 @@ public class PricedItem {
         this.id = ticketItem.getId();
     }
 
-    // Constructor to initialize name and price using a double value
     public PricedItem(String name, String type, double price, int id) {
         switch (type) {
             case "food":
@@ -81,12 +77,10 @@ public class PricedItem {
         this.price = new Price(price); 
     }
 
-    // Getter for name
     public String getName() {
         return name;
     }
 
-    // Getter for price
     public Price getPrice() {
         return price;
     }
@@ -111,7 +105,6 @@ public class PricedItem {
         return type == ItemType.DISCOUNT;
     }
 
-    // ToString method for better debugging
     @Override
     public String toString() {
         return "PricedItem{name='" + name + "', price=" + price + ", Id=" + id + '}';

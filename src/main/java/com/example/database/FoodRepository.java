@@ -16,39 +16,28 @@ import java.util.List;
 
 public class FoodRepository {
 
-    // Constructor
-    public FoodRepository(DatabaseManager dbManager) {
-        // Initialize with the database manager, if needed.
-    }
 
-    // Method to get a food item by its ID
     static public Food getFoodById(int foodId, Connection connection) throws SQLException {
-        // Query to get the food's basic info
         String foodQuery = "SELECT id_food, name FROM foods WHERE id_food = " + foodId;
     
-        // Execute food query
         ResultSet foodResult = DatabaseManager.runSelectQuery(foodQuery, connection);
         
-        // Check if the ResultSet is null or empty
         if (foodResult == null) {
             System.err.println("Error: The query did not return a result set.");
-            return null; // Return null if the result set is null
+            return null;
         }
     
         if (!foodResult.next()) {
             System.err.println("No food found with id: " + foodId);
-            return null; // Return null if no rows are returned
+            return null;
         }
     
-        // Extract food details
         int idFood = foodResult.getInt("id_food");
         String name = foodResult.getString("name");
     
-        // Query to get the prices for the food item
         String pricesQuery = "SELECT id_food_price, portion_size, price FROM food_prices WHERE id_food = " + foodId;
         ResultSet pricesResult = DatabaseManager.runSelectQuery(pricesQuery, connection);
     
-        // Map to hold portion size and price
         HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
         while (pricesResult.next()) {
             int id = pricesResult.getInt("id_food_price");
@@ -57,7 +46,6 @@ public class FoodRepository {
             prices.put(portionSize, new Pair<Integer, Price>(id, price));
         }
     
-        // Return a Food object with all details
         Food food = new Food(idFood, name);
     
         food.setPrices(prices);
@@ -65,7 +53,6 @@ public class FoodRepository {
         return food;
     }
     
-    // Method to get a list of all foods
     static public List<Food> getAllFoods(Connection connection) {
         List<Food> foods = new ArrayList<>();
         String foodQuery = "SELECT id_food, name FROM foods";
@@ -82,7 +69,6 @@ public class FoodRepository {
                 int foodId = foodResult.getInt("id_food");
                 String name = foodResult.getString("name");
 
-                // Query to get the prices for this food item
                 String fullPricesQuery = pricesQuery + foodId;
                 ResultSet pricesResult = DatabaseManager.runSelectQuery(fullPricesQuery, connection);
 
@@ -91,7 +77,6 @@ public class FoodRepository {
                     continue;
                 }
 
-                // Map to hold portion size and price
                 HashMap<String, Pair<Integer, Price>> prices = new HashMap<>();
                 while (pricesResult.next()) {
                     int id = pricesResult.getInt("id_food_price");
@@ -100,13 +85,13 @@ public class FoodRepository {
                     prices.put(portionSize, new Pair<Integer, Price>(id, price));
                 }
             
-                // Return a Food object with all details
+
                 Food food = new Food(foodId, name);
             
                 food.setPrices(prices);
 
 
-                foods.add(food);  // Add the food object to the list
+                foods.add(food); 
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -53,10 +53,8 @@ public class ShowingRepository {
                     LocalDateTime endTime = endTimeStamp.toLocalDateTime();
 
 
-                    // Fetch seats for the showing
                     List<Seat> seats = getSeatsByShowingId(showingId, connection);
 
-                    // Create Showing object and add to the list
                     Showing showing = new Showing(showingId, filmId, roomId, showTime, endTime, seats);
                     showings.add(showing);
                 }
@@ -75,13 +73,10 @@ public class ShowingRepository {
     
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
     
-            // Set the parameters for the query
             preparedStatement.setInt(1, seatId);
             
-            // Execute the update
             int rowsAffected = preparedStatement.executeUpdate();
     
-            // If a row was updated, the seat was successfully reserved
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,15 +93,12 @@ public class ShowingRepository {
     
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
     
-            // Set the parameters for the query
             preparedStatement.setInt(1, showingId);
             preparedStatement.setInt(2, rowNumber);
             preparedStatement.setInt(3, seatNumber);
     
-            // Execute the update
             int rowsAffected = preparedStatement.executeUpdate();
     
-            // If a row was updated, the seat was successfully reserved
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
