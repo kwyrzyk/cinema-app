@@ -1,6 +1,5 @@
 package com.example;
 
-import com.example.database.db_classes.Account;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,11 +11,9 @@ import javafx.scene.layout.VBox;
 public class AccountOptionsPage implements Page{
     private final VBox optionsBox = new VBox();
     private final Controller controller;
-    private Account userAccount;
 
     public AccountOptionsPage(Controller controller){
         this.controller = controller;
-        this.userAccount = controller.getAccountListing().getAccountById(this.controller.getAccountId());
         createContent();
     }
 
@@ -77,7 +74,7 @@ public class AccountOptionsPage implements Page{
         if (newLogin.isEmpty()) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Username cannot be empty.");
         } else {
-            userAccount.setLogin(newLogin);
+            controller.getAccountListing().changeLogin(controller.getAccountId(), newLogin);
         }
     }
 
@@ -85,7 +82,7 @@ public class AccountOptionsPage implements Page{
         if (newPassword.isEmpty()) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Username cannot be empty.");
         } else {
-            userAccount.setPassword(newPassword);
+            controller.getAccountListing().changePassword(controller.getAccountId(), newPassword);
         }
     }
 
@@ -93,7 +90,7 @@ public class AccountOptionsPage implements Page{
         if (!RegisterPage.isValidEmail(newEmail)) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a valid email address.");
         } else {
-            userAccount.setEmail(newEmail);
+            controller.getAccountListing().changeEmail(controller.getAccountId(), newEmail);
         }
     }
 
@@ -101,7 +98,7 @@ public class AccountOptionsPage implements Page{
         if(!RegisterPage.isValidPhoneNumber(newPhoneNumber)){
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a valid phone number.");
         } else {
-            userAccount.setPhoneNumber(newPhoneNumber);
+            controller.getAccountListing().changePhoneNumber(controller.getAccountId(), newPhoneNumber);
         }
     }
 }
