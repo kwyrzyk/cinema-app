@@ -22,17 +22,26 @@ import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * Class representing the Room Reservation Page.
+ */
 public class RoomReservationPage implements Page {
     private final VBox roomReservationBox = new VBox();
     private final Controller controller;
 
+    /**
+     * Constructor for RoomReservationPage.
+     * 
+     * @param controller the controller instance
+     */
     public RoomReservationPage(Controller controller) {
         this.controller = controller;
-
         createContent();
     }
 
+    /**
+     * Creates the content for the Room Reservation Page.
+     */
     private void createContent() {
         roomReservationBox.getStyleClass().add("page");
 
@@ -53,6 +62,9 @@ public class RoomReservationPage implements Page {
         roomReservationBox.getChildren().addAll(title, infoLabel, reservationBtnBox);
     }
 
+    /**
+     * Shows the reservation dialog.
+     */
     private void showReservationDialog() {
         Dialog<Void> dialog = new Dialog<>();
         dialog.setTitle("New Room Reservation");
@@ -76,11 +88,10 @@ public class RoomReservationPage implements Page {
             protected void updateItem(ScreeningRoom item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null) {
-                    setText(item.getName()); // Wyświetl tylko nazwę pokoju
+                    setText(item.getName());
                 } else {
                     setText(null);
                 }
-
             }
         });
     
@@ -136,7 +147,6 @@ public class RoomReservationPage implements Page {
                     } else if (startDateTime.isBefore(LocalDateTime.now())) {
                         Controller.showAlert(Alert.AlertType.ERROR, "Reservation unsuccessful", "Reservation cannot be in the past.");
                     } else {
-                        // Tutaj dodaj logikę zapisu rezerwacji do bazy danych
                         boolean reservationSuccesful = ReservationRepository.reserve_if_possible(selectedRoom.getId(), controller.getAccountId(), startTime, endTime, controller.databaseManager.getConnection());
                         if (reservationSuccesful) {
                             Controller.showAlert(
@@ -162,8 +172,12 @@ public class RoomReservationPage implements Page {
     
         dialog.showAndWait();
     }
-    
 
+    /**
+     * Creates a ComboBox for selecting hours.
+     * 
+     * @return the ComboBox for hours
+     */
     private ComboBox<Integer> createHourComboBox() {
         ComboBox<Integer> comboBox = new ComboBox<>();
         for (int i = 0; i < 24; i++) {
@@ -173,15 +187,25 @@ public class RoomReservationPage implements Page {
         return comboBox;
     }
 
+    /**
+     * Creates a ComboBox for selecting minutes.
+     * 
+     * @return the ComboBox for minutes
+     */
     private ComboBox<Integer> createMinuteComboBox() {
         ComboBox<Integer> comboBox = new ComboBox<>();
-        for (int i = 0; i < 60; i += 5) { // Minuty co 5 minut
+        for (int i = 0; i < 60; i += 5) {
             comboBox.getItems().add(i);
         }
         comboBox.setPromptText("MM");
         return comboBox;
     }
 
+    /**
+     * Returns the page content.
+     * 
+     * @return the VBox containing the page content
+     */
     public VBox getPage() {
         return roomReservationBox;
     }

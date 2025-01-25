@@ -11,6 +11,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+/**
+ * Represents the login page of the application.
+ */
 public class LoginPage implements Page {
     private final Controller controller;
     private AccountListing accountListing;
@@ -19,6 +22,11 @@ public class LoginPage implements Page {
     private TextField usernameField;
     private PasswordField passwordField;
 
+    /**
+     * Constructs a LoginPage with the specified controller and account listing.
+     * @param controller the controller of the application
+     * @param accountListing the account listing to be used
+     */
     public LoginPage(Controller controller, AccountListing accountListing) {
         this.controller = controller;
         this.accountListing = accountListing;
@@ -27,10 +35,17 @@ public class LoginPage implements Page {
         createContent();
     }
 
+    /**
+     * Returns the VBox containing the login page content.
+     * @return the VBox containing the login page content
+     */
     public VBox getPage() {
         return loginBox;
     }
 
+    /**
+     * Creates the content of the login page.
+     */
     private void createContent() {
         Label pageTitle = new Label("Sign in");
         pageTitle.getStyleClass().add("page-title");
@@ -53,8 +68,14 @@ public class LoginPage implements Page {
         loginBox.getChildren().addAll(pageTitle, usernameField, passwordField, submitButton);
         loginBox.getStyleClass().add("page");
     }
+
+    /**
+     * Handles the registration process.
+     * @param username the username entered by the user
+     * @param password the password entered by the user
+     */
     private void handleRegister(String username, String password) {
-         if (username.isEmpty()) {
+        if (username.isEmpty()) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Username cannot be empty.");
             return;
         }

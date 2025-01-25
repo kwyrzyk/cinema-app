@@ -11,30 +11,34 @@ public class DrinksListing {
     private DatabaseManager databaseManager;
     private List<Drink> drinks;
 
-    // Static method to get the list of drinks
+    /**
+     * Constructor initializes the drinks list and database manager.
+     * @param databaseManager the database manager
+     */
     public DrinksListing(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
-        // Fetch the list of drinks using the static method from DrinkRepository
-        try{
+        try {
             drinks = DrinkRepository.getAllDrinks(this.databaseManager.getConnection());
-        
-        } catch(Exception e){
+        } catch (Exception e) {
             ErrorHandler.handle(e);
         }
     }
 
+    /**
+     * Get the list of drinks.
+     * @return a list of drinks
+     */
     public List<Drink> getDrinks() {
         return drinks;
     }
 
-    // Static method to display all the drinks
+    /**
+     * Display all the drinks.
+     */
     public void displayDrinks() {
-        List<Drink> drinks = getDrinks();  // Get the list of drinks
-        
+        List<Drink> drinks = getDrinks();
         for (Drink drink : drinks) {
             System.out.println(drink);
         }
     }
-
-    // You can add more methods to filter, sort, or display the list of drinks as needed
 }

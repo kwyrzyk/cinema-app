@@ -14,17 +14,28 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Class representing the Seats Page.
+ */
 public class SeatsPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
     private final VBox historyBox = new VBox(scrollPane);
     private final Controller controller;
 
-    private GridPane seatsGrid; // Siatka miejsc
-    private final List<Seat> seats; // Lista miejsc (aktualizowana przy każdej zmianie)
-    private final Showing showing; // Seans, dla którego wyświetlamy miejsca
+    private GridPane seatsGrid;
+    private final List<Seat> seats;
+    private final Showing showing;
     private final Film film;
 
+    /**
+     * Constructor for SeatsPage.
+     * 
+     * @param controller the controller instance
+     * @param showing the showing instance
+     * @param filmPage the film page instance
+     * @param film the film instance
+     */
     public SeatsPage(Controller controller, Showing showing, Page filmPage, Film film) {
         this.controller = controller;
         this.seats = showing.getSeats();
@@ -34,6 +45,9 @@ public class SeatsPage implements Page {
         createContent();
     }
 
+    /**
+     * Creates the content for the Seats Page.
+     */
     private void createContent() {
         historyBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -68,7 +82,7 @@ public class SeatsPage implements Page {
                 }
 
                 Button seatButton = new Button();
-                seatButton.setText(String.valueOf(seatNumber)); // Wyświetla numer miejsca
+                seatButton.setText(String.valueOf(seatNumber));
 
                 if (seat != null) {
                     updateSeatStyle(seatButton, seat);
@@ -106,14 +120,13 @@ public class SeatsPage implements Page {
                                 seat.setStatus("available");
                                 controller.basket.removeTicket(new Ticket(film, showing, seat));
                             }
-                            updateAllSeats(); // Uaktualniamy wszystkie miejsca
+                            updateAllSeats();
                         }
                     });
                 } else {
                     seatButton.setDisable(true);
                 }
 
-                // Dodanie przycisku do siatki
                 seatButton.getStyleClass().add("seat-btn");
                 seatsGrid.add(seatButton, j, i - 1);
             }
@@ -131,15 +144,30 @@ public class SeatsPage implements Page {
         pageContent.getChildren().addAll(title, seatsGrid, backBtnBox);
     }
 
+    /**
+     * Returns the page content.
+     * 
+     * @return the VBox containing the page content
+     */
     public VBox getPage() {
         return pageContent;
     }
 
+    /**
+     * Returns the showing instance.
+     * 
+     * @return the showing instance
+     */
     public Showing getShowing() {
         return showing;
     }
 
-    // Metoda konwertująca liczbę na zapis rzymski
+    /**
+     * Converts a number to Roman numeral.
+     * 
+     * @param number the number to convert
+     * @return the Roman numeral representation of the number
+     */
     private String toRoman(int number) {
         String[] romanNumerals = {
             "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
@@ -158,6 +186,12 @@ public class SeatsPage implements Page {
         return result.toString();
     }
 
+    /**
+     * Updates the style of a seat button based on the seat status.
+     * 
+     * @param seatButton the seat button
+     * @param seat the seat instance
+     */
     public void updateSeatStyle(Button seatButton, Seat seat) {
         switch (seat.getStatus()) {
             case "available":
@@ -177,6 +211,9 @@ public class SeatsPage implements Page {
         }
     }
 
+    /**
+     * Updates the style of all seat buttons.
+     */
     public void updateAllSeats() {
         for (Node node : seatsGrid.getChildren()) {
             if (node instanceof Button) {

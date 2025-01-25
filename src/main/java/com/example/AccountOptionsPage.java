@@ -1,6 +1,5 @@
 package com.example;
 
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -8,18 +7,33 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
+/**
+ * Represents the account options page of the application.
+ */
 public class AccountOptionsPage implements Page{
     private final VBox optionsBox = new VBox();
     private final Controller controller;
 
+    /**
+     * Constructs an AccountOptionsPage with the specified controller.
+     * @param controller the controller of the application
+     */
     public AccountOptionsPage(Controller controller){
         this.controller = controller;
         createContent();
     }
 
+    /**
+     * Returns the VBox containing the account options page content.
+     * @return the VBox containing the account options page content
+     */
     public VBox getPage(){
         return optionsBox;
     }
+
+    /**
+     * Creates the content of the account options page.
+     */
     private void createContent() {
         Label pageTitle = new Label("Account options");
         pageTitle.getStyleClass().add("page-title");
@@ -70,6 +84,10 @@ public class AccountOptionsPage implements Page{
         optionsBox.getStyleClass().add("page");
     }
 
+    /**
+     * Changes the login of the account.
+     * @param newLogin the new login to be set
+     */
     private void changeLogin(String newLogin) {
         if (newLogin.isEmpty()) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Username cannot be empty.");
@@ -78,6 +96,10 @@ public class AccountOptionsPage implements Page{
         }
     }
 
+    /**
+     * Changes the password of the account.
+     * @param newPassword the new password to be set
+     */
     private void changePassword(String newPassword) {
         if (newPassword.isEmpty()) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Username cannot be empty.");
@@ -86,6 +108,10 @@ public class AccountOptionsPage implements Page{
         }
     }
 
+    /**
+     * Changes the email of the account.
+     * @param newEmail the new email to be set
+     */
     private void changeEmail(String newEmail) {
         if (!RegisterPage.isValidEmail(newEmail)) {
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a valid email address.");
@@ -94,6 +120,10 @@ public class AccountOptionsPage implements Page{
         }
     }
 
+    /**
+     * Changes the phone number of the account.
+     * @param newPhoneNumber the new phone number to be set
+     */
     private void changePhone(String newPhoneNumber) {
         if(!RegisterPage.isValidPhoneNumber(newPhoneNumber)){
             Controller.showAlert(Alert.AlertType.ERROR, "Validation Error", "Please enter a valid phone number.");

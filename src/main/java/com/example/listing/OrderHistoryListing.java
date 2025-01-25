@@ -7,24 +7,34 @@ import com.example.exceptions.ErrorHandler;
 
 import java.util.List;
 
-
 public class OrderHistoryListing {
     private List<OrderHistoryRecord> orders;
     private DatabaseManager databaseManager;
 
-
-    public OrderHistoryListing(DatabaseManager databaseManager){
+    /**
+     * Constructor initializes the database manager.
+     * @param databaseManager the database manager
+     */
+    public OrderHistoryListing(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
     }
 
-    public void loadOrderHistory(int user_id){
-        try{
+    /**
+     * Load the order history for a specific user.
+     * @param user_id the user ID
+     */
+    public void loadOrderHistory(int user_id) {
+        try {
             this.orders = AccountRepository.getAllOrdersHistory(user_id, databaseManager.getConnection());
-        }catch (Exception e){
+        } catch (Exception e) {
             ErrorHandler.handle(e);
         }
     }
 
+    /**
+     * Get the list of order history records.
+     * @return a list of order history records
+     */
     public List<OrderHistoryRecord> getOrders() {
         return orders;
     }

@@ -9,6 +9,9 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * Class representing the Modify Basket Page.
+ */
 public class ModifyBasketPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
@@ -17,13 +20,20 @@ public class ModifyBasketPage implements Page {
     private final Controller controller;
     private final Basket basket;
 
+    /**
+     * Constructor for ModifyBasketPage.
+     * 
+     * @param controller the controller instance
+     */
     public ModifyBasketPage(Controller controller) {
         this.controller = controller;
         this.basket = controller.basket;
-
         createContent();
     }
 
+    /**
+     * Creates the content for the Modify Basket Page.
+     */
     private void createContent() {
         modifyBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -46,26 +56,23 @@ public class ModifyBasketPage implements Page {
             ticketLabel.getStyleClass().add("product-price");
             ticketItemsBox.getChildren().add(ticketLabel);
 
-            // Placeholder action for button click
             ticketLabel.setOnMouseClicked(e -> {
                 controller.modifyTicketMode = true;
                 controller.modifyingTicket = ticket;
-                // addOption("Category", "categoryBtn", this::handleOptionClick);
-                // ListView<Tag> categoryListView = repertoirePage.getCategoryList();
-                // categoryListView.setId("categoryList");
-                // optionsBar.getChildren().add(categoryListView);
-                // addOption("Type", "typeBtn", this::handleOptionClick);
-                // addOption("Other", "otherBtn", this::handleOptionClick);
                 controller.container.getChildren().clear();
                 controller.container.getChildren().add(controller.repertoirePage.getPage());
                 controller.optionsBar.getChildren().clear();
                 controller.addOption("Cancel", "cancelBtn", controller::handleOptionClick);
-
             });
         }
         pageContent.getChildren().addAll(title, infoLabel, ticketItemsBox);
     }
 
+    /**
+     * Returns the page content.
+     * 
+     * @return the VBox containing the page content
+     */
     @Override
     public VBox getPage() {
         return modifyBox;

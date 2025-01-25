@@ -13,34 +13,44 @@ public class DiscountListing {
     private List<Discount> discounts;
     private DatabaseManager databaseManager;
 
-
-
-    public DiscountListing(DatabaseManager databaseManager){
+    /**
+     * Constructor initializes the discounts list and database manager.
+     * @param databaseManager the database manager
+     */
+    public DiscountListing(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
-        try{
+        try {
             this.discounts = DiscountRepository.getAllDiscounts(this.databaseManager.getConnection());
-        } catch( Exception e){
+        } catch (Exception e) {
             ErrorHandler.handle(e);
         }
     }
 
+    /**
+     * Get the list of discounts.
+     * @return a list of discounts
+     */
     public List<Discount> getDiscounts() {
         return discounts;
     }
 
-    // Static method to display all the discounts
+    /**
+     * Display all the discounts.
+     */
     public void displayDiscounts() {
-        List<Discount> discounts = getDiscounts();  // Get the list of discounts
-        
+        List<Discount> discounts = getDiscounts();
         for (Discount discount : discounts) {
             System.out.println(discount);
         }
     }
 
+    /**
+     * Get the list of active discounts.
+     * @return a list of active discounts
+     */
     public List<Discount> getActiveDiscounts() {
         return discounts.stream()
                 .filter(discount -> discount.isDiscountActive(LocalTime.now()))
                 .collect(Collectors.toList());
     }
-
 }

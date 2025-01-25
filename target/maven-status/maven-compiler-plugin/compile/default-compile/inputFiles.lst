@@ -1,10 +1,12 @@
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/db_classes/Film.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/db_classes/Discount.java
+/home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/listing/RewardsListing.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/ScreeningRoomRepository.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/DrinksPage.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/db_classes/Showing.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/AccountOptionsPage.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/db_classes/Reservation.java
+/home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/exceptions/NonRecoverableDatabaseException.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/db_classes/Drink.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/SeatsPage.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/DiscountsPage.java
@@ -12,6 +14,8 @@
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/LoginPage.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/db_classes/Ticket.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/FoodsPage.java
+/home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/listing/TagListing.java
+/home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/exceptions/RecoverableDatabaseException.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/ModifyBasketPage.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/SearchPanel.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/ReservationsPage.java
@@ -39,6 +43,7 @@
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/listing/FilmListing.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/FoodRepository.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/listing/DrinksListing.java
+/home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/exceptions/ErrorHandler.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/listing/DiscountListing.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/database/AccountRepository.java
 /home/wyrzykowski/PAP/pap2024z-z14/src/main/java/com/example/listing/FoodListing.java

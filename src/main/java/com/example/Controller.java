@@ -35,6 +35,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Controller class for managing the application.
+ */
 public class Controller {
     public DatabaseManager databaseManager = new DatabaseManager();
     private Stage stage;
@@ -43,7 +46,6 @@ public class Controller {
     private int accountId = 0;
     public Boolean modifyTicketMode = false;
     public PricedItem modifyingTicket;
-
 
     private final List<Integer> listOfPegiValues = List.of(3, 7, 12, 16, 18);
 
@@ -70,12 +72,10 @@ public class Controller {
     private final List<PointsReward> listOfRewards = rewardsListing.getRewards();
     private final List<Tag> listOfTags = tagListing.getTags();
     
-
     public RepertoirePage repertoirePage = new RepertoirePage(this);
     private VBox categoryList = repertoirePage.getCategories();
     private VBox pegisList = repertoirePage.getPegis();
    
-    
     @FXML
     private Label label;
     @FXML
@@ -85,70 +85,140 @@ public class Controller {
     @FXML
     public VBox container;
 
+    /**
+     * Sets the stage for the application.
+     * @param stage the stage to be set
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Sets the scene for the application.
+     * @param scene the scene to be set
+     */
     public void setScene(Scene scene) {
         this.scene = scene;
     }
 
+    /**
+     * Returns the stage of the application.
+     * @return the stage of the application
+     */
     public Stage getStage(){
         return this.stage;
     }
 
+    /**
+     * Returns the scene of the application.
+     * @return the scene of the application
+     */
     public Scene getScene(){
         return this.scene;
     }
 
+    /**
+     * Returns the options bar of the application.
+     * @return the options bar of the application
+     */
     public VBox getOptionsBar(){
         return this.optionsBar;
     }
 
+    /**
+     * Logs in the user with the specified ID.
+     * @param Id the ID of the user to log in
+     */
     public void login(int Id){
         this.accountId = Id;
     }
 
+    /**
+     * Returns the ID of the logged-in account.
+     * @return the ID of the logged-in account
+     */
     public int getAccountId(){
         return this.accountId;
     }
 
+    /**
+     * Returns the list of films.
+     * @return the list of films
+     */
     public List<Film> getListOfFilms(){
         return this.listOfFilms;
     }
 
+    /**
+     * Returns the list of foods.
+     * @return the list of foods
+     */
     public List<Food> getListOfFoods(){
         return this.listOfFoods;
     }
 
+    /**
+     * Returns the list of drinks.
+     * @return the list of drinks
+     */
     public List<Drink> getListOfDrinks(){
         return this.listOfDrinks;
     }
 
+    /**
+     * Returns the list of discounts.
+     * @return the list of discounts
+     */
     public List<Discount> getListOfDiscounts(){
         return this.listOfDiscounts;
     }
 
+    /**
+     * Returns the list of rewards.
+     * @return the list of rewards
+     */
     public List<PointsReward> getListOfRewards(){
         return this.listOfRewards;
     }
 
+    /**
+     * Returns the list of tags.
+     * @return the list of tags
+     */
     public List<Tag> getListOfTags(){
         return this.listOfTags;
     }
 
+    /**
+     * Returns the list of PEGI values.
+     * @return the list of PEGI values
+     */
     public List<Integer> getListOfPegiValues(){
         return this.listOfPegiValues;
     }
 
+    /**
+     * Returns the account listing.
+     * @return the account listing
+     */
     public AccountListing getAccountListing(){
         return this.accountsListing;
     }
 
+    /**
+     * Returns the film listing.
+     * @return the film listing
+     */
     public FilmListing getFilmListing(){
         return this.filmListing;
     }
 
+    /**
+     * Adds an option to the options bar.
+     * @param optionText the text of the option
+     * @param btnId the ID of the button
+     * @param action the action to be performed when the button is clicked
+     */
     public void addOption(String optionText, String btnId, javafx.event.EventHandler<ActionEvent> action) {
         Button optionButton = new Button(optionText);
         optionButton.setId(btnId);
@@ -157,6 +227,10 @@ public class Controller {
         optionsBar.getChildren().add(optionButton);
     }
 
+    /**
+     * Modifies the container with the specified page.
+     * @param newPage the new page to be set in the container
+     */
     public void modifyContainer(Page newPage){
         container.getChildren().clear();
         container.getChildren().add(newPage.getPage());
@@ -354,6 +428,7 @@ public class Controller {
             }
         }
     }
+
     @FXML
     public void handleSidebarClick(ActionEvent event) {
         if (modifyTicketMode) { return;}
@@ -406,6 +481,12 @@ public class Controller {
         }
     }
 
+    /**
+     * Shows an alert with the specified type, title, and message.
+     * @param alertType the type of the alert
+     * @param title the title of the alert
+     * @param message the message of the alert
+     */
     public static void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -416,6 +497,9 @@ public class Controller {
         alert.showAndWait();
     }
 
+    /**
+     * Toggles the visibility of the category list.
+     */
     private void toggleCategoryList() {
         if (categoryList.isVisible()) {
             categoryList.setVisible(false);
@@ -426,6 +510,9 @@ public class Controller {
         }
     }
 
+    /**
+     * Toggles the visibility of the PEGI list.
+     */
     private void togglePegisList() {
         if (pegisList.isVisible()) {
             pegisList.setVisible(false);

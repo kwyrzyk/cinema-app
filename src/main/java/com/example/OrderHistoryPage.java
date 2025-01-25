@@ -16,6 +16,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Class representing the Order History Page.
+ */
 public class OrderHistoryPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
@@ -26,15 +29,22 @@ public class OrderHistoryPage implements Page {
     private final List<OrderHistoryRecord> allOrders;
     private List<OrderHistoryRecord> displayedOrders;
 
+    /**
+     * Constructor for OrderHistoryPage.
+     * 
+     * @param controller the controller instance
+     * @param orders the list of order history records
+     */
     public OrderHistoryPage(Controller controller, List<OrderHistoryRecord> orders) {
         this.controller = controller;
-
         this.allOrders = orders;
         this.displayedOrders = new ArrayList<>(this.allOrders);
-
         createContent();
     }
     
+    /**
+     * Creates the content for the Order History Page.
+     */
     private void createContent() {
         historyBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -51,6 +61,11 @@ public class OrderHistoryPage implements Page {
         pageContent.getChildren().addAll(title, searchPanel, orderItemsBox);
     }
 
+    /**
+     * Updates the view with the given list of orders.
+     * 
+     * @param ordersToDisplay the list of orders to display
+     */
     private void updateOrdersView(List<OrderHistoryRecord> ordersToDisplay) {
         orderItemsBox.getChildren().clear();
 
@@ -111,6 +126,11 @@ public class OrderHistoryPage implements Page {
         }
     }
 
+    /**
+     * Filters the orders based on the given query.
+     * 
+     * @param query the search query
+     */
     private void filterOrders(String query) {
         if (query.isEmpty()) {
             displayedOrders = new ArrayList<>(allOrders);
@@ -130,6 +150,11 @@ public class OrderHistoryPage implements Page {
         updateOrdersView(displayedOrders);
     }
 
+    /**
+     * Returns the page content.
+     * 
+     * @return the VBox containing the page content
+     */
     public VBox getPage() {
         return historyBox;
     }

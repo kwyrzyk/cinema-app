@@ -14,6 +14,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Represents the film page of the application.
+ */
 public class FilmPage implements Page {
 
     private final VBox pageContent = new VBox();
@@ -23,6 +26,11 @@ public class FilmPage implements Page {
     private final Controller controller;
     private Film film;
 
+    /**
+     * Constructs a FilmPage with the specified controller and film.
+     * @param controller the controller of the application
+     * @param film the film to be displayed
+     */
     public FilmPage(Controller controller, Film film) {
         this.controller = controller;
         this.film = film;
@@ -30,6 +38,9 @@ public class FilmPage implements Page {
         createContent();
     }
 
+    /**
+     * Creates the content of the film page.
+     */
     private void createContent() {
         repertoireBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -42,7 +53,6 @@ public class FilmPage implements Page {
         title.getStyleClass().add("page-title");
 
         VBox infoBox = new VBox();
-        // infoBox.getStyleClass().add("film-info-box");
         infoBox.getStyleClass().add("wide-box");
 
         HBox titleRow = getRow("Title", film.getTitle());
@@ -50,7 +60,6 @@ public class FilmPage implements Page {
         HBox shortDescRow = getRow("Short Description", film.getShortDescription());
         HBox longDescRow = getRow("Description", film.getLongDescription());
         HBox actorsRow = getRow("Actors", getActors());
-        // HBox showingsRow = getRow("Showings:", "");
         actorsRow.getStyleClass().add("last-info-row");
         infoBox.getChildren().addAll(titleRow, ratingRow, shortDescRow, longDescRow, actorsRow);
         
@@ -75,7 +84,6 @@ public class FilmPage implements Page {
 
         Button backButton = new Button("Back");
         backButton.getStyleClass().add("btn");
-        // backButton.setId("repertoireBackBtn");
         backButton.setOnAction(e -> {
             controller.modifyContainer(new RepertoirePage(controller));
         });
@@ -85,6 +93,12 @@ public class FilmPage implements Page {
         pageContent.getChildren().addAll(title, infoBox, showingsBox, backBtnBox);
     }
 
+    /**
+     * Creates a row with the specified key and value.
+     * @param key the key of the row
+     * @param value the value of the row
+     * @return the HBox containing the row
+     */
     private HBox getRow(String key, String value) {
         Label filmKeyLabel = new Label(key);
         filmKeyLabel.getStyleClass().add("info-key");
@@ -96,6 +110,10 @@ public class FilmPage implements Page {
         return infoRow;
     }
 
+    /**
+     * Returns a string representation of the actors in the film.
+     * @return a string representation of the actors in the film
+     */
     private String getActors() {
         List<String> actors = new ArrayList<>();
         for (Actor actor : film.getActors()) {
@@ -104,6 +122,10 @@ public class FilmPage implements Page {
         return actors.stream().collect(Collectors.joining(", "));
     }
 
+    /**
+     * Returns the VBox containing the film page content.
+     * @return the VBox containing the film page content
+     */
     public VBox getPage() {
         return repertoireBox;
     }

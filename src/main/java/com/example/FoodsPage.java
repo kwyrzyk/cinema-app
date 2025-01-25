@@ -14,6 +14,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
+/**
+ * Represents the foods page of the application.
+ */
 public class FoodsPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
@@ -23,6 +26,10 @@ public class FoodsPage implements Page {
     private List<Food> displayedFoods;
     private final Basket basket;
 
+    /**
+     * Constructs a FoodsPage with the specified controller.
+     * @param controller the controller of the application
+     */
     public FoodsPage(Controller controller) {
         this.basket = controller.basket;
         this.allFoods = controller.getListOfFoods();
@@ -31,6 +38,9 @@ public class FoodsPage implements Page {
         createContent();
     }
 
+    /**
+     * Creates the content of the foods page.
+     */
     private void createContent() {
         foodBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -51,6 +61,10 @@ public class FoodsPage implements Page {
         pageContent.getChildren().addAll(title, searchPanel, foodItemsBox);
     }
 
+    /**
+     * Updates the view of the foods to display.
+     * @param foodsToDisplay the list of foods to display
+     */
     private void updateFoodsView(List<Food> foodsToDisplay) {
         foodItemsBox.getChildren().clear();
 
@@ -86,6 +100,10 @@ public class FoodsPage implements Page {
         }
     }
 
+    /**
+     * Filters the foods based on the query.
+     * @param query the query to filter the foods
+     */
     private void filterFoods(String query) {
         if (query.isEmpty()) {
             displayedFoods = new ArrayList<>(allFoods);
@@ -97,6 +115,10 @@ public class FoodsPage implements Page {
         updateFoodsView(displayedFoods);
     }
 
+    /**
+     * Returns the VBox containing the foods page content.
+     * @return the VBox containing the foods page content
+     */
     public VBox getPage() {
         return foodBox;
     }

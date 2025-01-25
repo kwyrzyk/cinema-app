@@ -12,6 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Class representing the Points Rewards Page.
+ */
 public class PointsRewardsPage implements Page {
 
     private final VBox pageContent = new VBox();
@@ -22,14 +25,21 @@ public class PointsRewardsPage implements Page {
     private List<PointsReward> displayedRewards;
     private final Controller controller;
 
+    /**
+     * Constructor for PointsRewardsPage.
+     * 
+     * @param controller the controller instance
+     */
     public PointsRewardsPage(Controller controller) {
         this.controller = controller;
         this.allRewards = controller.getListOfRewards();
         this.displayedRewards = new ArrayList<>(this.allRewards);
-
         createContent();
     }
 
+    /**
+     * Creates the content for the Points Rewards Page.
+     */
     private void createContent() {
         rewardsBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -47,6 +57,11 @@ public class PointsRewardsPage implements Page {
         pageContent.getChildren().addAll(title, searchPanel, rewardsItemsBox);
     }
 
+    /**
+     * Updates the view with the given list of rewards.
+     * 
+     * @param rewardsToDisplay the list of rewards to display
+     */
     private void updateRewardsView(List<PointsReward> rewardsToDisplay) {
         rewardsItemsBox.getChildren().clear();
 
@@ -70,6 +85,11 @@ public class PointsRewardsPage implements Page {
         }
     }
 
+    /**
+     * Filters the rewards based on the given query.
+     * 
+     * @param query the search query
+     */
     private void filterRewards(String query) {
         if (query.isEmpty()) {
             displayedRewards = new ArrayList<>(allRewards);
@@ -81,6 +101,11 @@ public class PointsRewardsPage implements Page {
         updateRewardsView(displayedRewards);
     }
 
+    /**
+     * Handles the selection of a reward.
+     * 
+     * @param reward the selected reward
+     */
     private void handleRewardSelection(PointsReward reward) {
         int userLoyaltyPoints = controller.getAccountListing().getAccountById(controller.getAccountId()).getLoyaltyPoints();
 
@@ -103,6 +128,11 @@ public class PointsRewardsPage implements Page {
         }
     }
 
+    /**
+     * Returns the page content.
+     * 
+     * @return the VBox containing the page content
+     */
     public VBox getPage() {
         return rewardsBox;
     }

@@ -6,13 +6,18 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * Class representing the main scene of the application.
+ */
 public class MainScene {
     private final int height = 900;
     private final int width = 800;
     private Layout layout;
 
+    /**
+     * Constructor for MainScene.
+     */
     public MainScene() {
-        // this.layout = layout;
         Button repertoireButton = new Button("Repertoire");
         Button ticketsButton = new Button("Tickets");
         Button snacksButton = new Button("Food");
@@ -27,17 +32,31 @@ public class MainScene {
         container.getStyleClass().add("content");
         
         this.layout = new Layout(sideBar, optionsBar, container);
-
     }
 
+    /**
+     * Returns the layout of the main scene.
+     * 
+     * @return the HBox containing the layout
+     */
     public HBox getLayout() {
         return this.layout.getLayout();
     }
 
+    /**
+     * Returns the scene of the main scene.
+     * 
+     * @return the Scene object
+     */
     public Scene getScene() {
         return new Scene(this.layout.getLayout(), width, height);
     }
 
+    /**
+     * Loads a new page into the main scene.
+     * 
+     * @param newPage the new page to be loaded
+     */
     public void loadPage(Page newPage) {
         this.layout.changeContainer(newPage.getPage());
     }

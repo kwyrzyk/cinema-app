@@ -9,17 +9,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 
-
+/**
+ * Represents the balance page of the application.
+ */
 public class BalancePage implements Page {
     private final VBox balanceBox = new VBox();
     private final Controller controller;
 
+    /**
+     * Constructs a BalancePage with the specified controller.
+     * @param controller the controller of the application
+     */
     public BalancePage(Controller controller) {
         this.controller = controller;
 
         createContent();
     }
 
+    /**
+     * Creates the content of the balance page.
+     */
     private void createContent() {
         balanceBox.getStyleClass().add("page");
 
@@ -69,6 +78,10 @@ public class BalancePage implements Page {
         balanceBox.getChildren().addAll(title, currentBalanceLabel, topUpBtnBox);
     }
 
+    /**
+     * Returns the VBox containing the balance page content.
+     * @return the VBox containing the balance page content
+     */
     public VBox getPage() {
         return balanceBox;
     }

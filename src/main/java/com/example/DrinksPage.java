@@ -14,6 +14,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Pair;
 
+/**
+ * Represents the drinks page of the application.
+ */
 public class DrinksPage implements Page {
     private final VBox pageContent = new VBox();
     private final ScrollPane scrollPane = new ScrollPane(pageContent);
@@ -23,6 +26,10 @@ public class DrinksPage implements Page {
     private List<Drink> displayedDrinks;
     private final Basket basket;
 
+    /**
+     * Constructs a DrinksPage with the specified controller.
+     * @param controller the controller of the application
+     */
     public DrinksPage(Controller controller) {
         this.basket = controller.basket;
         this.allDrinks = controller.getListOfDrinks();
@@ -31,6 +38,9 @@ public class DrinksPage implements Page {
         createContent();
     }
 
+    /**
+     * Creates the content of the drinks page.
+     */
     private void createContent() {
         drinkBox.getStyleClass().add("page");
         scrollPane.getStyleClass().add("scroll-pane");
@@ -51,6 +61,10 @@ public class DrinksPage implements Page {
         pageContent.getChildren().addAll(title, searchPanel, drinkItemsBox);
     }
 
+    /**
+     * Updates the view of the drinks to display.
+     * @param drinksToDisplay the list of drinks to display
+     */
     private void updateDrinksView(List<Drink> drinksToDisplay) {
         drinkItemsBox.getChildren().clear();
 
@@ -86,6 +100,10 @@ public class DrinksPage implements Page {
         }
     }
 
+    /**
+     * Filters the drinks based on the query.
+     * @param query the query to filter the drinks
+     */
     private void filterDrinks(String query) {
         if (query.isEmpty()) {
             displayedDrinks = new ArrayList<>(allDrinks);
@@ -97,6 +115,10 @@ public class DrinksPage implements Page {
         updateDrinksView(displayedDrinks);
     }
 
+    /**
+     * Returns the VBox containing the drinks page.
+     * @return the VBox containing the drinks page
+     */
     public VBox getPage() {
         return drinkBox;
     }
