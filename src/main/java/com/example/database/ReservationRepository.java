@@ -2,6 +2,8 @@ package com.example.database;
 
 import com.example.database.db_classes.Reservation;
 import com.example.database.db_classes.ScreeningRoom;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +37,10 @@ public class ReservationRepository {
                 ScreeningRoom room = new ScreeningRoom(id, name, numRows, seatsPerRow);
                 reservations.add(new Reservation(startTime, endTime, room));
             }
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Database error: " + e.getMessage());
+            throw new RecoverableDatabaseException("Database query getting the reservation: " + e.getMessage(), e);
         }
         return reservations; 
     }
@@ -96,10 +99,10 @@ public class ReservationRepository {
             } else {
                 return false;  // Conflict exists
             }
+        }  catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println(e.getMessage());
-            return false;
+            throw new RecoverableDatabaseException("Database query getting the films: " + e.getMessage(), e);
         }
     }
 

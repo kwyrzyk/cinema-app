@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.database.db_classes.ScreeningRoom;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 public class ScreeningRoomRepository {
     
@@ -30,9 +32,10 @@ public class ScreeningRoomRepository {
 
                 ScreeningRooms.add(new ScreeningRoom(id, name, numRows, seatsPerRow));
             }
-        } catch (SQLException e){
-            e.printStackTrace();
-            System.err.println("Database error while getting the screeening rooms: " + e.getMessage());
+        }  catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new RecoverableDatabaseException("Database query getting the rooms: " + e.getMessage(), e);
         }
         return ScreeningRooms;
     }

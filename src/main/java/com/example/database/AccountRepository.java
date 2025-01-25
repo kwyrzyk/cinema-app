@@ -4,6 +4,8 @@ import com.example.database.db_classes.Account;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.OrderHistoryRecord;
 import com.example.database.db_classes.PricedItem;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 import com.example.database.db_classes.Price;
 
 import java.sql.Statement;
@@ -11,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +39,11 @@ public class AccountRepository {
             int loyalty_points = accountResult.getInt("loyalty_points");
             Price balance = new Price(accountResult.getDouble("balance"));
             return new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance);
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Database error: " + e.getMessage());
-            return new Account();
-        }
+            throw new RecoverableDatabaseException("Database query getting the account: " + e.getMessage(), e);
+        } 
 
     }
 
@@ -67,10 +70,11 @@ public class AccountRepository {
 
                 accounts.add(new Account(idAccount, login, password, email, phoneNumber, loyalty_points, balance));
             }
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Database error: " + e.getMessage());
-        }
+            throw new RecoverableDatabaseException("Database query getting the account: " + e.getMessage(), e);
+        } 
 
         return accounts;
     }
@@ -86,11 +90,11 @@ public class AccountRepository {
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to insert account: " + e.getMessage());
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query adding the account: " + e.getMessage(), e);
+        } 
     }
 
     static private boolean changeColumn(String columnName, int accountId, String newData, Connection connection){
@@ -103,11 +107,11 @@ public class AccountRepository {
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
+        }catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to update login for account ID " + accountId + ": " + e.getMessage());
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query changing the account: " + e.getMessage(), e);
+        } 
     }
 
     static public boolean changeLogin(int accountId, String newLogin, Connection connection) {
@@ -137,11 +141,11 @@ public class AccountRepository {
             
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query adding loyalty points the account: " + e.getMessage(), e);
+        } 
     }
 
     static public boolean takeLoyaltyPoints(int accountId, int pointsToTake, Connection connection) {
@@ -155,11 +159,11 @@ public class AccountRepository {
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query taking the account: " + e.getMessage(), e);
+        } 
     }
 
     static public boolean addBalance(int accountId, double balanceToAdd, Connection connection) {
@@ -172,11 +176,11 @@ public class AccountRepository {
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
+        }catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query adding the balnasce to the account: " + e.getMessage(), e);
+        } 
     }
 
 
@@ -190,11 +194,11 @@ public class AccountRepository {
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0; 
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to add loyalty points for account ID " + accountId + ": " + e.getMessage());
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query taking balance from the account: " + e.getMessage(), e);
+        } 
     }
 
     
@@ -269,10 +273,11 @@ public class AccountRepository {
     
            return true;
         
-        }catch (SQLException e){
-            System.err.println("Somehing went wrong inserting the order" + e.getMessage());
-            return false;
-        }
+        }catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new RecoverableDatabaseException("Database query adding the order: " + e.getMessage(), e);
+        } 
     }    
 
 
@@ -296,9 +301,11 @@ public class AccountRepository {
                     orders.add(new OrderHistoryRecord(idOrder, price, orderDate, basket));
                 }
             }
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            throw new RecoverableDatabaseException("Database query getting the orders history: " + e.getMessage(), e);
+        } 
 
         return orders;
     }
@@ -328,10 +335,11 @@ public class AccountRepository {
                     basket.addNewItemInQuantity(new PricedItem(itemName, itemType, price, itemReferenceId), quantity);
                 }
             }
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+            throw new RecoverableDatabaseException("Database query getting the order: " + e.getMessage(), e);
+        } 
         return basket;
     }
 
@@ -355,10 +363,11 @@ public class AccountRepository {
                 connection.rollback();
                 return false;
             }
+        }catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+            throw new RecoverableDatabaseException("Database query removing the order: " + e.getMessage(), e);
+        } 
 
     }
 

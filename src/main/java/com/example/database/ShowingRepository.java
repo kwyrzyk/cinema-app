@@ -2,6 +2,8 @@ package com.example.database;
 
 import com.example.database.db_classes.Seat;
 import com.example.database.db_classes.Showing;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -27,9 +29,10 @@ public class ShowingRepository {
                     seats.add(seat);
                 }
             }
-        }catch (SQLException e) {
-            e.getStackTrace();
-            System.err.println(e.getMessage());
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new RecoverableDatabaseException("Database query getting the showing: " + e.getMessage(), e);
         }
         return seats;
     }
@@ -100,10 +103,10 @@ public class ShowingRepository {
             int rowsAffected = preparedStatement.executeUpdate();
     
             return rowsAffected > 0;
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Failed to reserve seat: " + e.getMessage());
-            return false;
+            throw new RecoverableDatabaseException("Database query getting the showing: " + e.getMessage(), e);
         }
     }
 

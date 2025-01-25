@@ -2,12 +2,15 @@ package com.example.database;
 
 import com.example.database.db_classes.Food;
 import com.example.database.db_classes.Price;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,9 +96,10 @@ public class FoodRepository {
 
                 foods.add(food); 
             }
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Database error: " + e.getMessage());
+            throw new RecoverableDatabaseException("Database query getting the foods: " + e.getMessage(), e);
         }
 
         return foods;

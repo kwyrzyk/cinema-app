@@ -3,9 +3,12 @@ package com.example.database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 
 import com.example.database.db_classes.PointsReward;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 import java.util.List;
 
@@ -31,9 +34,10 @@ public class RewardsRepository {
 
                 rewards.add(new PointsReward(id, name, price));
             }
-        } catch (SQLException e){
-            e.printStackTrace();
-            System.err.println("Database error while getting the points rewards: " + e.getMessage());
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new RecoverableDatabaseException("Database query getting the rewards: " + e.getMessage(), e);
         }
 
         return rewards;

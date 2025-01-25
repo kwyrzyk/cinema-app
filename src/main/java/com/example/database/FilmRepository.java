@@ -3,6 +3,7 @@ package com.example.database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import com.example.database.db_classes.Actor;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Showing;
 import com.example.database.db_classes.Tag;
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 
 public class FilmRepository {
@@ -124,10 +127,11 @@ public class FilmRepository {
 
                 films.add(new Film(filmId, title, shortDescription, longDescription, rating, actors, showings, tags, pegi));
             }
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Database error: " + e.getMessage());
-        }
+            throw new RecoverableDatabaseException("Database query getting the films: " + e.getMessage(), e);
+        } 
     
         return films;
     }

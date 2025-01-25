@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import com.example.exceptions.NonRecoverableDatabaseException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -35,14 +37,15 @@ public class DatabaseManager {
             
             this.connection =  DriverManager.getConnection(url, username, password);
             
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            System.err.println("Database error: " + ex.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
             this.connection = null;
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.err.println("Database error: " + e.getMessage());
             this.connection = null;
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
+
         }
         
     }
@@ -57,8 +60,7 @@ public class DatabaseManager {
             
             return rs;
         } catch (SQLException e) {
-            System.err.println("Error executing SELECT query: " + e.getMessage());
-            return null;
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
         }
     }
 }

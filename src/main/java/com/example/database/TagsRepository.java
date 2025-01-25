@@ -1,10 +1,12 @@
 package com.example.database;
 
 import com.example.database.db_classes.Tag;
-
+import com.example.exceptions.NonRecoverableDatabaseException;
+import com.example.exceptions.RecoverableDatabaseException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +34,10 @@ public class TagsRepository {
 
                 tags.add(new Tag(id, name));
             }
-        } catch (SQLException e){
-            e.printStackTrace();
-            System.err.println("Database error while getting the tags: " + e.getMessage());
+        } catch (SQLSyntaxErrorException e) {
+            throw new NonRecoverableDatabaseException("Syntax error in SQL query: " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new RecoverableDatabaseException("Database query getting the films: " + e.getMessage(), e);
         }
         return tags;
     }
