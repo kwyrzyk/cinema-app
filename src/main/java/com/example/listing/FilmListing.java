@@ -11,6 +11,7 @@ import com.example.database.FilmRepository;
 import com.example.database.ShowingRepository;
 import com.example.database.db_classes.Film;
 import com.example.database.db_classes.Tag;
+import com.example.exceptions.ErrorHandler;
 import com.example.database.db_classes.Showing;
 
 public class FilmListing {
@@ -25,11 +26,19 @@ public class FilmListing {
     public FilmListing(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
         // Initialize films list by fetching data from the database
+        try{
         this.films = FilmRepository.getAllFilms(this.databaseManager.getConnection());
+        } catch (Exception e){
+            ErrorHandler.handle(e);
+        }
     }
 
     public void update() {
+        try{
         this.films = FilmRepository.getAllFilms(this.databaseManager.getConnection());
+        } catch ( Exception e){
+            ErrorHandler.handle(e);
+        }
     }
 
     public List<Film> getFilmsByTag(Tag tag) {
@@ -74,7 +83,11 @@ public class FilmListing {
 
     public void updateModified(){
         for(Showing sh : modified){
-            sh.setSeats(ShowingRepository.getSeatsByShowingId(sh.getId(), databaseManager.getConnection()));
+            try{
+                sh.setSeats(ShowingRepository.getSeatsByShowingId(sh.getId(), databaseManager.getConnection()));
+            }catch ( Exception e){
+                ErrorHandler.handle(e);
+            }
         }
     }
 

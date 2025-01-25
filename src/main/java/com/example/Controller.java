@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
-import com.example.database.RewardsRepository;
 import com.example.database.ShowingRepository;
-import com.example.database.TagsRepository;
 import com.example.database.db_classes.Basket;
 import com.example.database.db_classes.Discount;
 import com.example.database.db_classes.Drink;
@@ -15,12 +13,15 @@ import com.example.database.db_classes.Food;
 import com.example.database.db_classes.PointsReward;
 import com.example.database.db_classes.PricedItem;
 import com.example.database.db_classes.Tag;
+import com.example.exceptions.ErrorHandler;
 import com.example.listing.AccountListing;
 import com.example.listing.DiscountListing;
 import com.example.listing.DrinksListing;
 import com.example.listing.FilmListing;
 import com.example.listing.FoodListing;
 import com.example.listing.OrderHistoryListing;
+import com.example.listing.RewardsListing;
+import com.example.listing.TagListing;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,6 +56,8 @@ public class Controller {
     private DrinksListing drinksListing = new DrinksListing(databaseManager);
     private DiscountListing discountListing = new DiscountListing(databaseManager);
     private AccountOptionsPage accountOptionsPage = new AccountOptionsPage(this);
+    private RewardsListing rewardsListing = new RewardsListing(databaseManager.getConnection());
+    private TagListing tagListing = new TagListing(databaseManager.getConnection());
     private OrderHistoryPage orderHistoryPage;
     private BalancePage balancePage;
     public SeatsPage seatsPage;
@@ -64,8 +67,8 @@ public class Controller {
     private final List<Food> listOfFoods = foodListing.getFoods();
     private final List<Drink> listOfDrinks = drinksListing.getDrinks();
     private final List<Discount> listOfDiscounts = discountListing.getDiscounts();
-    private final List<PointsReward> listOfRewards = RewardsRepository.getAllPointsRewards(databaseManager.getConnection());
-    private final List<Tag> listOfTags = TagsRepository.getAllTags(databaseManager.getConnection());
+    private final List<PointsReward> listOfRewards = rewardsListing.getRewards();
+    private final List<Tag> listOfTags = tagListing.getTags();
     
 
     public RepertoirePage repertoirePage = new RepertoirePage(this);
@@ -291,17 +294,26 @@ public class Controller {
                     default:
                         int newLoyaltyPoints = (int) (basket.getTotalPrice());
                         if (accountId != 0) {
+                            try{
                             AccountRepository.addOrder(accountId, basket, databaseManager.getConnection());
                             AccountRepository.addLoyaltyPoints(accountId, newLoyaltyPoints, databaseManager.getConnection());
                             accountsListing.updateAccount(accountId);
                             orderHistoryListing.loadOrderHistory(accountId);
                             showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!\nAdded " + newLoyaltyPoints + " loyalty points.");
+                            } catch(Exception e){
+                                ErrorHandler.handle(e);
+                            }
+
                         } else {
                             showAlert(AlertType.WARNING, "Payment Successful","Your payment was processed successfully!");
                         }
                         for ( PricedItem item : basket.getItems()) {    
                             if (item.isTicket()) {
+                                try{
                                 ShowingRepository.reserveSeat(item.getId(), databaseManager.getConnection());
+                                } catch (Exception e){
+                                    ErrorHandler.handle(e);
+                                }
                             }
                         }
                         filmListing.updateModified();

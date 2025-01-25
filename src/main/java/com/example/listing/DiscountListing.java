@@ -3,6 +3,7 @@ package com.example.listing;
 import com.example.database.DatabaseManager;
 import com.example.database.DiscountRepository;
 import com.example.database.db_classes.Discount;
+import com.example.exceptions.ErrorHandler;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,11 @@ public class DiscountListing {
 
     public DiscountListing(DatabaseManager databaseManager){
         this.databaseManager = databaseManager;
-        this.discounts = DiscountRepository.getAllDiscounts(this.databaseManager.getConnection());
+        try{
+            this.discounts = DiscountRepository.getAllDiscounts(this.databaseManager.getConnection());
+        } catch( Exception e){
+            ErrorHandler.handle(e);
+        }
     }
 
     public List<Discount> getDiscounts() {

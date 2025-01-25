@@ -5,6 +5,7 @@ import java.util.List;
 import com.example.database.DatabaseManager;
 import com.example.database.DrinkRepository;
 import com.example.database.db_classes.Drink;
+import com.example.exceptions.ErrorHandler;
 
 public class DrinksListing {
     private DatabaseManager databaseManager;
@@ -14,7 +15,12 @@ public class DrinksListing {
     public DrinksListing(DatabaseManager databaseManager) {
         this.databaseManager = databaseManager;
         // Fetch the list of drinks using the static method from DrinkRepository
-        drinks = DrinkRepository.getAllDrinks(this.databaseManager.getConnection());
+        try{
+            drinks = DrinkRepository.getAllDrinks(this.databaseManager.getConnection());
+        
+        } catch(Exception e){
+            ErrorHandler.handle(e);
+        }
     }
 
     public List<Drink> getDrinks() {

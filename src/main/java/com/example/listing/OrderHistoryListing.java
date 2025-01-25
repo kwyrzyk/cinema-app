@@ -3,6 +3,7 @@ package com.example.listing;
 import com.example.database.AccountRepository;
 import com.example.database.DatabaseManager;
 import com.example.database.db_classes.OrderHistoryRecord;
+import com.example.exceptions.ErrorHandler;
 
 import java.util.List;
 
@@ -17,7 +18,11 @@ public class OrderHistoryListing {
     }
 
     public void loadOrderHistory(int user_id){
-        this.orders = AccountRepository.getAllOrdersHistory(user_id, databaseManager.getConnection());
+        try{
+            this.orders = AccountRepository.getAllOrdersHistory(user_id, databaseManager.getConnection());
+        }catch (Exception e){
+            ErrorHandler.handle(e);
+        }
     }
 
     public List<OrderHistoryRecord> getOrders() {
