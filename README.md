@@ -3,6 +3,11 @@ Zespół 14:
 -Mikołaj Winiarski
 -Krzysztof Wyrzykowski
 
+# Opis projektu
+
+W tym repozytorium znajduje się projekt wykonany w trzyosobowej grupie w ramach przedmiotu Programowanie Aplikacyjne. 
+Jest to aplikacja dla pracownika kina umożliwiająca zarządzanie biletami, sprzedaż przekąsek oraz zarządzanie kontami klienckimi.
+
 # Instrukcja instalacji
 
 Poniżej przedstawiono kroki, które należy wykonać, aby zainstalować i uruchomić aplikację:
